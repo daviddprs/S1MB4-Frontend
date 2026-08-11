@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const NAV_ITEMS = [
@@ -50,9 +51,9 @@ function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
   if (!hasChildren) {
     return (
       <li className="nav-item" role="none">
-        <a className="nav-link" href={item.href} role="menuitem">
+        <Link className="nav-link" to={item.href} role="menuitem">
           {item.label}
-        </a>
+        </Link>
       </li>
     );
   }
@@ -82,9 +83,9 @@ function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
       >
         {item.children.map((child) => (
           <li key={child.href} role="none">
-            <a className="dropdown-link" href={child.href} role="menuitem">
+            <Link className="dropdown-link" to={child.href} role="menuitem">
               {child.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
@@ -128,10 +129,10 @@ export default function Navbar() {
 
       {/* ── Top Bar ── */}
       <div className="topbar">
-        <a href="/" className="brand-link" aria-label="Beranda Bakorwil I Madiun">
+        <Link to="/" className="brand-link" aria-label="Beranda Bakorwil I Madiun">
           <span className="brand-primary">BAKORWIL</span>
           <span className="brand-secondary">&nbsp;I MADIUN</span>
-        </a>
+        </Link>
       </div>
 
       {/* ── Nav Bar ── */}

@@ -1,0 +1,155 @@
+/* ============================================================
+   PpidPage.css — Shared page-level styles for all PPID pages
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --page-teal:      #0d9aa6;
+  --page-teal-dark: #0a818b;
+  --page-blue:      #1a5fb4;
+  --page-bg:        #f5fbfc;
+  --page-text:      #1e3540;
+  --page-muted:     #5e8694;
+  --page-border:    #d0eaed;
+  --page-font:      'Inter', system-ui, sans-serif;
+}
+
+/* ── Page wrapper ── */
+.ppid-page {
+  min-height: 60vh;
+  background: var(--page-bg);
+  padding: 32px 24px 64px;
+  font-family: var(--page-font);
+}
+
+.ppid-page__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── Page title ── */
+.ppid-page__title {
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  font-weight: 700;
+  color: var(--page-text);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+/* Underline accent on title */
+.ppid-page__title-bar {
+  width: 48px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--page-teal), var(--page-blue));
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+/* ── Tab pills ── */
+.ppid-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.ppid-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--page-font);
+  border: 1.5px solid var(--page-border);
+  background: #fff;
+  color: var(--page-muted);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+.ppid-tab:hover {
+  background: #f0fafb;
+  color: var(--page-teal);
+  border-color: var(--page-teal);
+}
+.ppid-tab.active {
+  background: var(--page-teal);
+  color: #fff;
+  border-color: var(--page-teal);
+  box-shadow: 0 3px 10px rgba(13,154,166,0.25);
+}
+.ppid-tab:focus-visible {
+  outline: 2px solid var(--page-teal);
+  outline-offset: 2px;
+}
+
+/* ── Section heading (PpidSetiapSaat) ── */
+.ppid-section {
+  margin-bottom: 36px;
+}
+
+.ppid-section__heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--page-text);
+  margin: 0 0 4px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--page-teal);
+  display: inline-block;
+}
+
+.ppid-section__divider {
+  border: none;
+  border-top: 1px solid var(--page-border);
+  margin: 0 0 16px;
+}
+
+/* ── Loading state ── */
+.ppid-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 24px;
+  color: var(--page-teal);
+  font-size: 0.9rem;
+  font-family: var(--page-font);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.ppid-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(13,154,166,0.2);
+  border-top-color: var(--page-teal);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Error state ── */
+.ppid-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: #b91c1c;
+  font-size: 0.85rem;
+  font-family: var(--page-font);
+  margin-bottom: 16px;
+}
+.ppid-error svg { flex-shrink: 0; margin-top: 1px; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .ppid-page { padding: 20px 14px 48px; }
+  .ppid-tabs { gap: 6px; }
+  .ppid-tab  { padding: 6px 12px; font-size: 0.75rem; }
+}
