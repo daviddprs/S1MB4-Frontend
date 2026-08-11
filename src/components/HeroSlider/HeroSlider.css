@@ -1,0 +1,247 @@
+/* ============================================================
+   HERO SLIDER + TICKER — Bakorwil I Madiun
+   ============================================================ */
+
+/* ── SECTION ── */
+.hero-section {
+  width: 100%;
+}
+
+/* ══════════════════════════════════════════════════
+   SLIDER
+══════════════════════════════════════════════════ */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 6;
+  overflow: hidden;
+  background: #0d1f2d;
+}
+
+/* Empty state */
+.hero-slider--empty {
+  display: flex;
+  flex-direction: column;
+}
+.hs-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a818b 0%, #0d1f2d 100%);
+  min-height: 200px;
+  color: rgba(255,255,255,0.6);
+  gap: 10px;
+  font-size: 0.9rem;
+}
+.hs-empty span { font-size: 2.5rem; }
+.hs-empty p    { margin: 0; }
+
+/* Track */
+.hs-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Slides */
+.hs-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.hs-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+.hs-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ── Arrows ── */
+.hs-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: none;
+  background: rgba(0,0,0,0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s;
+}
+.hs-arrow:hover  { background: rgba(13,154,166,0.85); }
+.hs-arrow:focus-visible { outline: 2px solid #0d9aa6; outline-offset: 2px; }
+.hs-arrow--prev  { left: 12px; }
+.hs-arrow--next  { right: 12px; }
+
+/* ── Indicators — TOP RIGHT ── */
+.hs-indicators {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hs-dot {
+  width: 18px;
+  height: 14px;
+  border: 1.5px solid rgba(255,255,255,0.85);
+  border-radius: 2px;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.hs-dot.active {
+  background: #1a5fb4;
+  border-color: #1a5fb4;
+}
+.hs-dot:hover:not(.active) {
+  background: rgba(255,255,255,0.6);
+}
+.hs-dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════════
+   TICKER BAR
+══════════════════════════════════════════════════ */
+.hs-ticker {
+  display: flex;
+  align-items: center;
+  background: #0d9aa6;
+  height: 36px;
+  overflow: hidden;
+}
+
+/* Badge */
+.hs-ticker__badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 100%;
+  background: #1a5fb4;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  position: relative;
+}
+/* Angled right edge */
+.hs-ticker__badge::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 36px 0 0 11px;
+  border-color: transparent transparent transparent #1a5fb4;
+  z-index: 1;
+}
+
+/* Text area */
+.hs-ticker__text {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 14px 0 18px;
+  position: relative;
+}
+
+/* Marquee text */
+.hs-ticker__marquee {
+  display: block;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  animation: ticker-marquee 18s linear infinite;
+  will-change: transform;
+}
+.hs-ticker__marquee:hover { text-decoration: underline; }
+.hs-ticker__marquee.reduced { animation: none; overflow: hidden; text-overflow: ellipsis; }
+
+@keyframes ticker-marquee {
+  0%   { transform: translateX(60vw); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Pause on hover */
+.hs-ticker:hover .hs-ticker__marquee {
+  animation-play-state: paused;
+}
+
+/* Nav buttons */
+.hs-ticker__nav {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.hs-ticker__btn {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.hs-ticker__btn:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: #fff;
+}
+.hs-ticker__btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-slider { aspect-ratio: 16 / 8; }
+  .hs-arrow { width: 28px; height: 28px; }
+  .hs-ticker__badge { font-size: 0.65rem; padding: 0 12px; }
+  .hs-ticker__marquee { font-size: 0.74rem; }
+}
+@media (max-width: 480px) {
+  .hero-slider { aspect-ratio: 4 / 3; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .hs-slide, .hs-arrow, .hs-dot, .hs-ticker__marquee {
+    transition: none;
+    animation: none;
+  }
+}

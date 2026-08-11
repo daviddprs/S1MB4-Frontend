@@ -1,0 +1,265 @@
+/* ============================================================
+   NAVBAR — Bakorwil I Madiun (clean government style)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --nav-teal:       #0d9aa6;
+  --nav-teal-dark:  #0a7f8a;
+  --nav-white:      #ffffff;
+  --nav-font:       'Inter', system-ui, sans-serif;
+  --nav-transition: 0.18s ease;
+}
+
+/* ── wrapper ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  font-family: var(--nav-font);
+}
+
+/* ══════════════════════════════════════════════════
+   TOP BAR  — slim white strip with brand text
+══════════════════════════════════════════════════ */
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #dde;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+}
+
+.brand-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.brand-primary {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a5fb4;          /* biru sesuai referensi */
+  letter-spacing: 0.03em;
+}
+
+.brand-secondary {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #222;
+  letter-spacing: 0.03em;
+}
+
+/* ══════════════════════════════════════════════════
+   NAVBAR — teal bar
+══════════════════════════════════════════════════ */
+.navbar {
+  background: var(--nav-teal);
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+
+/* ── Menu list ── */
+.nav-menu {
+  display: flex;
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 38px;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Nav link shared ── */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--nav-white);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--nav-transition);
+  min-height: 38px;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: rgba(0,0,0,0.12);
+  outline: none;
+}
+
+/* Caret character */
+.dropdown-caret {
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════════════════
+   DROPDOWN
+══════════════════════════════════════════════════ */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: #fff;
+  border-top: 2px solid var(--nav-teal);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity var(--nav-transition),
+    visibility var(--nav-transition),
+    transform var(--nav-transition);
+  pointer-events: none;
+  z-index: 200;
+}
+
+@media (min-width: 901px) {
+  .nav-item.has-dropdown:hover > .dropdown-menu,
+  .nav-item.has-dropdown:focus-within > .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.dropdown-link {
+  display: block;
+  padding: 8px 18px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #2c4a52;
+  text-decoration: none;
+  transition: background var(--nav-transition), color var(--nav-transition);
+}
+.dropdown-link:hover {
+  background: #f0fafb;
+  color: var(--nav-teal);
+}
+.dropdown-link:focus-visible {
+  outline: 2px solid var(--nav-teal);
+  outline-offset: -2px;
+}
+
+/* ══════════════════════════════════════════════════
+   HAMBURGER
+══════════════════════════════════════════════════ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+}
+.hamburger:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+.hamburger-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--nav-white);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s;
+  transform-origin: center;
+}
+.hamburger.active .hamburger-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active .hamburger-bar:nth-child(2) { opacity: 0; }
+.hamburger.active .hamburger-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — Mobile ≤ 900px
+══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hamburger { display: flex; }
+
+  .navbar { position: relative; }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: unset;
+    background: var(--nav-teal-dark);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+    z-index: 300;
+  }
+  .nav-menu.open {
+    max-height: 600px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-item { flex-direction: column; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+  .nav-link { padding: 12px 16px; font-size: 0.82rem; justify-content: space-between; min-height: unset; }
+
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border-top: none;
+    border-radius: 0;
+    background: rgba(0,0,0,0.15);
+    pointer-events: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0;
+  }
+  .nav-item.mobile-open > .dropdown-menu {
+    max-height: 300px;
+    padding: 4px 0;
+  }
+
+  .dropdown-link { color: rgba(255,255,255,0.9); padding: 9px 16px 9px 32px; }
+  .dropdown-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .nav-link, .dropdown-menu, .hamburger-bar, .nav-menu {
+    transition: none;
+  }
+}
