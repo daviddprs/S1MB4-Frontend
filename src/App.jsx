@@ -6,6 +6,8 @@ import PpidDikecualikan from './pages/PpidDikecualikan';
 import PpidSertaMerta from './pages/PpidSertaMerta';
 import PpidSetiapSaat from './pages/PpidSetiapSaat';
 import Placeholder from './pages/Placeholder';
+import Berita from './pages/Berita';
+import SakipRb from './pages/SakipRb';
 import './App.css';
 
 function App() {
@@ -23,10 +25,11 @@ function App() {
 
         {/* Placeholder untuk halaman yang belum dibuat */}
         <Route path="/profil/*" element={<Placeholder />} />
-        <Route path="/berita" element={<Placeholder />} />
+        <Route path="/berita" element={<Berita />} />
+        <Route path="/berita/:id" element={<Berita />} />
         <Route path="/ejsc" element={<Placeholder />} />
         <Route path="/layanan/*" element={<Placeholder />} />
-        <Route path="/sakip-rb" element={<Placeholder />} />
+        <Route path="/sakip-rb" element={<SakipRb />} />
         <Route path="/inovasi/*" element={<Placeholder />} />
       </Routes>
     </>
