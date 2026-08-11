@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import HeroSlider from '../components/HeroSlider/HeroSlider';
 import './Home.css';
 
+// VITE_API_URL sudah berisi /api (misal: http://localhost:8000/api)
+// apiFetch menerima path TANPA prefix /api, misal '/sliders'
 const API_URL = import.meta.env.VITE_API_URL ?? '';
 
 /**
@@ -15,7 +17,7 @@ async function apiFetch(path, signal) {
     return await res.json();
   } catch (err) {
     if (err.name !== 'AbortError') {
-      console.warn(`[SIMBA API] fetch failed for ${path}:`, err.message);
+      console.warn(`[SIMBA API] fetch failed for ${API_URL}${path}:`, err.message);
     }
     return null;
   }
@@ -32,37 +34,41 @@ export default function Home() {
     (async () => {
       setLoading(true);
 
+      // Path tanpa prefix /api karena API_URL sudah berakhiran /api
       const [slidersData, breakingData] = await Promise.all([
-        apiFetch('/api/sliders', controller.signal),
-        apiFetch('/api/berita?breaking=1', controller.signal),
+        apiFetch('/sliders', controller.signal),
+        apiFetch('/berita?breaking=1', controller.signal),
       ]);
 
-      /* ── Map API responses to component props ── */
-      if (slidersData?.data ?? slidersData) {
-        const raw = slidersData?.data ?? slidersData;
-        setSlides(
-          Array.isArray(raw)
-            ? raw.map((s) => ({
-                id:    s.id,
-                image: s.image_url ?? `${API_URL}/storage/${s.image}`,
-                alt:   s.title ?? s.alt ?? `Slide ${s.id}`,
-              }))
-            : []
-        );
-      }
+      /* ── Slider: API returns flat array [{ id, gambar, url_tujuan, urutan }] ── */
+      const rawSliders = Array.isArray(slidersData)
+        ? slidersData
+        : (slidersData?.data ?? []);
 
-      if (breakingData?.data ?? breakingData) {
-        const raw = breakingData?.data ?? breakingData;
-        setNewsItems(
-          Array.isArray(raw)
-            ? raw.map((n) => ({
-                id:   n.id,
-                text: n.judul ?? n.title ?? n.text,
-                href: n.url ?? `/berita/${n.slug ?? n.id}`,
-              }))
-            : []
-        );
-      }
+      setSlides(
+        rawSliders.map((s) => ({
+          id:    s.id,
+          // Field gambar sudah berupa URL lengkap dari backend (asset('storage/...'))
+          image: s.gambar ?? s.image_url ?? s.image ?? '',
+          alt:   s.url_tujuan
+                   ? `Slide menuju ${s.url_tujuan}`
+                   : `Slide ${s.id}`,
+          href:  s.url_tujuan ?? null,
+        }))
+      );
+
+      /* ── Berita breaking: API returns flat array [{ id, judul, slug, ... }] ── */
+      const rawBerita = Array.isArray(breakingData)
+        ? breakingData
+        : (breakingData?.data ?? []);
+
+      setNewsItems(
+        rawBerita.map((n) => ({
+          id:   n.id,
+          text: n.judul ?? n.title ?? n.text ?? '',
+          href: n.url ?? `/berita/${n.slug ?? n.id}`,
+        }))
+      );
 
       setLoading(false);
     })();
