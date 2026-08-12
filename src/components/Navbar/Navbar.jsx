@@ -19,10 +19,26 @@ const NAV_ITEMS = [
     id: 'ppid',
     label: 'PPID',
     children: [
-      { label: 'Informasi Berkala', href: '/ppid/berkala' },
-      { label: 'Informasi Serta Merta', href: '/ppid/serta-merta' },
-      { label: 'Informasi Setiap Saat', href: '/ppid/setiap-saat' },
-      { label: 'Informasi Dikecualikan', href: '/ppid/dikecualikan' },
+      { label: 'Profil PPID', href: '/ppid/profil' },
+      { label: 'Layanan Informasi', href: '/ppid/layanan-informasi' },
+      {
+        label: 'Dokumen PPID',
+        children: [
+          { label: 'Dokumen Anggaran', href: '/ppid/dokumen/anggaran' },
+          { label: 'Dokumen Renstra', href: '/ppid/dokumen/renstra' },
+          { label: 'Dokumen Kinerja', href: '/ppid/dokumen/kinerja' },
+        ],
+      },
+      {
+        label: 'Klasifikasi Informasi',
+        children: [
+          { label: 'Informasi Berkala', href: '/ppid/berkala' },
+          { label: 'Informasi Serta Merta', href: '/ppid/serta-merta' },
+          { label: 'Informasi Setiap Saat', href: '/ppid/setiap-saat' },
+          { label: 'Informasi Dikecualikan', href: '/ppid/dikecualikan' },
+          { label: 'Laporan Akses Informasi', href: '/ppid/laporan-akses-informasi' },
+        ],
+      },
     ],
   },
   { id: 'ejsc', label: 'EJSC', href: '/ejsc' },
@@ -45,8 +61,63 @@ const NAV_ITEMS = [
   },
 ];
 
+/**
+ * DropdownChild — render satu item di dalam dropdown-menu.
+ * Bisa berupa link biasa ATAU sub-submenu (nested dropdown ke kanan).
+ */
+function DropdownChild({ child, isMobile, mobileOpenSub, onMobileSubToggle }) {
+  const hasSubChildren = child.children && child.children.length > 0;
+  // Gunakan label sebagai key unik untuk mobile sub-accordion
+  const subKey = child.label;
+  const isSubOpen = mobileOpenSub === subKey;
+
+  if (!hasSubChildren) {
+    return (
+      <li className="dropdown-item" role="none">
+        <Link className="dropdown-link" to={child.href} role="menuitem">
+          {child.label}
+        </Link>
+      </li>
+    );
+  }
+
+  return (
+    <li
+      className={`dropdown-item has-submenu${isSubOpen ? ' submenu-mobile-open' : ''}`}
+      role="none"
+    >
+      <button
+        className={`dropdown-link dropdown-submenu-toggle${isSubOpen ? ' active' : ''}`}
+        aria-haspopup="true"
+        aria-expanded={isSubOpen}
+        aria-label={`Submenu ${child.label}`}
+        onClick={() => isMobile && onMobileSubToggle(subKey)}
+        type="button"
+      >
+        {child.label}
+        <span className="submenu-caret" aria-hidden="true">›</span>
+      </button>
+      <ul className="submenu" role="menu" aria-label={child.label}>
+        {child.children.map((sub) => (
+          <li key={sub.href} role="none">
+            <Link className="dropdown-link submenu-link" to={sub.href} role="menuitem">
+              {sub.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+}
+
 function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
   const hasChildren = item.children && item.children.length > 0;
+  // State untuk mobile sub-accordion (level-2)
+  const [mobileOpenSub, setMobileOpenSub] = useState(null);
+  const handleMobileSubToggle = useCallback(
+    (key) => setMobileOpenSub((prev) => (prev === key ? null : key)),
+    []
+  );
 
   if (!hasChildren) {
     return (
@@ -82,11 +153,13 @@ function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
         aria-label={`Submenu ${item.label}`}
       >
         {item.children.map((child) => (
-          <li key={child.href} role="none">
-            <Link className="dropdown-link" to={child.href} role="menuitem">
-              {child.label}
-            </Link>
-          </li>
+          <DropdownChild
+            key={child.label}
+            child={child}
+            isMobile={isMobile}
+            mobileOpenSub={mobileOpenSub}
+            onMobileSubToggle={handleMobileSubToggle}
+          />
         ))}
       </ul>
     </li>

@@ -155,6 +155,12 @@
   color: #2c4a52;
   text-decoration: none;
   transition: background var(--nav-transition), color var(--nav-transition);
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 .dropdown-link:hover {
   background: #f0fafb;
@@ -163,6 +169,74 @@
 .dropdown-link:focus-visible {
   outline: 2px solid var(--nav-teal);
   outline-offset: -2px;
+}
+
+/* ══════════════════════════════════════════════════
+   NESTED SUBMENU (Level-2) — expand ke kanan
+══════════════════════════════════════════════════ */
+.dropdown-item {
+  position: relative;
+}
+
+.dropdown-submenu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.submenu-caret {
+  font-size: 1rem;
+  line-height: 1;
+  margin-left: 6px;
+  transition: transform var(--nav-transition);
+  flex-shrink: 0;
+}
+
+/* Submenu panel */
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;        /* expand ke kanan */
+  min-width: 210px;
+  background: #fff;
+  border-top: 2px solid var(--nav-teal);
+  box-shadow: 4px 4px 16px rgba(0,0,0,0.12);
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-6px);
+  transition:
+    opacity var(--nav-transition),
+    visibility var(--nav-transition),
+    transform var(--nav-transition);
+  pointer-events: none;
+  z-index: 300;
+}
+
+@media (min-width: 901px) {
+  .dropdown-item.has-submenu:hover > .submenu,
+  .dropdown-item.has-submenu:focus-within > .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  /* Saat submenu aktif, rotasi caret */
+  .dropdown-item.has-submenu:hover > .dropdown-submenu-toggle .submenu-caret,
+  .dropdown-item.has-submenu:focus-within > .dropdown-submenu-toggle .submenu-caret {
+    transform: rotate(90deg);
+  }
+}
+
+.submenu-link {
+  padding-left: 18px;
+}
+.submenu-link:hover {
+  background: #f0fafb;
+  color: var(--nav-teal);
 }
 
 /* ══════════════════════════════════════════════════
@@ -249,12 +323,40 @@
     padding: 0;
   }
   .nav-item.mobile-open > .dropdown-menu {
-    max-height: 300px;
+    max-height: 600px;   /* dinaikkan agar nested submenu ikut terlihat */
     padding: 4px 0;
+  }
+
+  /* Nested submenu — mobile accordion */
+  .submenu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border-top: none;
+    background: rgba(0,0,0,0.12);
+    pointer-events: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0;
+    z-index: auto;
+  }
+  .dropdown-item.submenu-mobile-open > .submenu {
+    max-height: 400px;
+    padding: 2px 0;
+  }
+  /* Rotasi caret saat mobile sub-accordion terbuka */
+  .dropdown-item.submenu-mobile-open > .dropdown-submenu-toggle .submenu-caret {
+    transform: rotate(90deg);
   }
 
   .dropdown-link { color: rgba(255,255,255,0.9); padding: 9px 16px 9px 32px; }
   .dropdown-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+  /* Submenu links sedikit lebih inden */
+  .submenu .dropdown-link { padding-left: 48px; color: rgba(255,255,255,0.8); }
 }
 
 /* ── Reduced motion ── */

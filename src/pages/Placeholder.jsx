@@ -14,6 +14,12 @@ const PAGE_NAMES = {
   '/layanan/pengaduan': 'Pengaduan',
   '/inovasi/daftar': 'Daftar Inovasi',
   '/inovasi/ajukan': 'Ajukan Inovasi',
+  // PPID
+  '/ppid/profil': 'Profil PPID',
+  '/ppid/layanan-informasi': 'Layanan Informasi',
+  '/ppid/dokumen/anggaran': 'Dokumen Anggaran',
+  '/ppid/dokumen/renstra': 'Dokumen Renstra',
+  '/ppid/dokumen/kinerja': 'Dokumen Kinerja',
 };
 
 export default function Placeholder() {
