@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchJson } from '../lib/api';
-import PpidList from '../components/PpidList/PpidList';
+import PpidTable from '../components/PpidTable/PpidTable';
 import './PpidPage.css';
 
 /**
@@ -11,11 +11,12 @@ import './PpidPage.css';
  *   endpoint {string}  — API path, e.g. "/ppid/dikecualikan"
  *
  * Response shape: flat array of items  OR  { data: [...] }
+ * Renders a single PpidTable (no sub-categories needed for these endpoints).
  */
 export default function PpidSimplePage({ title, endpoint }) {
-  const [items, setItems]   = useState([]);
+  const [items, setItems]     = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]   = useState(null);
+  const [error, setError]     = useState(null);
 
   useEffect(() => {
     if (!endpoint) return;
@@ -62,8 +63,8 @@ export default function PpidSimplePage({ title, endpoint }) {
           </div>
         )}
 
-        {/* List */}
-        {!loading && !error && <PpidList items={items} />}
+        {/* Table */}
+        {!loading && !error && <PpidTable items={items} standalone />}
       </div>
     </div>
   );

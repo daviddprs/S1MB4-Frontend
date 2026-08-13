@@ -1,5 +1,6 @@
 /* ============================================================
    PpidPage.css — Shared page-level styles for all PPID pages
+   Reference: bakorwilmadiun.jatimprov.go.id
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -17,92 +18,56 @@
 /* ── Page wrapper ── */
 .ppid-page {
   min-height: 60vh;
-  background: var(--page-bg);
+  background: #fff;
   padding: 32px 24px 64px;
   font-family: var(--page-font);
 }
 
 .ppid-page__inner {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 /* ── Page title ── */
 .ppid-page__title {
-  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
-  font-weight: 700;
-  color: var(--page-text);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 800;
+  color: #111;
   margin: 0 0 6px;
-  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* Underline accent on title */
 .ppid-page__title-bar {
   width: 48px;
   height: 4px;
-  background: linear-gradient(90deg, var(--page-teal), var(--page-blue));
-  border-radius: 4px;
-  margin-bottom: 24px;
-}
-
-/* ── Tab pills ── */
-.ppid-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.ppid-tab {
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 16px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  font-family: var(--page-font);
-  border: 1.5px solid var(--page-border);
-  background: #fff;
-  color: var(--page-muted);
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
-  white-space: nowrap;
-}
-.ppid-tab:hover {
-  background: #f0fafb;
-  color: var(--page-teal);
-  border-color: var(--page-teal);
-}
-.ppid-tab.active {
   background: var(--page-teal);
-  color: #fff;
-  border-color: var(--page-teal);
-  box-shadow: 0 3px 10px rgba(13,154,166,0.25);
-}
-.ppid-tab:focus-visible {
-  outline: 2px solid var(--page-teal);
-  outline-offset: 2px;
+  border-radius: 4px;
+  margin-bottom: 28px;
 }
 
-/* ── Section heading (PpidSetiapSaat) ── */
+/* ── Section wrapper (one per category) ── */
 .ppid-section {
-  margin-bottom: 36px;
+  margin-bottom: 40px;
 }
 
+/*
+ * Category heading above each table.
+ * Reference style: plain bold uppercase text — no colored background.
+ */
 .ppid-section__heading {
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--page-text);
-  margin: 0 0 4px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--page-teal);
-  display: inline-block;
-}
-
-.ppid-section__divider {
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+  padding: 0;
+  background: none;
   border: none;
-  border-top: 1px solid var(--page-border);
-  margin: 0 0 16px;
+  border-radius: 0;
+  display: block;
 }
 
 /* ── Loading state ── */
@@ -138,7 +103,7 @@
   background: #fff5f5;
   border: 1px solid #fca5a5;
   border-left: 4px solid #ef4444;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 14px 18px;
   color: #b91c1c;
   font-size: 0.85rem;
@@ -150,6 +115,6 @@
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .ppid-page { padding: 20px 14px 48px; }
-  .ppid-tabs { gap: 6px; }
-  .ppid-tab  { padding: 6px 12px; font-size: 0.75rem; }
+  .ppid-section { margin-bottom: 28px; }
+  .ppid-section__heading { font-size: 0.9rem; }
 }

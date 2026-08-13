@@ -1,65 +1,81 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchJson } from '../../lib/api';
 import './Navbar.css';
 
-const NAV_ITEMS = [
-  { id: 'beranda', label: 'BERANDA', href: '/' },
-  {
-    id: 'profil',
-    label: 'PROFIL',
-    children: [
-      { label: 'Sejarah', href: '/profil/sejarah' },
-      { label: 'Visi & Misi', href: '/profil/visi-misi' },
-      { label: 'Struktur Organisasi', href: '/profil/struktur-organisasi' },
-      { label: 'Tugas & Fungsi', href: '/profil/tugas-fungsi' },
-    ],
-  },
-  { id: 'berita', label: 'BERITA', href: '/berita' },
-  {
-    id: 'ppid',
-    label: 'PPID',
-    children: [
-      { label: 'Profil PPID', href: '/ppid/profil' },
-      { label: 'Layanan Informasi', href: '/ppid/layanan-informasi' },
-      {
-        label: 'Dokumen PPID',
-        children: [
-          { label: 'Dokumen Anggaran', href: '/ppid/dokumen/anggaran' },
-          { label: 'Dokumen Renstra', href: '/ppid/dokumen/renstra' },
-          { label: 'Dokumen Kinerja', href: '/ppid/dokumen/kinerja' },
-        ],
-      },
-      {
-        label: 'Klasifikasi Informasi',
-        children: [
-          { label: 'Informasi Berkala', href: '/ppid/berkala' },
-          { label: 'Informasi Serta Merta', href: '/ppid/serta-merta' },
-          { label: 'Informasi Setiap Saat', href: '/ppid/setiap-saat' },
-          { label: 'Informasi Dikecualikan', href: '/ppid/dikecualikan' },
-          { label: 'Laporan Akses Informasi', href: '/ppid/laporan-akses-informasi' },
-        ],
-      },
-    ],
-  },
-  { id: 'ejsc', label: 'EJSC', href: '/ejsc' },
-  {
-    id: 'layanan',
-    label: 'LAYANAN',
-    children: [
-      { label: 'Layanan Publik', href: '/layanan/publik' },
-      { label: 'Pengaduan', href: '/layanan/pengaduan' },
-    ],
-  },
-  { id: 'sakip-rb', label: 'SAKIP-RB', href: '/sakip-rb' },
-  {
-    id: 'inovasi',
-    label: 'INOVASI',
-    children: [
-      { label: 'Daftar Inovasi', href: '/inovasi/daftar' },
-      { label: 'Ajukan Inovasi', href: '/inovasi/ajukan' },
-    ],
-  },
+/**
+ * Fallback statis — ditampilkan selama fetch API berlangsung
+ * atau jika API tidak dapat dijangkau.
+ * Urutan dan label harus konsisten dengan tabel ppid_klasifikasi.
+ */
+const KLASIFIKASI_FALLBACK = [
+  { label: 'Informasi Berkala',          href: '/ppid/berkala' },
+  { label: 'Informasi Serta Merta',      href: '/ppid/serta-merta' },
+  { label: 'Informasi Setiap Saat',      href: '/ppid/setiap-saat' },
+  { label: 'Informasi Dikecualikan',     href: '/ppid/dikecualikan' },
+  { label: 'Laporan Akses Informasi',    href: '/ppid/laporan-akses-informasi' },
 ];
+
+/**
+ * Bangun array NAV_ITEMS dengan menginjeksikan daftar klasifikasi dinamis.
+ * @param {Array<{label:string, href:string}>} klasifikasiItems
+ */
+function buildNavItems(klasifikasiItems) {
+  return [
+    { id: 'beranda', label: 'BERANDA', href: '/' },
+    {
+      id: 'profil',
+      label: 'PROFIL',
+      children: [
+        { label: 'Sejarah', href: '/profil/sejarah' },
+        { label: 'Visi & Misi', href: '/profil/visi-misi' },
+        { label: 'Struktur Organisasi', href: '/profil/struktur-organisasi' },
+        { label: 'Tugas & Fungsi', href: '/profil/tugas-fungsi' },
+      ],
+    },
+    { id: 'berita', label: 'BERITA', href: '/berita' },
+    {
+      id: 'ppid',
+      label: 'PPID',
+      children: [
+        { label: 'Profil PPID', href: '/ppid/profil' },
+        { label: 'Layanan Informasi', href: '/ppid/layanan-informasi' },
+        {
+          label: 'Dokumen PPID',
+          children: [
+            { label: 'Dokumen Anggaran', href: '/ppid/dokumen/anggaran' },
+            { label: 'Dokumen Renstra', href: '/ppid/dokumen/renstra' },
+            { label: 'Dokumen Kinerja', href: '/ppid/dokumen/kinerja' },
+          ],
+        },
+        {
+          label: 'Klasifikasi Informasi',
+          // Diisi dari API; fallback ke statis jika API gagal
+          children: klasifikasiItems,
+        },
+      ],
+    },
+    { id: 'ejsc', label: 'EJSC', href: '/ejsc' },
+    {
+      id: 'layanan',
+      label: 'LAYANAN',
+      children: [
+        { label: 'Layanan Publik', href: '/layanan/publik' },
+        { label: 'Pengaduan', href: '/layanan/pengaduan' },
+      ],
+    },
+    { id: 'sakip-rb', label: 'SAKIP-RB', href: '/sakip-rb' },
+    {
+      id: 'inovasi',
+      label: 'INOVASI',
+      children: [
+        { label: 'Daftar Inovasi', href: '/inovasi/daftar' },
+        { label: 'Ajukan Inovasi', href: '/inovasi/ajukan' },
+      ],
+    },
+  ];
+}
+
 
 /**
  * DropdownChild — render satu item di dalam dropdown-menu.
@@ -170,7 +186,37 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  // Mulai dari fallback; akan di-replace dengan data API saat fetch selesai
+  const [klasifikasiItems, setKlasifikasiItems] = useState(KLASIFIKASI_FALLBACK);
   const navRef = useRef(null);
+
+  // Fetch daftar klasifikasi dari API saat Navbar pertama kali mount
+  useEffect(() => {
+    const ctrl = new AbortController();
+
+    fetchJson('/ppid/klasifikasi', { signal: ctrl.signal })
+      .then((data) => {
+        const raw = Array.isArray(data) ? data : (data?.data ?? []);
+        // Validasi minimal: setiap item harus punya label & href
+        const valid = raw.filter((d) => d?.label && d?.href);
+        if (valid.length > 0) {
+          setKlasifikasiItems(valid);
+        }
+        // Jika API kembalikan array kosong, tetap pakai fallback
+      })
+      .catch((err) => {
+        // Jika fetch di-abort (React StrictMode / unmount), abaikan
+        // Jika error jaringan/server, biarkan fallback tetap aktif
+        if (err?.name !== 'AbortError') {
+          console.warn('[Navbar] Gagal memuat klasifikasi dari API, menggunakan data statis.', err?.message);
+        }
+      });
+
+    return () => ctrl.abort();
+  }, []);
+
+  // Rebuild NAV_ITEMS setiap kali klasifikasiItems berubah
+  const navItems = buildNavItems(klasifikasiItems);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');
@@ -230,7 +276,7 @@ export default function Navbar() {
           role="menubar"
           aria-label="Menu utama"
         >
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <NavItem
               key={item.id}
               item={item}

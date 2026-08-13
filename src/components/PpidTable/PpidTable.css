@@ -1,0 +1,162 @@
+/* ============================================================
+   PpidTable.css — Clean minimal table matching bakorwilmadiun reference
+   ============================================================ */
+
+/* ── Wrapper ── */
+.ppid-table__wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Standalone (no section heading above) — same, no difference needed */
+.ppid-table__wrapper--standalone {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Table base ── */
+.ppid-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.88rem;
+  color: #222;
+  background: #fff;
+}
+
+/* ── Header row ── */
+.ppid-table thead tr {
+  border-bottom: 2px solid #ddd;
+}
+
+.ppid-table__th {
+  background: transparent;
+  color: #111;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  text-align: left;
+  border: none;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+/* Column widths */
+.ppid-table__th--no   { width: 56px; }
+.ppid-table__th--info { width: auto; }
+.ppid-table__th--link { width: 90px; }
+
+/* ── Body rows ── */
+.ppid-table__row {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.12s;
+}
+.ppid-table__row:nth-child(even) {
+  background: #f7f9fc;
+}
+.ppid-table__row:nth-child(odd) {
+  background: #fff;
+}
+.ppid-table__row:last-child {
+  border-bottom: none;
+}
+.ppid-table__row:hover {
+  background: #eef4ff;
+}
+
+/* ── Cells ── */
+.ppid-table__td {
+  padding: 11px 14px;
+  vertical-align: middle;
+  border: none;
+}
+
+.ppid-table__td--no {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #1a6bcc;
+  width: 56px;
+}
+
+.ppid-table__td--info {
+  vertical-align: middle;
+}
+
+.ppid-table__td--link {
+  width: 90px;
+}
+
+/* Info cell content */
+.ppid-table__nama {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #222;
+  line-height: 1.5;
+}
+
+/* Row where link is active — nama text turns blue */
+.ppid-table__row--linked .ppid-table__nama {
+  color: #1a6bcc;
+}
+
+.ppid-table__desc {
+  display: block;
+  font-size: 0.78rem;
+  color: #666;
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+/* ── "Tautan" link in Tautan column ── */
+.ppid-table__link {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #1a6bcc;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.15s, text-decoration 0.15s;
+}
+.ppid-table__link:hover {
+  color: #0d4fa0;
+  text-decoration: underline;
+}
+
+/* Unavailable dash */
+.ppid-table__unavailable {
+  color: #aaa;
+  font-size: 0.88rem;
+}
+
+/* ── Empty state ── */
+.ppid-table__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: #888;
+  font-size: 0.875rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+.ppid-table__empty span { margin: 0; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .ppid-table__th,
+  .ppid-table__td {
+    padding: 9px 10px;
+    font-size: 0.82rem;
+  }
+  .ppid-table__th--no,
+  .ppid-table__td--no {
+    width: 36px;
+  }
+}

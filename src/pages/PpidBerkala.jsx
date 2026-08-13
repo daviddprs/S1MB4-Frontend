@@ -1,46 +1,38 @@
 import { useState, useEffect } from 'react';
 import { fetchJson } from '../lib/api';
-import PpidList from '../components/PpidList/PpidList';
+import PpidTable from '../components/PpidTable/PpidTable';
 import './PpidPage.css';
 
 /**
  * PpidBerkala — /ppid/berkala
  *
- * Response: [{ id_jenis_dokumen, nama_kategori, items: [...] }]
- * Renders tab pills per kategori, shows PpidList for active tab.
+ * Response: flat array, each item has `jenis_dokumen` (category name).
+ * Groups items by `jenis_dokumen` and renders each as a separate section
+ * with a heading and a PpidTable — no tab UI.
  */
 export default function PpidBerkala() {
-  const [categories, setCategories] = useState([]);
-  const [activeTab, setActiveTab]   = useState(null);
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState(null);
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState(null);
 
   useEffect(() => {
     const ctrl = new AbortController();
-
     setLoading(true);
     setError(null);
 
     fetchJson('/ppid/berkala', { signal: ctrl.signal })
       .then((data) => {
-        // API mengembalikan flat array langsung (bukan { data: [...] })
         const flat = Array.isArray(data) ? data : (data?.data ?? []);
 
-        // Group items by jenis_dokumen untuk membentuk tab
-        const grouped = [];
-        const seen = new Map(); // jenis_dokumen -> index di grouped
-
+        // Group items by jenis_dokumen, preserving insertion order
+        const map = new Map();
         flat.forEach((item) => {
           const key = item.jenis_dokumen ?? 'Lainnya';
-          if (!seen.has(key)) {
-            seen.set(key, grouped.length);
-            grouped.push({ id_jenis_dokumen: key, nama_kategori: key, items: [] });
-          }
-          grouped[seen.get(key)].items.push(item);
+          if (!map.has(key)) map.set(key, []);
+          map.get(key).push(item);
         });
 
-        setCategories(grouped);
-        if (grouped.length > 0) setActiveTab(grouped[0].id_jenis_dokumen);
+        setSections([...map.entries()].map(([kategori, items]) => ({ kategori, items })));
       })
       .catch((err) => {
         if (err.name !== 'AbortError') setError(err.message);
@@ -49,10 +41,6 @@ export default function PpidBerkala() {
 
     return () => ctrl.abort();
   }, []);
-
-  /* Items for the currently active tab */
-  const activeItems =
-    categories.find((c) => c.id_jenis_dokumen === activeTab)?.items ?? [];
 
   return (
     <div className="ppid-page">
@@ -79,35 +67,26 @@ export default function PpidBerkala() {
           </div>
         )}
 
-        {/* Tab pills */}
-        {!loading && !error && categories.length > 0 && (
-          <nav className="ppid-tabs" aria-label="Kategori informasi berkala" role="tablist">
-            {categories.map((cat) => (
-              <button
-                key={cat.id_jenis_dokumen}
-                className={`ppid-tab${activeTab === cat.id_jenis_dokumen ? ' active' : ''}`}
-                role="tab"
-                aria-selected={activeTab === cat.id_jenis_dokumen}
-                aria-controls="ppid-berkala-panel"
-                onClick={() => setActiveTab(cat.id_jenis_dokumen)}
-                type="button"
-              >
-                {cat.nama_kategori}
-              </button>
-            ))}
-          </nav>
+        {/* All sections — one table per category */}
+        {!loading && !error && sections.length === 0 && (
+          <PpidTable items={[]} />
         )}
 
-        {/* List panel */}
-        {!loading && !error && (
-          <div
-            id="ppid-berkala-panel"
-            role="tabpanel"
-            aria-label="Daftar informasi berkala"
+        {!loading && !error && sections.map((section, idx) => (
+          <section
+            key={section.kategori ?? idx}
+            className="ppid-section"
+            aria-labelledby={`ppid-berkala-section-${idx}`}
           >
-            <PpidList items={activeItems} />
-          </div>
-        )}
+            <h2
+              id={`ppid-berkala-section-${idx}`}
+              className="ppid-section__heading"
+            >
+              {section.kategori}
+            </h2>
+            <PpidTable items={section.items} />
+          </section>
+        ))}
       </div>
     </div>
   );

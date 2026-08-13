@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { fetchJson } from '../lib/api';
-import PpidList from '../components/PpidList/PpidList';
+import PpidTable from '../components/PpidTable/PpidTable';
 import './PpidPage.css';
 
 /**
  * PpidSetiapSaat — /ppid/setiap-saat
  *
- * Response: [{ kategori, items: [...] }]
- * Renders all sections at once, each as a heading + PpidList.
+ * Response: [{ kategori, items: [...] }]  (already grouped by backend)
+ * Renders each section as a heading + PpidTable (no tab UI).
  */
 export default function PpidSetiapSaat() {
   const [sections, setSections] = useState([]);
@@ -57,25 +57,25 @@ export default function PpidSetiapSaat() {
           </div>
         )}
 
-        {/* All sections */}
+        {/* Empty state */}
         {!loading && !error && sections.length === 0 && (
-          <PpidList items={[]} /> /* renders empty state */
+          <PpidTable items={[]} />
         )}
 
+        {/* All sections — one table per category */}
         {!loading && !error && sections.map((section, idx) => (
           <section
             key={section.kategori ?? idx}
             className="ppid-section"
-            aria-labelledby={`ppid-section-${idx}`}
+            aria-labelledby={`ppid-setiapsaat-section-${idx}`}
           >
             <h2
-              id={`ppid-section-${idx}`}
+              id={`ppid-setiapsaat-section-${idx}`}
               className="ppid-section__heading"
             >
               {section.kategori ?? `Kategori ${idx + 1}`}
             </h2>
-            <hr className="ppid-section__divider" />
-            <PpidList items={section.items ?? []} />
+            <PpidTable items={section.items ?? []} />
           </section>
         ))}
       </div>
