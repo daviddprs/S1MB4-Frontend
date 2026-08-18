@@ -43,9 +43,9 @@ function buildNavItems(klasifikasiItems) {
         {
           label: 'Dokumen PPID',
           children: [
-            { label: 'Dokumen Anggaran', href: '/ppid/dokumen/anggaran' },
-            { label: 'Dokumen Renstra', href: '/ppid/dokumen/renstra' },
-            { label: 'Dokumen Kinerja', href: '/ppid/dokumen/kinerja' },
+            { label: 'SK PPID', href: '/ppid/dokumen/sk-ppid' },
+            { label: 'DIP',     href: '/ppid/dokumen/dip/bakorwil-1-madiun' },
+            { label: 'LLID',    href: '/ppid/dokumen/llid/bakorwil-1-madiun' },
           ],
         },
         {

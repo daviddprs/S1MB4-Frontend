@@ -17,9 +17,9 @@ const PAGE_NAMES = {
   // PPID
   '/ppid/profil': 'Profil PPID',
   '/ppid/layanan-informasi': 'Layanan Informasi',
-  '/ppid/dokumen/anggaran': 'Dokumen Anggaran',
-  '/ppid/dokumen/renstra': 'Dokumen Renstra',
-  '/ppid/dokumen/kinerja': 'Dokumen Kinerja',
+  '/ppid/dokumen/sk-ppid':                    'SK PPID',
+  '/ppid/dokumen/dip/bakorwil-1-madiun':      'DIP PPID Bakorwil I Madiun',
+  '/ppid/dokumen/llid/bakorwil-1-madiun':     'LLID PPID Bakorwil I Madiun',
 };
 
 export default function Placeholder() {

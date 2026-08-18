@@ -7,6 +7,7 @@ import PpidSertaMerta from './pages/PpidSertaMerta';
 import PpidSetiapSaat from './pages/PpidSetiapSaat';
 import PpidLaporanAkses from './pages/PpidLaporanAkses';
 import Placeholder from './pages/Placeholder';
+import PpidSimplePage from './pages/PpidSimplePage';
 import Berita from './pages/Berita';
 import SakipRb from './pages/SakipRb';
 import './App.css';
@@ -26,6 +27,18 @@ function App() {
         <Route path="/ppid/laporan-akses-informasi" element={<PpidLaporanAkses />} />
         <Route path="/ppid/profil" element={<Placeholder />} />
         <Route path="/ppid/layanan-informasi" element={<Placeholder />} />
+        {/* Dokumen PPID — live data dari API */}
+        <Route
+          path="/ppid/dokumen/sk-ppid"
+          element={<PpidSimplePage title="SK PPID" endpoint="/ppid/dokumen/sk-ppid" />}
+        />
+        <Route
+          path="/ppid/dokumen/dip/bakorwil-1-madiun"
+          element={<PpidSimplePage title="DIP PPID Bakorwil I Madiun" endpoint="/ppid/dokumen/dip-bakorwil-1-madiun" />}
+        />
+        {/* LLID — route sementara ke Placeholder, diupdate setelah ID dikonfirmasi */}
+        <Route path="/ppid/dokumen/llid/bakorwil-1-madiun" element={<Placeholder />} />
+        {/* Catch-all untuk path dokumen lain yang belum dikonfigurasi */}
         <Route path="/ppid/dokumen/*" element={<Placeholder />} />
 
         {/* Placeholder untuk halaman yang belum dibuat */}
