@@ -36,8 +36,11 @@ function App() {
           path="/ppid/dokumen/dip/bakorwil-1-madiun"
           element={<PpidSimplePage title="DIP PPID Bakorwil I Madiun" endpoint="/ppid/dokumen/dip-bakorwil-1-madiun" />}
         />
-        {/* LLID — route sementara ke Placeholder, diupdate setelah ID dikonfirmasi */}
-        <Route path="/ppid/dokumen/llid/bakorwil-1-madiun" element={<Placeholder />} />
+        {/* LLID — live data dari API */}
+        <Route
+          path="/ppid/dokumen/llid/bakorwil-1-madiun"
+          element={<PpidSimplePage title="LLID PPID Bakorwil I Madiun" endpoint="/ppid/dokumen/llid-bakorwil-1-madiun" />}
+        />
         {/* Catch-all untuk path dokumen lain yang belum dikonfigurasi */}
         <Route path="/ppid/dokumen/*" element={<Placeholder />} />
 
