@@ -30,7 +30,6 @@ function buildNavItems(klasifikasiItems) {
         { label: 'Sejarah', href: '/profil/sejarah' },
         { label: 'Visi & Misi', href: '/profil/visi-misi' },
         { label: 'Struktur Organisasi', href: '/profil/struktur-organisasi' },
-        { label: 'Tugas & Fungsi', href: '/profil/tugas-fungsi' },
       ],
     },
     { id: 'berita', label: 'BERITA', href: '/berita' },
@@ -60,18 +59,13 @@ function buildNavItems(klasifikasiItems) {
       id: 'layanan',
       label: 'LAYANAN',
       children: [
-        { label: 'Layanan Publik', href: '/layanan/publik' },
-        { label: 'Pengaduan', href: '/layanan/pengaduan' },
+
       ],
     },
     { id: 'sakip-rb', label: 'SAKIP-RB', href: '/sakip-rb' },
     {
       id: 'inovasi',
       label: 'INOVASI',
-      children: [
-        { label: 'Daftar Inovasi', href: '/inovasi/daftar' },
-        { label: 'Ajukan Inovasi', href: '/inovasi/ajukan' },
-      ],
     },
   ];
 }
