@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { fetchJson } from '../lib/api';
 import './Berita.css';
 
@@ -299,7 +300,9 @@ function BeritaList({ onSelect }) {
    ROOT: switches between list and detail
 ══════════════════════════════════════════════════════════ */
 export default function Berita() {
-  const [selectedId, setSelectedId] = useState(null);
+  const location = useLocation();
+  // Jika navigasi dari Home (card diklik), location.state?.openId berisi id artikel
+  const [selectedId, setSelectedId] = useState(location.state?.openId ?? null);
 
   return (
     <div className="bt-page">

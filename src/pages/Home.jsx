@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeroSlider from '../components/HeroSlider/HeroSlider';
+import BeritaTerbaruSection from '../components/BeritaTerbaru/BeritaTerbaruSection';
 import './Home.css';
 
 /* ── Date formatter ── */
@@ -36,10 +38,21 @@ async function apiFetch(path, signal) {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
   const [slides, setSlides]         = useState([]);
   const [newsItems, setNewsItems]   = useState([]);
   const [latestNews, setLatestNews] = useState([]);
   const [loading, setLoading]       = useState(true);
+
+  /**
+
+   * Navigasi ke halaman Berita.
+   * id !== null → buka detail berita dengan id tersebut.
+   * id === null  → buka daftar berita.
+   */
+  function handleNavigateToBerita(id) {
+    navigate('/berita', { state: id != null ? { openId: id } : undefined });
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -180,6 +193,9 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* ── Berita Terbaru ── */}
+      <BeritaTerbaruSection onNavigateToBerita={handleNavigateToBerita} />
     </main>
   );
 }
