@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchJson } from '../../lib/api';
+import bannerBakorwil from '../../assets/banner-bakorwil-madiun.jpg';
 import './BeritaTerbaruSection.css';
 
 /* ════════════════════════════════════════════════════════════
@@ -179,6 +180,16 @@ function VideoItem({ video }) {
 function Sidebar({ videos, videoLoading, videoError }) {
   return (
     <aside className="bts__sidebar">
+      {/* ── Banner Bakorwil ── */}
+      <div className="bts__banner-wrap">
+        <img
+          src={bannerBakorwil}
+          alt="Banner Bakorwil I Madiun"
+          className="bts__banner-img"
+          loading="lazy"
+        />
+      </div>
+
       {/* ── Section VIDEO ── */}
       <div className="bts__video-section">
         <div className="bts__video-title-wrap">

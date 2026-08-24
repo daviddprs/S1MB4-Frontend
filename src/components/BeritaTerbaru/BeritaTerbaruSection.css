@@ -343,17 +343,19 @@
   gap: 24px;
 }
 
-/* Banner statis */
-.bts__banner {
+/* Banner di atas section VIDEO */
+.bts__banner-wrap {
   width: 100%;
   border-radius: var(--bts-radius);
   overflow: hidden;
   box-shadow: var(--bts-shadow);
+  margin-bottom: 4px; /* gap sudah dihandle oleh .bts__sidebar gap: 24px */
 }
-.bts__banner img {
+.bts__banner-img {
   width: 100%;
   display: block;
   object-fit: cover;
+  border-radius: var(--bts-radius);
 }
 
 /* ── Sidebar VIDEO ── */
