@@ -1,8 +1,33 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import HeroSlider from '../components/HeroSlider/HeroSlider';
 import BeritaTerbaruSection from '../components/BeritaTerbaru/BeritaTerbaruSection';
+import lambangMagetan      from '../assets/lambang-magetan.png';
+import lambangMadiun       from '../assets/lambang-madiun.png';
+import lambangKotaMadiun   from '../assets/lambang-kota-madiun.png';
+import lambangPonorogo     from '../assets/lambang-ponorogo.png';
+import lambangNgawi        from '../assets/lambang-ngawi.png';
+import lambangPacitan      from '../assets/lambang-pacitan.png';
+import lambangKediri       from '../assets/lambang-kediri.png';
+import lambangKotaKediri   from '../assets/lambang-kota-kediri.png';
+import lambangTrenggalek   from '../assets/lambang-trenggalek.png';
+import lambangTulungagung  from '../assets/lambang-tulungagung.png';
 import './Home.css';
+
+/* ── Data wilayah Bakorwil I Madiun (10 daerah, 5 per halaman) ── */
+const WILAYAH = [
+  { name: 'Kab. Magetan',     href: 'https://magetankab.go.id',      logo: lambangMagetan },
+  { name: 'Kab. Madiun',      href: 'https://madiunkab.go.id',       logo: lambangMadiun },
+  { name: 'Kota Madiun',      href: 'https://madiunkota.go.id',      logo: lambangKotaMadiun },
+  { name: 'Kab. Ponorogo',    href: 'https://ponorogo.go.id',        logo: lambangPonorogo },
+  { name: 'Kab. Ngawi',       href: 'https://ngawikab.go.id',        logo: lambangNgawi },
+  { name: 'Kab. Pacitan',     href: 'https://pacitankab.go.id',      logo: lambangPacitan },
+  { name: 'Kab. Kediri',      href: 'https://kedirikab.go.id',       logo: lambangKediri },
+  { name: 'Kota Kediri',      href: 'https://kedirikota.go.id',      logo: lambangKotaKediri },
+  { name: 'Kab. Trenggalek',  href: 'https://trenggalekkab.go.id',   logo: lambangTrenggalek },
+  { name: 'Kab. Tulungagung', href: 'https://tulungagungkab.go.id',  logo: lambangTulungagung },
+];
+const WILAYAH_PER_PAGE = 5;
 
 /* ── Date formatter ── */
 function formatDate(iso) {
@@ -39,10 +64,16 @@ async function apiFetch(path, signal) {
 
 export default function Home() {
   const navigate = useNavigate();
-  const [slides, setSlides]         = useState([]);
-  const [newsItems, setNewsItems]   = useState([]);
-  const [latestNews, setLatestNews] = useState([]);
-  const [loading, setLoading]       = useState(true);
+  const [slides, setSlides]           = useState([]);
+  const [newsItems, setNewsItems]     = useState([]);
+  const [latestNews, setLatestNews]   = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [wilayahOffset, setWilayahOffset] = useState(0);
+
+  const maxOffset = WILAYAH.length - WILAYAH_PER_PAGE;
+  const prevWilayah = () => setWilayahOffset((o) => Math.max(0, o - 1));
+  const nextWilayah = () => setWilayahOffset((o) => Math.min(maxOffset, o + 1));
+  const visibleWilayah = WILAYAH.slice(wilayahOffset, wilayahOffset + WILAYAH_PER_PAGE);
 
   /**
 
@@ -147,8 +178,8 @@ export default function Home() {
                 ) : (
                   latestNews.map((item) => (
                     <li key={item.id} className="home-sidebar__item">
-                      <a
-                        href={`/berita/${item.slug}`}
+                      <Link
+                        to={`/berita/${item.slug}`}
                         className="home-sidebar__link"
                         aria-label={`Baca: ${item.judul}`}
                       >
@@ -161,36 +192,69 @@ export default function Home() {
                             {formatDate(item.tanggal)}
                           </time>
                         )}
-                      </a>
+                      </Link>
                     </li>
                   ))
                 )}
               </ul>
-              <a href="/berita" className="home-sidebar__more" aria-label="Lihat semua berita">
+              <Link to="/berita" className="home-sidebar__more" aria-label="Lihat semua berita">
                 Lihat Semua Berita →
-              </a>
+              </Link>
             </aside>
           </div>
         )}
       </section>
 
-      {/* ─── Welcome section below ─── */}
-      <section className="home-welcome" aria-labelledby="welcome-heading">
-        <div className="home-welcome__inner">
-          <h1 id="welcome-heading" className="home-welcome__title">
-            Selamat Datang di Website Resmi
-            <br />
-            <span>Bakorwil I Madiun</span>
-          </h1>
-          <p className="home-welcome__sub">
-            Badan Koordinasi Wilayah I Madiun — Provinsi Jawa Timur
-          </p>
-          <div className="home-welcome__divider" aria-hidden="true" />
-          <p className="home-welcome__desc">
-            Bakorwil I Madiun bertugas mengkoordinasikan penyelenggaraan pemerintahan,
-            pembangunan, dan pemberdayaan masyarakat di wilayah Madiun, Ponorogo,
-            Pacitan, Magetan, dan Ngawi.
-          </p>
+      {/* ─── Wilayah Section ─── */}
+      <section className="home-wilayah" aria-label="Wilayah Bakorwil I Madiun">
+        <div className="home-wilayah__inner">
+          <div className="home-wilayah__header">
+            <h2 className="home-wilayah__title">WILAYAH BAKORWIL I MADIUN</h2>
+            <div className="home-wilayah__nav" aria-label="Navigasi wilayah">
+              <button
+                className="home-wilayah__btn"
+                onClick={prevWilayah}
+                aria-label="Wilayah sebelumnya"
+                type="button"
+                disabled={wilayahOffset === 0}
+              >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M7 2L3 5L7 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button
+                className="home-wilayah__btn"
+                onClick={nextWilayah}
+                aria-label="Wilayah berikutnya"
+                type="button"
+                disabled={wilayahOffset >= maxOffset}
+              >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M3 2L7 5L3 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div className="home-wilayah__logos">
+            {visibleWilayah.map((w) => (
+              <a
+                key={w.name}
+                href={w.href}
+                className="home-wilayah__item"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Website resmi ${w.name}`}
+              >
+                <img
+                  src={w.logo}
+                  alt={`Lambang ${w.name}`}
+                  className="home-wilayah__logo"
+                  loading="lazy"
+                />
+                <span className="home-wilayah__name">{w.name}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -65,9 +65,9 @@ const KONTAK = {
   telepon: '(0351) 464151',
   email: 'bakorwilmadiun@jatimprov.go.id',
   sosmed: [
-    { label: 'Facebook',  href: '#' },
-    { label: 'Instagram', href: '#' },
-    { label: 'YouTube',   href: '#' },
+    { label: 'Facebook',  href: 'https://www.facebook.com/bakorwilmdn/',      ariaLabel: 'Facebook Bakorwil I Madiun' },
+    { label: 'Instagram', href: 'https://www.instagram.com/bakorwilmadiun_/', ariaLabel: 'Instagram Bakorwil I Madiun' },
+    { label: 'YouTube',   href: 'https://www.youtube.com/@bakorwilmadiun',    ariaLabel: 'YouTube Bakorwil I Madiun' },
   ],
 };
 
@@ -128,8 +128,8 @@ export default function Footer() {
                 key={s.label}
                 href={s.href}
                 className="footer-sosmed__btn"
-                aria-label={`Ikuti kami di ${s.label}`}
-                target={s.href !== '#' ? '_blank' : undefined}
+                aria-label={s.ariaLabel}
+                target="_blank"
                 rel="noopener noreferrer"
                 role="listitem"
               >
