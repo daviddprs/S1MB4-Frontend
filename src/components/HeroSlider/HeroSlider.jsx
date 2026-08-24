@@ -6,7 +6,10 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
   const [paused, setPaused]           = useState(false);
   const [newsIndex, setNewsIndex]     = useState(0);
   const [prefersReduced, setReduced]  = useState(false);
-  const timerRef = useRef(null);
+  const [mobileHeight, setMobileHeight] = useState(null); // tinggi dinamis di mobile
+  const timerRef     = useRef(null);
+  const containerRef = useRef(null); // ref ke .hero-slider container
+  const MOBILE_BP    = 600; // breakpoint mobile (px)
 
   /* prefers-reduced-motion */
   useEffect(() => {
@@ -16,6 +19,28 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
     mq.addEventListener('change', h);
     return () => mq.removeEventListener('change', h);
   }, []);
+
+  /* Reset mobileHeight saat resize ke desktop */
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > MOBILE_BP) setMobileHeight(null);
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, [MOBILE_BP]);
+
+  /**
+   * Dipanggil saat <img> selesai load.
+   * Hanya aktif di mobile — menghitung tinggi container dari rasio natural gambar
+   * sehingga tidak ada letterbox (ruang kosong atas/bawah).
+   */
+  const onImgLoad = useCallback((e) => {
+    if (window.innerWidth > MOBILE_BP || !containerRef.current) return;
+    const { naturalWidth, naturalHeight } = e.target;
+    if (!naturalWidth || !naturalHeight) return;
+    const containerW = containerRef.current.offsetWidth;
+    setMobileHeight(Math.round((containerW * naturalHeight) / naturalWidth));
+  }, [MOBILE_BP]);
 
   /* Slide navigation */
   const goTo = useCallback(
@@ -58,7 +83,9 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
     <section className="hero-section" aria-label="Slider utama dan berita terkini">
       {/* ── SLIDER ── */}
       <div
+        ref={containerRef}
         className="hero-slider"
+        style={mobileHeight ? { height: mobileHeight } : undefined}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocus={() => setPaused(true)}
@@ -83,6 +110,7 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
                 className="hs-img"
                 draggable={false}
                 loading={idx === 0 ? 'eager' : 'lazy'}
+                onLoad={idx === current ? onImgLoad : undefined}
               />
             </div>
           ))}
