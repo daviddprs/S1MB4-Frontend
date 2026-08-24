@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 import Home from './pages/Home';
 import PpidBerkala from './pages/PpidBerkala';
 import PpidDikecualikan from './pages/PpidDikecualikan';
@@ -53,6 +54,7 @@ function App() {
         <Route path="/sakip-rb" element={<SakipRb />} />
         <Route path="/inovasi/*" element={<Placeholder />} />
       </Routes>
+      <Footer />
     </>
   );
 }
