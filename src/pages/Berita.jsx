@@ -8,7 +8,7 @@ function formatDate(iso) {
   if (!iso) return null;
   try {
     return new Intl.DateTimeFormat('id-ID', {
-      day: 'numeric', month: 'long', year: 'numeric',
+      day: 'numeric', month: 'short', year: 'numeric',
     }).format(new Date(iso));
   } catch {
     return iso;
@@ -49,8 +49,9 @@ function BeritaCard({ item, onClick }) {
       </div>
       <div className="bt-card__body">
         <div className="bt-card__meta">
-          <time className="bt-card__date" dateTime={item.created_at}>
-            {formatDate(item.created_at)}
+          {/* prefer tanggal_berita, fallback ke created_at */}
+          <time className="bt-card__date" dateTime={item.tanggal_berita ?? item.created_at}>
+            {formatDate(item.tanggal_berita ?? item.created_at)}
           </time>
           {item.penulis && <>
             <span className="bt-card__dot" aria-hidden="true">●</span>
@@ -193,8 +194,8 @@ function BeritaDetail({ id, onBack }) {
           </svg>
           Berita
         </span>
-        <time className="bt-detail__date" dateTime={article.created_at}>
-          {formatDate(article.created_at)}
+        <time className="bt-detail__date" dateTime={article.tanggal_berita ?? article.created_at}>
+          {formatDate(article.tanggal_berita ?? article.created_at)}
         </time>
         {article.penulis && (
           <span className="bt-detail__author">oleh {article.penulis}</span>

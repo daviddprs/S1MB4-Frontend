@@ -296,9 +296,7 @@
   }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — stack vertically on mobile
-══════════════════════════════════════════════════ */
+/*RESPONSIVE — stack vertically on mobile*/
 @media (max-width: 768px) {
   .home-hero-layout {
     flex-direction: column;

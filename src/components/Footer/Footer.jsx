@@ -153,15 +153,6 @@ export default function Footer() {
               aria-label="Peta lokasi kantor Bakorwil I Madiun"
             />
           </div>
-          <a
-            href={MAPS_OPEN_URL}
-            className="footer-maps-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Buka lokasi di Google Maps"
-          >
-            📍 Buka di Google Maps
-          </a>
         </div>
 
         {/* ── Kolom 3: Bakorwil Jatim ── */}

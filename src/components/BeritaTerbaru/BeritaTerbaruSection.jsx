@@ -7,13 +7,13 @@ import './BeritaTerbaruSection.css';
    HELPERS
 ════════════════════════════════════════════════════════════ */
 
-/** Format tanggal ISO ke "20 Agustus 2026" */
+/** Format tanggal ke "24 Agu 2026" (bulan disingkat 3 huruf, Indonesia) */
 function formatDate(iso) {
   if (!iso) return null;
   try {
     return new Intl.DateTimeFormat('id-ID', {
       day: 'numeric',
-      month: 'long',
+      month: 'short',
       year: 'numeric',
     }).format(new Date(iso));
   } catch {
@@ -112,10 +112,10 @@ function BeritaCard({ item, onNavigate }) {
         {/* Badge kategori statis */}
         <span className="bts-card__badge">Berita</span>
 
-        {/* Tanggal */}
-        {item.created_at && (
-          <time className="bts-card__date" dateTime={item.created_at}>
-            {formatDate(item.created_at)}
+        {/* Tanggal — prefer tanggal_berita, fallback ke created_at */}
+        {(item.tanggal_berita || item.created_at) && (
+          <time className="bts-card__date" dateTime={item.tanggal_berita ?? item.created_at}>
+            {formatDate(item.tanggal_berita ?? item.created_at)}
           </time>
         )}
 
