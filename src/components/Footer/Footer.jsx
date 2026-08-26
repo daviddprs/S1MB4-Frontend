@@ -78,11 +78,11 @@ const MAPS_OPEN_URL =
   'https://maps.app.goo.gl/auH4fWTi3azcm1Zz9';
 
 const BAKORWIL_LINKS = [
-  { label: 'Bakorwil I Madiun',      href: 'https://bakorwilmadiun.jatimprov.go.id', active: true },
-  { label: 'Bakorwil II Bojonegoro', href: '#' },
-  { label: 'Bakorwil III Malang',    href: '#' },
-  { label: 'Bakorwil IV Pamekasan',  href: '#' },
-  { label: 'Bakorwil V Jember',      href: '#' },
+  { label: 'Bakorwil I Madiun',      href: 'https://bakorwilmadiun.jatimprov.go.id',      active: true },
+  { label: 'Bakorwil II Bojonegoro', href: 'https://bakorwilbojonegoro.jatimprov.go.id'             },
+  { label: 'Bakorwil III Malang',    href: 'https://bakorwilmalang.jatimprov.go.id'                 },
+  { label: 'Bakorwil IV Pamekasan',  href: 'https://bakorwilpamekasan.jatimprov.go.id'              },
+  { label: 'Bakorwil V Jember',      href: 'https://bakorwiljember.jatimprov.go.id'                 },
 ];
 
 /* ── Render ikon sosmed berdasarkan label ── */

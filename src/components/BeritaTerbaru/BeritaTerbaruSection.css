@@ -138,9 +138,9 @@
 /* Card image */
 .bts-card__img-wrap {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: linear-gradient(135deg, #cceaed, #b2dde3);
+  background: linear-gradient(135deg, #ddf2f5, #c8e8ed);
   position: relative;
   flex-shrink: 0;
 }
@@ -148,11 +148,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Prioritaskan bagian ATAS gambar saat crop — judul/angka utama
+     infografis biasanya ada di atas, foto dokumentasi umumnya juga oke */
+  object-position: top center;
   display: block;
   transition: transform 0.35s ease;
 }
 .bts-card:hover .bts-card__img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 .bts-card__img-placeholder {
   width: 100%;
@@ -261,7 +264,7 @@
 }
 .bts-card-skeleton__img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
 }
 .bts-card-skeleton__body {
   padding: 16px 18px 18px;
