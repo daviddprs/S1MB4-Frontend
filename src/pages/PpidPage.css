@@ -1,0 +1,120 @@
+/* ============================================================
+   PpidPage.css — Shared page-level styles for all PPID pages
+   Reference: bakorwilmadiun.jatimprov.go.id
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --page-teal:      #0d9aa6;
+  --page-teal-dark: #0a818b;
+  --page-blue:      #1a5fb4;
+  --page-bg:        #f5fbfc;
+  --page-text:      #1e3540;
+  --page-muted:     #5e8694;
+  --page-border:    #d0eaed;
+  --page-font:      'Inter', system-ui, sans-serif;
+}
+
+/* ── Page wrapper ── */
+.ppid-page {
+  min-height: 60vh;
+  background: #fff;
+  padding: 32px 24px 64px;
+  font-family: var(--page-font);
+}
+
+.ppid-page__inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ── Page title ── */
+.ppid-page__title {
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Underline accent on title */
+.ppid-page__title-bar {
+  width: 48px;
+  height: 4px;
+  background: var(--page-teal);
+  border-radius: 4px;
+  margin-bottom: 28px;
+}
+
+/* ── Section wrapper (one per category) ── */
+.ppid-section {
+  margin-bottom: 40px;
+}
+
+/*
+ * Category heading above each table.
+ * Reference style: plain bold uppercase text — no colored background.
+ */
+.ppid-section__heading {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  display: block;
+}
+
+/* ── Loading state ── */
+.ppid-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 24px;
+  color: var(--page-teal);
+  font-size: 0.9rem;
+  font-family: var(--page-font);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.ppid-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(13,154,166,0.2);
+  border-top-color: var(--page-teal);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Error state ── */
+.ppid-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-left: 4px solid #ef4444;
+  border-radius: 6px;
+  padding: 14px 18px;
+  color: #b91c1c;
+  font-size: 0.85rem;
+  font-family: var(--page-font);
+  margin-bottom: 16px;
+}
+.ppid-error svg { flex-shrink: 0; margin-top: 1px; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .ppid-page { padding: 20px 14px 48px; }
+  .ppid-section { margin-bottom: 28px; }
+  .ppid-section__heading { font-size: 0.9rem; }
+}

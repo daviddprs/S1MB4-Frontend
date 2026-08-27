@@ -1,0 +1,45 @@
+/* ============================================================
+   App.css — Global overrides for Bakorwil I Madiun SIMBA
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f0f8fa;
+}
+
+/* Remove the old Vite default #root centering */
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: left;
+  border: none;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Skip-to-content for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a5fb4;
+  color: white;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  transition: top 0.2s;
+  text-decoration: none;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.skip-link:focus {
+  top: 0;
+}

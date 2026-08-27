@@ -1,0 +1,42 @@
+.placeholder-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--color-bg, #f5f6fa);
+}
+
+.placeholder-card {
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem 4rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  max-width: 420px;
+  width: 100%;
+}
+
+.placeholder-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.placeholder-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a2340;
+  margin: 0 0 0.75rem;
+}
+
+.placeholder-text {
+  font-size: 1rem;
+  color: #5a6a85;
+  margin: 0 0 0.25rem;
+}
+
+.placeholder-sub {
+  font-size: 0.875rem;
+  color: #9baabb;
+  margin: 0;
+}

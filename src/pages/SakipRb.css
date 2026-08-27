@@ -1,0 +1,228 @@
+/* ============================================================
+   SakipRb.css — Halaman SAKIP-RB Publik
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --sk-teal:       #0d9aa6;
+  --sk-teal-dark:  #0a818b;
+  --sk-blue:       #1a5fb4;
+  --sk-bg:         #f5fbfc;
+  --sk-card-bg:    #ffffff;
+  --sk-text:       #1e3540;
+  --sk-muted:      #5e8694;
+  --sk-border:     #d0eaed;
+  --sk-font:       'Inter', system-ui, sans-serif;
+  --sk-radius:     12px;
+  --sk-shadow:     0 2px 14px rgba(13,154,166,0.07);
+}
+
+/* ── Page wrapper ── */
+.sk-page {
+  min-height: 60vh;
+  background: var(--sk-bg);
+  padding: 36px 24px 72px;
+  font-family: var(--sk-font);
+}
+.sk-page__inner { max-width: 1000px; margin: 0 auto; }
+
+/* ── Header ── */
+.sk-header { margin-bottom: 28px; }
+.sk-header__title {
+  font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+  font-weight: 800;
+  color: var(--sk-text);
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+.sk-header__bar {
+  width: 52px; height: 4px;
+  background: linear-gradient(90deg, var(--sk-teal), var(--sk-blue));
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.sk-header__desc {
+  font-size: 0.9rem;
+  color: var(--sk-muted);
+  line-height: 1.6;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* ── Year pill tabs ── */
+.sk-year-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.sk-year-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 20px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--sk-font);
+  border: 1.5px solid var(--sk-border);
+  background: #fff;
+  color: var(--sk-muted);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+.sk-year-btn:hover { background: #f0fafb; color: var(--sk-teal); border-color: var(--sk-teal); }
+.sk-year-btn.active {
+  background: var(--sk-teal); color: #fff; border-color: var(--sk-teal);
+  box-shadow: 0 3px 10px rgba(13,154,166,0.25);
+}
+.sk-year-btn:focus-visible { outline: 2px solid var(--sk-teal); outline-offset: 2px; }
+
+/* ── Loading ── */
+.sk-loading {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; padding: 80px 24px;
+  color: var(--sk-teal); font-size: 0.9rem;
+}
+@keyframes sk-spin { to { transform: rotate(360deg); } }
+.sk-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid rgba(13,154,166,0.15);
+  border-top-color: var(--sk-teal);
+  border-radius: 50%;
+  animation: sk-spin 0.75s linear infinite;
+}
+
+/* ── Error ── */
+.sk-error {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: #fff5f5; border: 1px solid #fca5a5; border-left: 4px solid #ef4444;
+  border-radius: 10px; padding: 16px 20px;
+  color: #b91c1c; font-size: 0.875rem; margin-bottom: 24px;
+}
+.sk-error svg { flex-shrink: 0; margin-top: 1px; }
+
+/* ── Empty ── */
+.sk-empty {
+  text-align: center; padding: 60px 24px; color: var(--sk-muted);
+}
+.sk-empty__icon { font-size: 2.8rem; margin-bottom: 12px; }
+.sk-empty__title { font-size: 1rem; font-weight: 600; color: var(--sk-text); margin: 0 0 6px; }
+.sk-empty__sub   { font-size: 0.85rem; margin: 0; }
+
+/* ── Document list ── */
+.sk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Document card ── */
+.sk-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--sk-card-bg);
+  border: 1px solid var(--sk-border);
+  border-radius: var(--sk-radius);
+  padding: 16px 20px;
+  box-shadow: var(--sk-shadow);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+.sk-card:hover {
+  box-shadow: 0 6px 24px rgba(13,154,166,0.14);
+  border-color: rgba(13,154,166,0.3);
+  transform: translateY(-2px);
+}
+
+/* Nomor urut */
+.sk-card__num {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(13,154,166,0.1);
+  color: var(--sk-teal);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Body teks */
+.sk-card__body { flex: 1; min-width: 0; }
+.sk-card__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--sk-text);
+  margin: 0 0 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sk-card__meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.sk-card__klasifikasi {
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--sk-teal);
+  background: rgba(13,154,166,0.08);
+  border-radius: 999px; padding: 2px 10px;
+}
+.sk-card__tahun {
+  font-size: 0.72rem; color: var(--sk-muted); font-weight: 500;
+}
+
+/* Action button */
+.sk-card__action { flex-shrink: 0; }
+.sk-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.78rem; font-weight: 600;
+  font-family: var(--sk-font);
+  text-decoration: none;
+  border: none; cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.15s;
+  white-space: nowrap;
+}
+.sk-btn--dokumen {
+  background: linear-gradient(135deg, var(--sk-teal), var(--sk-teal-dark));
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(13,154,166,0.3);
+}
+.sk-btn--dokumen:hover {
+  box-shadow: 0 4px 14px rgba(13,154,166,0.45);
+  transform: translateY(-1px);
+}
+.sk-btn--link {
+  background: linear-gradient(135deg, var(--sk-blue), #1248a0);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(26,95,180,0.3);
+}
+.sk-btn--link:hover {
+  box-shadow: 0 4px 14px rgba(26,95,180,0.45);
+  transform: translateY(-1px);
+}
+.sk-btn--unavailable {
+  background: #f1f5f9; color: #94a3b8;
+  cursor: default; box-shadow: none;
+}
+
+/* Stat bar */
+.sk-stat {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.sk-stat__item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; color: var(--sk-muted);
+}
+.sk-stat__num {
+  font-size: 1.1rem; font-weight: 700; color: var(--sk-teal);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .sk-page  { padding: 24px 14px 56px; }
+  .sk-card  { flex-wrap: wrap; gap: 12px; }
+  .sk-card__title { white-space: normal; }
+  .sk-card__action { width: 100%; }
+  .sk-btn   { width: 100%; justify-content: center; }
+}

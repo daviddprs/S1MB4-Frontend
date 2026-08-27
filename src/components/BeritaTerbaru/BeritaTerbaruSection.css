@@ -1,0 +1,522 @@
+/* ============================================================
+   BeritaTerbaruSection.css
+   Section "Berita Terbaru" di Halaman Beranda — Bakorwil I Madiun
+   ============================================================ */
+
+/* ── Design tokens (scoped ke section ini) ── */
+.bts {
+  --bts-teal:        #0d9aa6;
+  --bts-teal-dark:   #0a818b;
+  --bts-teal-light:  rgba(13, 154, 166, 0.08);
+  --bts-blue:        #1a5fb4;
+  --bts-text:        #1e3540;
+  --bts-muted:       #5e8694;
+  --bts-border:      #d0eaed;
+  --bts-bg:          #f0f8f9;
+  --bts-card-bg:     #ffffff;
+  --bts-radius:      12px;
+  --bts-shadow:      0 2px 12px rgba(13, 154, 166, 0.08);
+  --bts-shadow-hov:  0 6px 28px rgba(13, 154, 166, 0.18);
+  --bts-font:        'Inter', system-ui, sans-serif;
+
+  background: var(--bts-bg);
+  padding: 52px 24px 64px;
+  font-family: var(--bts-font);
+}
+
+/* ── Outer wrapper ── */
+.bts__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ════════════════════════════════════════════════
+   SECTION HEADER
+════════════════════════════════════════════════ */
+.bts__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.bts__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bts__title-bar {
+  width: 5px;
+  height: 28px;
+  background: linear-gradient(180deg, var(--bts-teal), var(--bts-blue));
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.bts__title {
+  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  color: var(--bts-text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.bts__more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--bts-teal);
+  text-decoration: none;
+  border: 1.5px solid var(--bts-border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.bts__more-link:hover {
+  background: var(--bts-teal);
+  color: #fff;
+  border-color: var(--bts-teal);
+}
+.bts__more-link svg {
+  transition: transform 0.18s;
+}
+.bts__more-link:hover svg {
+  transform: translateX(3px);
+}
+
+/* ════════════════════════════════════════════════
+   BODY LAYOUT: grid berita + sidebar
+════════════════════════════════════════════════ */
+.bts__body {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ════════════════════════════════════════════════
+   BERITA GRID (kiri)
+════════════════════════════════════════════════ */
+.bts__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* ════════════════════════════════════════════════
+   BERITA CARD
+════════════════════════════════════════════════ */
+.bts-card {
+  background: var(--bts-card-bg);
+  border-radius: var(--bts-radius);
+  box-shadow: var(--bts-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  text-decoration: none;
+  color: inherit;
+}
+.bts-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bts-shadow-hov);
+  border-color: rgba(13, 154, 166, 0.2);
+}
+.bts-card:focus-visible {
+  outline: 2px solid var(--bts-teal);
+  outline-offset: 2px;
+}
+
+/* Card image */
+.bts-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ddf2f5, #c8e8ed);
+  position: relative;
+  flex-shrink: 0;
+}
+.bts-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Prioritaskan bagian ATAS gambar saat crop — judul/angka utama
+     infografis biasanya ada di atas, foto dokumentasi umumnya juga oke */
+  object-position: top center;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.bts-card:hover .bts-card__img {
+  transform: scale(1.04);
+}
+.bts-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, #ddf2f5, #c8e8ed);
+}
+
+/* Card body */
+.bts-card__body {
+  padding: 16px 18px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Badge kategori */
+.bts-card__badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  background: var(--bts-teal-light);
+  color: var(--bts-teal);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Tanggal */
+.bts-card__date {
+  font-size: 0.72rem;
+  color: var(--bts-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Judul */
+.bts-card__title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--bts-text);
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Excerpt */
+.bts-card__excerpt {
+  font-size: 0.78rem;
+  color: var(--bts-muted);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Read more */
+.bts-card__readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--bts-teal);
+  margin-top: 4px;
+  transition: gap 0.15s;
+}
+.bts-card:hover .bts-card__readmore {
+  gap: 9px;
+}
+
+/* ════════════════════════════════════════════════
+   SKELETON LOADING — GRID
+════════════════════════════════════════════════ */
+@keyframes bts-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.bts-skeleton {
+  background: linear-gradient(90deg, #d6eef0 25%, #c3e6ea 50%, #d6eef0 75%);
+  background-size: 600px 100%;
+  animation: bts-shimmer 1.4s infinite linear;
+  border-radius: 8px;
+}
+
+.bts-card-skeleton {
+  background: var(--bts-card-bg);
+  border-radius: var(--bts-radius);
+  box-shadow: var(--bts-shadow);
+  overflow: hidden;
+}
+.bts-card-skeleton__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+.bts-card-skeleton__body {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bts-card-skeleton__badge {
+  width: 90px;
+  height: 18px;
+  border-radius: 999px;
+}
+.bts-card-skeleton__date {
+  width: 80px;
+  height: 12px;
+}
+.bts-card-skeleton__title {
+  width: 100%;
+  height: 14px;
+}
+.bts-card-skeleton__title2 {
+  width: 70%;
+  height: 14px;
+}
+.bts-card-skeleton__excerpt {
+  width: 100%;
+  height: 11px;
+}
+.bts-card-skeleton__excerpt2 {
+  width: 85%;
+  height: 11px;
+}
+.bts-card-skeleton__excerpt3 {
+  width: 60%;
+  height: 11px;
+}
+
+/* ════════════════════════════════════════════════
+   ERROR STATE
+════════════════════════════════════════════════ */
+.bts__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #b91c1c;
+  font-size: 0.875rem;
+  grid-column: 1 / -1;
+}
+
+/* ════════════════════════════════════════════════
+   EMPTY STATE
+════════════════════════════════════════════════ */
+.bts__empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--bts-muted);
+  grid-column: 1 / -1;
+}
+.bts__empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.bts__empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bts-text);
+  margin: 0 0 4px;
+}
+.bts__empty-sub { font-size: 0.8rem; margin: 0; }
+
+/* ════════════════════════════════════════════════
+   SIDEBAR (kanan)
+════════════════════════════════════════════════ */
+.bts__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Banner di atas section VIDEO */
+.bts__banner-wrap {
+  width: 100%;
+  border-radius: var(--bts-radius);
+  overflow: hidden;
+  box-shadow: var(--bts-shadow);
+  margin-bottom: 4px; /* gap sudah dihandle oleh .bts__sidebar gap: 24px */
+}
+.bts__banner-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--bts-radius);
+}
+
+/* ── Sidebar VIDEO ── */
+.bts__video-section {}
+
+.bts__video-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.bts__video-title-bar {
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, var(--bts-teal), var(--bts-blue));
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.bts__video-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--bts-text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* Video list */
+.bts__video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Video item */
+.bts-video-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  align-items: start;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 8px;
+  transition: background 0.18s;
+  text-decoration: none;
+  color: inherit;
+}
+.bts-video-item:hover {
+  background: rgba(13, 154, 166, 0.06);
+}
+
+.bts-video-item__thumb {
+  width: 100px;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #cceaed;
+  flex-shrink: 0;
+  position: relative;
+}
+.bts-video-item__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.bts-video-item__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+.bts-video-item:hover .bts-video-item__play {
+  opacity: 1;
+}
+.bts-video-item__thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.bts-video-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 2px;
+}
+.bts-video-item__title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bts-text);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.bts-video-item__label {
+  font-size: 0.68rem;
+  color: var(--bts-teal);
+  font-weight: 500;
+}
+
+/* Skeleton sidebar video */
+.bts-video-skeleton {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  padding: 8px;
+}
+.bts-video-skeleton__thumb {
+  width: 100px;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+}
+.bts-video-skeleton__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+}
+.bts-video-skeleton__line1 { width: 100%; height: 11px; }
+.bts-video-skeleton__line2 { width: 70%; height: 11px; }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .bts__body {
+    grid-template-columns: 1fr 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bts {
+    padding: 36px 16px 48px;
+  }
+  .bts__body {
+    grid-template-columns: 1fr;
+  }
+  .bts__grid {
+    grid-template-columns: 1fr;
+  }
+  /* Di mobile, sidebar tampil di bawah grid */
+  .bts__sidebar {
+    order: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .bts__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
