@@ -11,6 +11,11 @@ import Placeholder from './pages/Placeholder';
 import PpidSimplePage from './pages/PpidSimplePage';
 import Berita from './pages/Berita';
 import SakipRb from './pages/SakipRb';
+import ProfilVisiMisi from './pages/ProfilVisiMisi';
+import ProfilKedudukanAlamat from './pages/ProfilKedudukanAlamat';
+import ProfilStrukturOrganisasi from './pages/ProfilStrukturOrganisasi';
+import ProfilWilayahKerja from './pages/ProfilWilayahKerja';
+import ProfilPejabatStruktural from './pages/ProfilPejabatStruktural';
 import './App.css';
 
 function App() {
@@ -45,8 +50,14 @@ function App() {
         {/* Catch-all untuk path dokumen lain yang belum dikonfigurasi */}
         <Route path="/ppid/dokumen/*" element={<Placeholder />} />
 
-        {/* Placeholder untuk halaman yang belum dibuat */}
-        <Route path="/profil/*" element={<Placeholder />} />
+        {/* Halaman Profil */}
+        <Route path="/profil/visi-misi"           element={<ProfilVisiMisi />} />
+        <Route path="/profil/kedudukan-alamat"    element={<ProfilKedudukanAlamat />} />
+        <Route path="/profil/struktur-organisasi" element={<ProfilStrukturOrganisasi />} />
+        <Route path="/profil/wilayah-kerja"       element={<ProfilWilayahKerja />} />
+        <Route path="/profil/pejabat-struktural"  element={<ProfilPejabatStruktural />} />
+        {/* Catch-all untuk sub-halaman profil yang belum diimplementasikan (mis. /profil/sejarah) */}
+        <Route path="/profil/*"                   element={<Placeholder />} />
         <Route path="/berita" element={<Berita />} />
         <Route path="/berita/:id" element={<Berita />} />
         <Route path="/ejsc" element={<Placeholder />} />
