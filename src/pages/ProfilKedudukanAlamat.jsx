@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'react';
+import { fetchJson } from '../lib/api';
+import { Sidebar } from '../components/BeritaTerbaru/BeritaTerbaruSection';
+import '../components/BeritaTerbaru/BeritaTerbaruSection.css';
 import './Profil.css';
 
-/* ── Google Maps embed — sama dengan Footer ── */
+/* ── Google Maps embed — kantor Bakorwil I Madiun ── */
 const MAPS_EMBED_SRC =
   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31636.57274888182!2d111.52875088039548!3d-7.621504390965603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79be56503dac8d%3A0x34ae6448236d0a9f!2sBadan%20Koordinasi%20Wilayah%20Pemerintahan%20dan%20Pembangunan%20Provinsi%20Jawa%20Timur%20(BAKORWIL%20I)%20di%20Madiun!5e0!3m2!1sid!2sid!4v1787542006438!5m2!1sid!2sid';
 
@@ -36,6 +40,29 @@ function IconMail() {
 }
 
 export default function ProfilKedudukanAlamat() {
+  /* ── Video state — reuse data yang sama dengan Beranda & Visi Misi ── */
+  const [videos, setVideos]         = useState([]);
+  const [videoLoading, setVLoading]  = useState(true);
+  const [videoError, setVError]      = useState(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+
+    setVLoading(true);
+    setVError(null);
+    fetchJson('/videos', { signal: ctrl.signal })
+      .then((data) => {
+        const raw = Array.isArray(data) ? data : [];
+        setVideos(raw);
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') setVError(err.message);
+      })
+      .finally(() => setVLoading(false));
+
+    return () => ctrl.abort();
+  }, []);
+
   return (
     <main className="pr-page" aria-label="Kedudukan dan Alamat Bakorwil I Madiun">
       <div className="pr-page__inner">
@@ -55,22 +82,25 @@ export default function ProfilKedudukanAlamat() {
           {/* Kolom kiri: konten */}
           <div className="pr-content">
 
-            {/* KEDUDUKAN */}
-            <section className="pr-section" aria-labelledby="heading-kedudukan">
+            {/* KEDUDUKAN + ALAMAT — satu card menyatu dengan divider */}
+            <section className="pr-section" aria-label="Kedudukan dan Alamat kantor">
               <h2 className="pr-section__heading" id="heading-kedudukan">KEDUDUKAN</h2>
-              <p className="pr-section__text">
-                Badan Koordinasi Wilayah Pemerintahan dan Pembangunan Provinsi Jawa Timur
-                di Madiun merupakan salah satu Organisasi Perangkat Daerah Pemerintah
-                Provinsi Jawa Timur, dipimpin oleh seorang Kepala Badan yang berkedudukan
-                di bawah dan bertanggung jawab kepada Gubernur Jawa Timur melalui
-                Sekretaris Daerah Provinsi Jawa Timur.
-              </p>
-            </section>
-
-            {/* ALAMAT */}
-            <section className="pr-section" aria-labelledby="heading-alamat">
-              <h2 className="pr-section__heading" id="heading-alamat">ALAMAT</h2>
               <div className="pr-info-card">
+
+                {/* Bagian Kedudukan */}
+                <p className="pr-section__text" style={{ margin: 0 }}>
+                  Badan Koordinasi Wilayah Pemerintahan dan Pembangunan Provinsi Jawa Timur
+                  di Madiun merupakan salah satu Organisasi Perangkat Daerah Pemerintah
+                  Provinsi Jawa Timur, dipimpin oleh seorang Kepala Badan yang berkedudukan
+                  di bawah dan bertanggung jawab kepada Gubernur Jawa Timur melalui
+                  Sekretaris Daerah Provinsi Jawa Timur.
+                </p>
+
+                {/* Divider */}
+                <hr className="pr-card-divider" aria-hidden="true" />
+
+                {/* Bagian Alamat */}
+                <h3 className="pr-section__heading pr-card-subheading" id="heading-alamat">ALAMAT</h3>
                 <p className="pr-info-card__name">
                   Badan Koordinasi Wilayah Pemerintahan dan Pembangunan Provinsi Jawa Timur
                   di Madiun (Bakorwil I Madiun)
@@ -91,49 +121,37 @@ export default function ProfilKedudukanAlamat() {
                     </a>
                   </li>
                 </ul>
+
+              </div>
+            </section>
+
+            {/* GOOGLE MAPS */}
+            <section className="pr-section" aria-labelledby="heading-maps">
+              <h2 className="pr-section__heading" id="heading-maps">GOOGLE MAPS</h2>
+              <div className="pr-map-wrap">
+                <iframe
+                  title="Lokasi Kantor Bakorwil I Madiun"
+                  src={MAPS_EMBED_SRC}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  aria-label="Peta lokasi kantor Bakorwil I Madiun di Google Maps"
+                />
               </div>
             </section>
 
           </div>
 
-          {/* Kolom kanan: gambar */}
-          <aside className="pr-sidebar" aria-label="Foto kantor">
-            <img
-              src="/logo-bakorwil.png"
-              alt="Logo Bakorwil I Madiun"
-              className="pr-sidebar__img"
-              loading="lazy"
-              style={{ padding: '16px', background: '#fff', borderRadius: '12px', boxShadow: '0 2px 14px rgba(13,154,166,0.08)' }}
+          {/* Kolom kanan: sidebar reuse dari Beranda & Visi Misi (banner + VIDEO) */}
+          <div className="bts pr-visimisi-sidebar-wrap">
+            <Sidebar
+              videos={videos}
+              videoLoading={videoLoading}
+              videoError={videoError}
             />
-          </aside>
+          </div>
 
         </div>
-
-        {/* ── Google Maps (lebar penuh) ── */}
-        <section aria-labelledby="heading-maps" style={{ marginTop: '8px' }}>
-          <h2 className="pr-section__heading" id="heading-maps">LOKASI</h2>
-          {/* Info card lokasi */}
-          <div className="pr-info-card" style={{ marginBottom: '20px' }}>
-            <p style={{ margin: 0, fontSize: '0.9rem', color: '#1e3540', lineHeight: 1.6 }}>
-              <strong>Badan Koordinasi Wilayah Pemerintahan dan Pembangunan Provinsi Jawa Timur
-              (BAKORWIL I) di Madiun</strong>
-              <br />
-              Jl. Pahlawan No.31, Madiun Lor, Kec. Manguharjo, Kota Madiun,
-              Jawa Timur 63122
-            </p>
-          </div>
-          <div className="pr-map-wrap">
-            <iframe
-              title="Lokasi Kantor Bakorwil I Madiun"
-              src={MAPS_EMBED_SRC}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              aria-label="Peta lokasi kantor Bakorwil I Madiun di Google Maps"
-            />
-          </div>
-        </section>
-
       </div>
     </main>
   );

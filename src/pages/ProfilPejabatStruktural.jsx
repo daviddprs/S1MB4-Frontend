@@ -1,3 +1,7 @@
+import { useState, useEffect } from 'react';
+import { fetchJson } from '../lib/api';
+import { Sidebar } from '../components/BeritaTerbaru/BeritaTerbaruSection';
+import '../components/BeritaTerbaru/BeritaTerbaruSection.css';
 import './Profil.css';
 
 /*
@@ -25,6 +29,29 @@ const PEJABAT = [
 ];
 
 export default function ProfilPejabatStruktural() {
+  /* ── Video state — reuse sidebar yang sama dengan halaman Profil lain ── */
+  const [videos, setVideos]         = useState([]);
+  const [videoLoading, setVLoading]  = useState(true);
+  const [videoError, setVError]      = useState(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+
+    setVLoading(true);
+    setVError(null);
+    fetchJson('/videos', { signal: ctrl.signal })
+      .then((data) => {
+        const raw = Array.isArray(data) ? data : [];
+        setVideos(raw);
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') setVError(err.message);
+      })
+      .finally(() => setVLoading(false));
+
+    return () => ctrl.abort();
+  }, []);
+
   return (
     <main className="pr-page" aria-label="Pejabat Struktural Bakorwil I Madiun">
       <div className="pr-page__inner">
@@ -39,47 +66,62 @@ export default function ProfilPejabatStruktural() {
           </p>
         </header>
 
-        {/* ── Tabel pejabat ── */}
-        <section aria-labelledby="heading-pejabat">
-          <h2 className="pr-section__heading" id="heading-pejabat">
-            DAFTAR PEJABAT STRUKTURAL
-          </h2>
+        {/* ── Two-column layout ── */}
+        <div className="pr-layout">
 
-          <div className="pr-table-wrap">
-            <div className="pr-table-scroll" role="region"
-              aria-label="Tabel pejabat struktural" tabIndex="0">
-              <table className="pr-table" aria-describedby="heading-pejabat">
-                <thead>
-                  <tr>
-                    <th scope="col" style={{ width: '50px' }}>No</th>
-                    <th scope="col">Jabatan</th>
-                    <th scope="col">Nama</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {PEJABAT.map((p) => (
-                    <tr key={p.no}>
-                      <td>{p.no}</td>
-                      <td className="pr-table--jabatan">{p.jabatan}</td>
-                      <td className="pr-table--nama">{p.nama}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          {/* Kolom kiri: tabel pejabat */}
+          <div className="pr-content">
+            <section aria-labelledby="heading-pejabat">
+              <h2 className="pr-section__heading" id="heading-pejabat">
+                DAFTAR PEJABAT STRUKTURAL
+              </h2>
+
+              <div className="pr-table-wrap">
+                <div className="pr-table-scroll" role="region"
+                  aria-label="Tabel pejabat struktural" tabIndex="0">
+                  <table className="pr-table" aria-describedby="heading-pejabat">
+                    <thead>
+                      <tr>
+                        <th scope="col" style={{ width: '50px' }}>No</th>
+                        <th scope="col">Jabatan</th>
+                        <th scope="col">Nama</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {PEJABAT.map((p) => (
+                        <tr key={p.no}>
+                          <td>{p.no}</td>
+                          <td className="pr-table--jabatan">{p.jabatan}</td>
+                          <td className="pr-table--nama">{p.nama}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <p style={{
+                marginTop: '16px',
+                fontSize: '0.78rem',
+                color: '#5e8694',
+                fontStyle: 'italic',
+                fontFamily: 'Inter, system-ui, sans-serif',
+              }}>
+                * Data pejabat dapat berubah sewaktu-waktu mengikuti mutasi/pelantikan jabatan.
+              </p>
+            </section>
           </div>
 
-          <p style={{
-            marginTop: '16px',
-            fontSize: '0.78rem',
-            color: '#5e8694',
-            fontStyle: 'italic',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          }}>
-            * Data pejabat dapat berubah sewaktu-waktu mengikuti mutasi/pelantikan jabatan.
-          </p>
-        </section>
+          {/* Kolom kanan: sidebar reuse dari Beranda, Visi Misi, Kedudukan Alamat, Struktur Organisasi */}
+          <div className="bts pr-visimisi-sidebar-wrap">
+            <Sidebar
+              videos={videos}
+              videoLoading={videoLoading}
+              videoError={videoError}
+            />
+          </div>
 
+        </div>
       </div>
     </main>
   );

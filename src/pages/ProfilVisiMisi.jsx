@@ -1,3 +1,7 @@
+import { useState, useEffect } from 'react';
+import { fetchJson } from '../lib/api';
+import { Sidebar } from '../components/BeritaTerbaru/BeritaTerbaruSection';
+import '../components/BeritaTerbaru/BeritaTerbaruSection.css';
 import './Profil.css';
 
 const VISI =
@@ -11,6 +15,29 @@ const MISI = [
 ];
 
 export default function ProfilVisiMisi() {
+  // ── Video state (sama persis seperti di BeritaTerbaruSection) ──
+  const [videos, setVideos]        = useState([]);
+  const [videoLoading, setVLoading] = useState(true);
+  const [videoError, setVError]    = useState(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+
+    setVLoading(true);
+    setVError(null);
+    fetchJson('/videos', { signal: ctrl.signal })
+      .then((data) => {
+        const raw = Array.isArray(data) ? data : [];
+        setVideos(raw);
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') setVError(err.message);
+      })
+      .finally(() => setVLoading(false));
+
+    return () => ctrl.abort();
+  }, []);
+
   return (
     <main className="pr-page" aria-label="Visi dan Misi Bakorwil I Madiun">
       <div className="pr-page__inner">
@@ -34,22 +61,16 @@ export default function ProfilVisiMisi() {
             {/* VISI */}
             <section className="pr-section" aria-labelledby="heading-visi">
               <h2 className="pr-section__heading" id="heading-visi">VISI</h2>
-              <div className="pr-visi-box">
-                <p className="pr-visi-box__label" aria-hidden="true">Visi</p>
-                <p className="pr-visi-box__text">"{VISI}"</p>
-              </div>
+              <p className="pr-section__text pr-visi-text">{VISI}</p>
             </section>
 
             {/* MISI */}
             <section className="pr-section" aria-labelledby="heading-misi">
               <h2 className="pr-section__heading" id="heading-misi">MISI</h2>
-              <ol className="pr-misi-list" aria-label="Daftar Misi">
+              <ol className="pr-misi-plain" aria-label="Daftar Misi">
                 {MISI.map((teks, idx) => (
-                  <li key={idx} className="pr-misi-item">
-                    <span className="pr-misi-item__num" aria-hidden="true">
-                      {idx + 1}
-                    </span>
-                    <p className="pr-misi-item__text">{teks}</p>
+                  <li key={idx} className="pr-misi-plain__item">
+                    {teks}
                   </li>
                 ))}
               </ol>
@@ -57,21 +78,15 @@ export default function ProfilVisiMisi() {
 
           </div>
 
-          {/* Kolom kanan: gambar */}
-          <aside className="pr-sidebar" aria-label="Gambar Bakorwil I Madiun">
-            <img
-              src="/logo-bakorwil.png"
-              alt="Logo Bakorwil I Madiun"
-              className="pr-sidebar__img"
-              loading="lazy"
-              style={{ padding: '16px', background: '#fff', borderRadius: '12px', boxShadow: '0 2px 14px rgba(13,154,166,0.08)' }}
+          {/* Kolom kanan: sidebar reuse dari Beranda (banner + VIDEO) */}
+          {/* Dibungkus div agar CSS var --bts-* dari .bts tersedia */}
+          <div className="bts pr-visimisi-sidebar-wrap">
+            <Sidebar
+              videos={videos}
+              videoLoading={videoLoading}
+              videoError={videoError}
             />
-            <div className="pr-info-card" style={{ marginTop: '20px' }}>
-              <p className="pr-section__text" style={{ margin: 0, fontSize: '0.85rem', color: '#5e8694', textAlign: 'center', fontStyle: 'italic' }}>
-                Badan Koordinasi Wilayah Pemerintahan dan Pembangunan Provinsi Jawa Timur di Madiun
-              </p>
-            </div>
-          </aside>
+          </div>
 
         </div>
       </div>

@@ -1,0 +1,184 @@
+/* ============================================================
+   KategoriBeritaSection.css
+   Section "Berita Jatim" & "Berita EJSC" — Bakorwil I Madiun
+
+   CATATAN: Semua card style (.bts-card*, .bts-skeleton, dsb.)
+   ada di BeritaCard/BeritaCard.css — diimport oleh BeritaCard.jsx.
+   File ini HANYA mengatur layout section (header, grid wrapper).
+   Ini memastikan TIDAK ADA duplikasi CSS antar section.
+   ============================================================ */
+
+/* ── Design tokens (scoped ke .kbs) ── */
+.kbs {
+  /* --kbs-accent di-set via inline style dari JS per-instance */
+  --kbs-accent:    #2563eb;
+  --kbs-text:      #1e3540;
+  --kbs-muted:     #5e8694;
+  --kbs-border:    #d0eaed;
+  --kbs-bg:        #f8fbfc;
+  --kbs-font:      'Inter', system-ui, sans-serif;
+
+  /* CSS tokens untuk BeritaCard.css (card pakai var(--bts-*) dengan fallback,
+     tapi bila section ini mendefinisikan alias berikut maka card juga terima) */
+  --bts-card-bg:     #ffffff;
+  --bts-radius:      12px;
+  --bts-shadow:      0 2px 12px rgba(13, 154, 166, 0.08);
+  --bts-shadow-hov:  0 6px 28px rgba(13, 154, 166, 0.18);
+  --bts-teal:        #0d9aa6;
+  --bts-teal-light:  rgba(13, 154, 166, 0.08);
+  --bts-text:        #1e3540;
+  --bts-muted:       #5e8694;
+
+  background: var(--kbs-bg);
+  padding: 48px 24px 56px;
+  font-family: var(--kbs-font);
+  border-top: 1px solid #e8f4f5;
+}
+
+/* ── Outer wrapper ── */
+.kbs__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ════════════════════════════════════════════════
+   SECTION HEADER
+════════════════════════════════════════════════ */
+.kbs__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.kbs__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Border-left berwarna sesuai kategori (dari --kbs-accent via inline style) */
+.kbs__title-bar {
+  width: 5px;
+  height: 28px;
+  background: var(--kbs-accent);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.kbs__title {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 800;
+  color: var(--kbs-text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* "Berita Lainnya" link */
+.kbs__more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--kbs-accent);
+  text-decoration: none;
+  border: 1.5px solid var(--kbs-border);
+  border-radius: 999px;
+  padding: 5px 15px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.kbs__more-link:hover {
+  background: var(--kbs-accent);
+  color: #fff;
+  border-color: var(--kbs-accent);
+}
+.kbs__more-link svg {
+  transition: transform 0.18s;
+}
+.kbs__more-link:hover svg {
+  transform: translateX(3px);
+}
+
+/* ════════════════════════════════════════════════
+   BODY LAYOUT — identik dengan bts__body
+   grid + spacer kanan 300px agar lebar efektif
+   grid sama persis dengan section BERITA TERBARU
+════════════════════════════════════════════════ */
+.kbs__body {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Spacer kanan — kosong, hanya untuk menyamakan lebar */
+.kbs__spacer {
+  /* Tidak perlu isi — hanya structural spacer */
+}
+
+/* ════════════════════════════════════════════════
+   GRID — repeat(2, 1fr) dalam kolom 1fr kbs__body
+   Lebar efektif identik dengan bts__grid
+════════════════════════════════════════════════ */
+.kbs__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  min-width: 0; /* cegah grid blowout */
+}
+
+/* ════════════════════════════════════════════════
+   ERROR STATE
+════════════════════════════════════════════════ */
+.kbs__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #b91c1c;
+  font-size: 0.875rem;
+  grid-column: 1 / -1;
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+
+/* Tablet ≤1024px — kurangi spacer */
+@media (max-width: 1024px) {
+  .kbs__body {
+    grid-template-columns: 1fr 260px;
+  }
+}
+
+/* Mobile ≤768px — 1 kolom, sembunyikan spacer */
+@media (max-width: 768px) {
+  .kbs {
+    padding: 36px 16px 44px;
+  }
+  .kbs__body {
+    grid-template-columns: 1fr;
+  }
+  .kbs__spacer {
+    display: none;
+  }
+  .kbs__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .kbs__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

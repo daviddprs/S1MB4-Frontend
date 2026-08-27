@@ -1,25 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchJson } from '../../lib/api';
+import { BeritaCard, BeritaCardSkeleton } from '../BeritaCard/BeritaCard';
 import bannerBakorwil from '../../assets/banner-bakorwil-madiun.jpg';
 import './BeritaTerbaruSection.css';
-
-/* ════════════════════════════════════════════════════════════
-   HELPERS
-════════════════════════════════════════════════════════════ */
-
-/** Format tanggal ke "24 Agu 2026" (bulan disingkat 3 huruf, Indonesia) */
-function formatDate(iso) {
-  if (!iso) return null;
-  try {
-    return new Intl.DateTimeFormat('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-}
 
 /* ════════════════════════════════════════════════════════════
    ICONS
@@ -56,23 +39,6 @@ function ErrorIcon() {
    SKELETON LOADERS
 ════════════════════════════════════════════════════════════ */
 
-function CardSkeleton() {
-  return (
-    <div className="bts-card-skeleton" aria-hidden="true">
-      <div className="bts-card-skeleton__img bts-skeleton" />
-      <div className="bts-card-skeleton__body">
-        <div className="bts-card-skeleton__badge bts-skeleton" />
-        <div className="bts-card-skeleton__date bts-skeleton" />
-        <div className="bts-card-skeleton__title bts-skeleton" />
-        <div className="bts-card-skeleton__title2 bts-skeleton" />
-        <div className="bts-card-skeleton__excerpt bts-skeleton" />
-        <div className="bts-card-skeleton__excerpt2 bts-skeleton" />
-        <div className="bts-card-skeleton__excerpt3 bts-skeleton" />
-      </div>
-    </div>
-  );
-}
-
 function VideoSkeleton() {
   return (
     <div className="bts-video-skeleton" aria-hidden="true">
@@ -82,57 +48,6 @@ function VideoSkeleton() {
         <div className="bts-video-skeleton__line2 bts-skeleton" />
       </div>
     </div>
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   BERITA CARD
-════════════════════════════════════════════════════════════ */
-
-function BeritaCard({ item, onNavigate }) {
-  return (
-    <article
-      className="bts-card"
-      onClick={() => onNavigate(item.id)}
-      onKeyDown={(e) => e.key === 'Enter' && onNavigate(item.id)}
-      tabIndex={0}
-      role="button"
-      aria-label={`Baca berita: ${item.judul}`}
-    >
-      {/* Thumbnail */}
-      <div className="bts-card__img-wrap">
-        {item.gambar_url
-          ? <img className="bts-card__img" src={item.gambar_url} alt={item.judul} loading="lazy" />
-          : <div className="bts-card__img-placeholder" aria-hidden="true">📰</div>
-        }
-      </div>
-
-      {/* Body */}
-      <div className="bts-card__body">
-        {/* Badge kategori statis */}
-        <span className="bts-card__badge">Berita</span>
-
-        {/* Tanggal — prefer tanggal_berita, fallback ke created_at */}
-        {(item.tanggal_berita || item.created_at) && (
-          <time className="bts-card__date" dateTime={item.tanggal_berita ?? item.created_at}>
-            {formatDate(item.tanggal_berita ?? item.created_at)}
-          </time>
-        )}
-
-        {/* Judul */}
-        <h3 className="bts-card__title">{item.judul}</h3>
-
-        {/* Cuplikan isi */}
-        {item.ringkasan && (
-          <p className="bts-card__excerpt">{item.ringkasan}</p>
-        )}
-
-        {/* Read more */}
-        <span className="bts-card__readmore" aria-hidden="true">
-          Baca selengkapnya <ArrowRightIcon />
-        </span>
-      </div>
-    </article>
   );
 }
 
@@ -177,7 +92,7 @@ function VideoItem({ video }) {
    SIDEBAR
 ════════════════════════════════════════════════════════════ */
 
-function Sidebar({ videos, videoLoading, videoError }) {
+export function Sidebar({ videos, videoLoading, videoError }) {
   return (
     <aside className="bts__sidebar">
       {/* ── Banner Bakorwil ── */}
@@ -330,7 +245,7 @@ export default function BeritaTerbaruSection({ onNavigateToBerita }) {
             {beritaLoading && (
               <div className="bts__grid" aria-busy="true" aria-label="Memuat berita…">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <CardSkeleton key={i} />
+                  <BeritaCardSkeleton key={i} />
                 ))}
               </div>
             )}

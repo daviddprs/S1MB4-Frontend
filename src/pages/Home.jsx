@@ -2,32 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import HeroSlider from '../components/HeroSlider/HeroSlider';
 import BeritaTerbaruSection from '../components/BeritaTerbaru/BeritaTerbaruSection';
-import lambangMagetan      from '../assets/lambang-magetan.png';
-import lambangMadiun       from '../assets/lambang-madiun.png';
-import lambangKotaMadiun   from '../assets/lambang-kota-madiun.png';
-import lambangPonorogo     from '../assets/lambang-ponorogo.png';
-import lambangNgawi        from '../assets/lambang-ngawi.png';
-import lambangPacitan      from '../assets/lambang-pacitan.png';
-import lambangKediri       from '../assets/lambang-kediri.png';
-import lambangKotaKediri   from '../assets/lambang-kota-kediri.png';
-import lambangTrenggalek   from '../assets/lambang-trenggalek.png';
-import lambangTulungagung  from '../assets/lambang-tulungagung.png';
+import KategoriBeritaSection from '../components/KategoriBerita/KategoriBeritaSection';
+import { WILAYAH } from '../data/wilayah';
 import './Home.css';
 
-/* ── Data wilayah Bakorwil I Madiun (10 daerah, 5 per halaman) ── */
-const WILAYAH = [
-  { name: 'Kab. Magetan',     href: 'https://magetankab.go.id',      logo: lambangMagetan },
-  { name: 'Kab. Madiun',      href: 'https://madiunkab.go.id',       logo: lambangMadiun },
-  { name: 'Kota Madiun',      href: 'https://madiunkota.go.id',      logo: lambangKotaMadiun },
-  { name: 'Kab. Ponorogo',    href: 'https://ponorogo.go.id',        logo: lambangPonorogo },
-  { name: 'Kab. Ngawi',       href: 'https://ngawikab.go.id',        logo: lambangNgawi },
-  { name: 'Kab. Pacitan',     href: 'https://pacitankab.go.id',      logo: lambangPacitan },
-  { name: 'Kab. Kediri',      href: 'https://kedirikab.go.id',       logo: lambangKediri },
-  { name: 'Kota Kediri',      href: 'https://kedirikota.go.id',      logo: lambangKotaKediri },
-  { name: 'Kab. Trenggalek',  href: 'https://trenggalekkab.go.id',   logo: lambangTrenggalek },
-  { name: 'Kab. Tulungagung', href: 'https://tulungagungkab.go.id',  logo: lambangTulungagung },
-];
-const WILAYAH_PER_PAGE = 5;
+/* ── Data wilayah diimport dari src/data/wilayah.js (shared dengan ProfilWilayahKerja) ── */
+
 
 /* ── Date formatter ── */
 function formatDate(iso) {
@@ -68,12 +48,7 @@ export default function Home() {
   const [newsItems, setNewsItems]     = useState([]);
   const [latestNews, setLatestNews]   = useState([]);
   const [loading, setLoading]         = useState(true);
-  const [wilayahOffset, setWilayahOffset] = useState(0);
-
-  const maxOffset = WILAYAH.length - WILAYAH_PER_PAGE;
-  const prevWilayah = () => setWilayahOffset((o) => Math.max(0, o - 1));
-  const nextWilayah = () => setWilayahOffset((o) => Math.min(maxOffset, o + 1));
-  const visibleWilayah = WILAYAH.slice(wilayahOffset, wilayahOffset + WILAYAH_PER_PAGE);
+  // wilayahOffset tidak lagi diperlukan — section wilayah kini pakai marquee otomatis
 
   /**
 
@@ -95,7 +70,7 @@ export default function Home() {
       const [slidersData, breakingData, latestData] = await Promise.all([
         apiFetch('/sliders', controller.signal),
         apiFetch('/berita?breaking=1', controller.signal),
-        apiFetch('/berita?per_page=5', controller.signal),
+        apiFetch('/berita?per_page=3', controller.signal),  // sidebar: max 3 item
       ]);
 
       /* ── Slider: API returns flat array [{ id, gambar, url_tujuan, urutan }] ── */
@@ -135,10 +110,12 @@ export default function Home() {
 
       setLatestNews(
         rawLatest.map((n) => ({
-          id:   n.id,
-          judul: n.judul ?? n.title ?? '',
-          slug:  n.slug ?? n.id,
-          tanggal: n.created_at ?? null,
+          id:         n.id,
+          judul:      n.judul ?? n.title ?? '',
+          slug:       n.slug ?? n.id,
+          tanggal:    n.created_at ?? null,
+          gambar_url: n.gambar_url ?? n.gambar ?? n.image_url ?? n.image ?? null,
+          penulis:    n.penulis ?? null,   // nama user author dari API
         }))
       );
 
@@ -183,15 +160,39 @@ export default function Home() {
                         className="home-sidebar__link"
                         aria-label={`Baca: ${item.judul}`}
                       >
-                        <span className="home-sidebar__title">{item.judul}</span>
-                        {item.tanggal && (
-                          <time
-                            className="home-sidebar__date"
-                            dateTime={item.tanggal}
-                          >
-                            {formatDate(item.tanggal)}
-                          </time>
-                        )}
+                        {/* Thumbnail — tampil jika ada gambar, placeholder jika tidak */}
+                        <div className="home-sidebar__thumb-wrap">
+                          {item.gambar_url ? (
+                            <img
+                              src={item.gambar_url}
+                              alt=""
+                              className="home-sidebar__thumb"
+                              loading="lazy"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <div className="home-sidebar__thumb-placeholder" aria-hidden="true">
+                              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <rect x="1" y="1" width="16" height="16" rx="2" stroke="#9db8c4" strokeWidth="1.2"/>
+                                <path d="M1 12l4-4 3 3 3-4 6 6" stroke="#9db8c4" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <circle cx="6" cy="6" r="1.5" fill="#9db8c4"/>
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Teks: judul + tanggal */}
+                        <div className="home-sidebar__text">
+                          <span className="home-sidebar__title">{item.judul}</span>
+                          {item.tanggal && (
+                            <time
+                              className="home-sidebar__date"
+                              dateTime={item.tanggal}
+                            >
+                              {formatDate(item.tanggal)}
+                            </time>
+                          )}
+                        </div>
                       </Link>
                     </li>
                   ))
@@ -205,61 +206,56 @@ export default function Home() {
         )}
       </section>
 
-      {/* ─── Wilayah Section ─── */}
+      {/* ─── Wilayah Section — auto-scroll marquee ─── */}
       <section className="home-wilayah" aria-label="Wilayah Bakorwil I Madiun">
         <div className="home-wilayah__inner">
           <div className="home-wilayah__header">
             <h2 className="home-wilayah__title">WILAYAH BAKORWIL I MADIUN</h2>
-            <div className="home-wilayah__nav" aria-label="Navigasi wilayah">
-              <button
-                className="home-wilayah__btn"
-                onClick={prevWilayah}
-                aria-label="Wilayah sebelumnya"
-                type="button"
-                disabled={wilayahOffset === 0}
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                  <path d="M7 2L3 5L7 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              <button
-                className="home-wilayah__btn"
-                onClick={nextWilayah}
-                aria-label="Wilayah berikutnya"
-                type="button"
-                disabled={wilayahOffset >= maxOffset}
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                  <path d="M3 2L7 5L3 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            </div>
           </div>
-          <div className="home-wilayah__logos">
-            {visibleWilayah.map((w) => (
-              <a
-                key={w.name}
-                href={w.href}
-                className="home-wilayah__item"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Website resmi ${w.name}`}
-              >
-                <img
-                  src={w.logo}
-                  alt={`Lambang ${w.name}`}
-                  className="home-wilayah__logo"
-                  loading="lazy"
-                />
-                <span className="home-wilayah__name">{w.name}</span>
-              </a>
-            ))}
+          {/* Marquee di DALAM inner — ter-clip di batas max-width yang sama dengan judul */}
+          <div className="home-wilayah__marquee-wrap">
+            <div className="home-wilayah__track">
+              {[...WILAYAH, ...WILAYAH, ...WILAYAH].map((w, i) => (
+                <a
+                  key={`${w.name}-${i}`}
+                  href={w.href}
+                  className="home-wilayah__item"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Website resmi ${w.name}`}
+                >
+                  <img
+                    src={w.logo}
+                    alt={`Lambang ${w.name}`}
+                    className="home-wilayah__logo"
+                    loading="lazy"
+                  />
+                  <span className="home-wilayah__name">{w.name}</span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Berita Terbaru ── */}
       <BeritaTerbaruSection onNavigateToBerita={handleNavigateToBerita} />
+
+      {/* ── Berita Jatim ── */}
+      <KategoriBeritaSection
+        kategori="jatim"
+        judulSection="BERITA JATIM"
+        warnaBadge="#2563eb"
+        onNavigate={handleNavigateToBerita}
+      />
+
+      {/* ── Berita EJSC ── */}
+      <KategoriBeritaSection
+        kategori="ejsc"
+        judulSection="BERITA EJSC"
+        warnaBadge="#f59e0b"
+        onNavigate={handleNavigateToBerita}
+      />
     </main>
   );
 }

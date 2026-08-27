@@ -1,3 +1,7 @@
+import { useState, useEffect } from 'react';
+import { fetchJson } from '../lib/api';
+import { Sidebar } from '../components/BeritaTerbaru/BeritaTerbaruSection';
+import '../components/BeritaTerbaru/BeritaTerbaruSection.css';
 import './Profil.css';
 
 const INTRO =
@@ -16,6 +20,11 @@ const CLOSING =
   'Masing-masing Sub Bidang dipimpin oleh Kepala Sub Bidang yang berada di bawah dan ' +
   'bertanggung jawab kepada Kepala Bidang, dimana sesuai dengan struktur organisasi yang ' +
   'ada pada Gambar Berikut:';
+
+const DASAR_HUKUM =
+  'Peraturan Gubernur Jawa Timur Nomor 134 Tahun 2016 Tentang Kedudukan, Susunan ' +
+  'Organisasi, Uraian Tugas dan Fungsi Serta Tata Kerja Badan Koordinasi Wilayah ' +
+  'Pemerintahan dan Pembangunan Provinsi Jawa Timur.';
 
 const ORGANISASI = [
   {
@@ -45,6 +54,29 @@ const ORGANISASI = [
 ];
 
 export default function ProfilStrukturOrganisasi() {
+  /* ── Video state — reuse sidebar yang sama dengan halaman Profil lain ── */
+  const [videos, setVideos]         = useState([]);
+  const [videoLoading, setVLoading]  = useState(true);
+  const [videoError, setVError]      = useState(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+
+    setVLoading(true);
+    setVError(null);
+    fetchJson('/videos', { signal: ctrl.signal })
+      .then((data) => {
+        const raw = Array.isArray(data) ? data : [];
+        setVideos(raw);
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') setVError(err.message);
+      })
+      .finally(() => setVLoading(false));
+
+    return () => ctrl.abort();
+  }, []);
+
   return (
     <main className="pr-page" aria-label="Struktur Organisasi Bakorwil I Madiun">
       <div className="pr-page__inner">
@@ -68,60 +100,50 @@ export default function ProfilStrukturOrganisasi() {
             {/* Intro */}
             <p className="pr-org-intro">{INTRO}</p>
 
-            {/* Daftar organisasi */}
-            <section aria-labelledby="heading-org-list">
-              <h2 className="pr-section__heading" id="heading-org-list"
-                style={{ marginBottom: '16px' }}>
-                SUSUNAN ORGANISASI
-              </h2>
-              <ol className="pr-org-list" aria-label="Susunan organisasi Bakorwil I Madiun">
+            {/* SUSUNAN ORGANISASI — plain numbered list, konsisten dengan pola Misi */}
+            <section className="pr-section" aria-labelledby="heading-org-list">
+              <h2 className="pr-section__heading" id="heading-org-list">SUSUNAN ORGANISASI</h2>
+              <ol className="pr-misi-plain pr-org-plain" aria-label="Susunan organisasi Bakorwil I Madiun">
                 {ORGANISASI.map((item, idx) => (
-                  <li key={idx} className="pr-org-item">
-                    <span className="pr-org-item__num" aria-hidden="true">{idx + 1}</span>
-                    <div className="pr-org-item__body">
-                      <p className="pr-org-item__name">{item.nama}</p>
-                      {item.sub && (
-                        <p className="pr-org-item__sub">
-                          membawahi: {item.sub}
-                        </p>
-                      )}
-                    </div>
+                  <li key={idx} className="pr-misi-plain__item pr-org-plain__item">
+                    <span className="pr-org-plain__name">{item.nama}</span>
+                    {item.sub && (
+                      <span className="pr-org-plain__sub">membawahi: {item.sub}</span>
+                    )}
                   </li>
                 ))}
               </ol>
             </section>
 
             {/* Closing text */}
-            <p className="pr-org-closing" style={{ marginTop: '24px' }}>{CLOSING}</p>
+            <p className="pr-org-closing">{CLOSING}</p>
+
+            {/* DASAR HUKUM — di kolom kiri, dalam info-card, konsisten dengan halaman lain */}
+            <section className="pr-section" aria-labelledby="heading-dasar-hukum">
+              <h2 className="pr-section__heading" id="heading-dasar-hukum">DASAR HUKUM</h2>
+              <div className="pr-info-card">
+                <p className="pr-section__text" style={{ margin: 0 }}>{DASAR_HUKUM}</p>
+              </div>
+            </section>
 
           </div>
 
-          {/* Kolom kanan: gambar */}
-          <aside className="pr-sidebar" aria-label="Informasi tambahan">
-            <img
-              src="/logo-bakorwil.png"
-              alt="Logo Bakorwil I Madiun"
-              className="pr-sidebar__img"
-              loading="lazy"
-              style={{ padding: '16px', background: '#fff', borderRadius: '12px', boxShadow: '0 2px 14px rgba(13,154,166,0.08)' }}
+          {/* Kolom kanan: sidebar reuse dari Beranda, Visi Misi, Kedudukan Alamat */}
+          <div className="bts pr-visimisi-sidebar-wrap">
+            <Sidebar
+              videos={videos}
+              videoLoading={videoLoading}
+              videoError={videoError}
             />
-            <div className="pr-info-card" style={{ marginTop: '20px' }}>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#5e8694', lineHeight: 1.6 }}>
-                <strong style={{ color: '#1e3540' }}>Dasar Hukum:</strong><br />
-                Peraturan Gubernur Jawa Timur Nomor 134 Tahun 2016 Tentang Kedudukan,
-                Susunan Organisasi, Uraian Tugas dan Fungsi Serta Tata Kerja Badan
-                Koordinasi Wilayah Pemerintahan dan Pembangunan Provinsi Jawa Timur.
-              </p>
-            </div>
-          </aside>
+          </div>
 
         </div>
 
-        {/* ── Bagan struktur organisasi ── */}
-        <section aria-labelledby="heading-bagan" style={{ marginTop: '8px' }}>
+        {/* ── Bagan struktur organisasi (full-width di bawah layout) ── */}
+        <section className="pr-section" aria-labelledby="heading-bagan" style={{ marginTop: '8px' }}>
           <h2 className="pr-section__heading" id="heading-bagan">BAGAN STRUKTUR ORGANISASI</h2>
           {/*
-            Ganti div placeholder di bawah ini dengan:
+            Ganti placeholder di bawah dengan:
             <img src={baganSrc} alt="Bagan Struktur Organisasi Bakorwil I Madiun"
                  className="pr-org-chart-img" loading="lazy" />
             setelah file gambar tersedia di src/assets/.

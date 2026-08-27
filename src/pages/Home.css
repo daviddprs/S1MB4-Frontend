@@ -9,6 +9,7 @@
   align-items: stretch;
   width: 100%;
   background: #eaf6f8;
+  overflow: hidden; /* safety net: clip visual overflow dari sidebar */
 }
 
 .home-hero-layout__slider {
@@ -26,6 +27,11 @@
   border-left: 1px solid rgba(13,154,166,0.15);
   overflow: hidden;
   border-radius: 0 8px 8px 0;
+  /* KRITIS: izinkan sidebar menyusut di bawah content size-nya
+     sehingga HeroSlider (bukan sidebar) yang menentukan tinggi container.
+     Tanpa ini, sidebar content mendrive height → slider stretch ke atas,
+     sidebar tidak pernah scroll. */
+  min-height: 0;
 }
 
 /* SIDEBAR — BERITA TERBARU */
@@ -53,20 +59,8 @@
   margin: 0;
   padding: 8px 0;
   flex: 1;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.15) transparent;
-}
-
-.home-sidebar__list::-webkit-scrollbar {
-  width: 4px;
-}
-.home-sidebar__list::-webkit-scrollbar-track {
-  background: transparent;
-}
-.home-sidebar__list::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.18);
-  border-radius: 4px;
+  min-height: 0; /* cegah list mendrive tinggi container */
+  /* Tidak perlu overflow-y: auto karena list dikunci max 3 item */
 }
 
 .home-sidebar__item {
@@ -78,9 +72,10 @@
 
 .home-sidebar__link {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 16px;
+  flex-direction: row;   /* thumbnail kiri + teks kanan */
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
   text-decoration: none;
   transition: background 0.18s;
 }
@@ -88,6 +83,44 @@
   background: rgba(13,154,166,0.18);
 }
 
+/* ── Thumbnail ── */
+.home-sidebar__thumb-wrap {
+  flex-shrink: 0;          /* jangan ikut menyusut saat teks panjang */
+  width: 60px;
+  height: 48px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #d8edf0;     /* warna sementara sebelum gambar load */
+}
+
+.home-sidebar__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* crop proporsional, tidak gepeng */
+  display: block;
+  border-radius: 6px;
+}
+
+.home-sidebar__thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #daedf1;     /* abu-abu kebiruan senada sidebar */
+  border-radius: 6px;
+}
+
+/* Wrapper teks (judul + tanggal) */
+.home-sidebar__text {
+  flex: 1;
+  min-width: 0;            /* cegah teks overflow dari flex container */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Judul berita ── */
 .home-sidebar__title {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.78rem;
@@ -174,23 +207,22 @@
   opacity: 0.7;
 }
 
-/*WILAYAH SECTION*/
+/*WILAYAH SECTION — auto-scroll marquee*/
 .home-wilayah {
   background: #fff;
-  padding: 36px 24px 40px;
+  padding: 32px 0 36px;
   font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
 }
 .home-wilayah__inner {
   max-width: 1100px;
   margin: 0 auto;
+  padding: 0 24px;
 }
 
-/* Header: judul + tombol nav */
+/* Header: judul saja (tombol nav dihapus) */
 .home-wilayah__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   border-bottom: 1px solid #e8edf2;
   padding-bottom: 14px;
 }
@@ -205,59 +237,69 @@
   line-height: 1.2;
 }
 
-/* Tombol prev/next */
-.home-wilayah__nav {
-  display: flex;
-  gap: 6px;
-}
-.home-wilayah__btn {
-  width: 26px;
-  height: 26px;
-  border: 1px solid #c8d3dc;
-  background: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #3a4f60;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-}
-.home-wilayah__btn:hover:not(:disabled) {
-  background: #eef4ff;
-  border-color: #1a5fb4;
-  color: #1a5fb4;
-}
-.home-wilayah__btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+/* ── Marquee wrapper: clip overflow ── */
+.home-wilayah__marquee-wrap {
+  /* Negatifkan padding __inner supaya marquee bisa menyentuh edge inner */
+  margin-left:  -24px;
+  margin-right: -24px;
+  overflow: hidden;
+  /* Fade edge kiri & kanan supaya logo menghilang halus di tepi */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
 }
 
-/* Logo grid — 5 item sejajar */
-.home-wilayah__logos {
+/* ── Track: semua logo dalam satu baris, digerakkan translateX ── */
+@keyframes wilayah-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.3333%); } /* 1/3 dari 3× array */
+}
+
+.home-wilayah__track {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
   gap: 0;
+  width: max-content;         /* jangan wrap, biarkan melebihi viewport */
+  animation: wilayah-scroll 28s linear infinite;
 }
+
+/* Pause saat hover (UX: bisa klik logo) */
+.home-wilayah__marquee-wrap:hover .home-wilayah__track {
+  animation-play-state: paused;
+}
+
+/* Satu item logo */
 .home-wilayah__item {
-  flex: 1;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   text-decoration: none;
-  padding: 16px 8px;
+  padding: 12px 32px;
   border-radius: 8px;
   transition: background 0.18s, transform 0.18s;
+  min-width: 140px;
 }
 .home-wilayah__item:hover {
   background: #f4f8ff;
   transform: translateY(-4px);
 }
+
 .home-wilayah__logo {
-  width: 110px;
-  height: 120px;
+  width: 90px;
+  height: 100px;
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
@@ -267,32 +309,41 @@
   filter: drop-shadow(0 4px 12px rgba(26,95,180,0.18));
 }
 .home-wilayah__name {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #2c3e50;
   text-align: center;
   line-height: 1.3;
 }
 
-/* Responsive */
+/* Responsive — percepat sedikit di layar sempit */
 @media (max-width: 768px) {
-  .home-wilayah__logos {
-    flex-wrap: wrap;
-    gap: 8px;
+  .home-wilayah {
+    padding: 24px 0 28px;
   }
   .home-wilayah__item {
-    flex: 0 0 calc(33.33% - 8px);
-    max-width: calc(33.33% - 8px);
+    padding: 8px 20px;
+    min-width: 110px;
   }
   .home-wilayah__logo {
-    width: 72px;
-    height: 80px;
+    width: 64px;
+    height: 72px;
+  }
+  .home-wilayah__track {
+    animation-duration: 20s;
   }
 }
 @media (max-width: 480px) {
   .home-wilayah__item {
-    flex: 0 0 calc(50% - 8px);
-    max-width: calc(50% - 8px);
+    min-width: 90px;
+    padding: 8px 14px;
+  }
+  .home-wilayah__logo {
+    width: 52px;
+    height: 60px;
+  }
+  .home-wilayah__track {
+    animation-duration: 16s;
   }
 }
 
