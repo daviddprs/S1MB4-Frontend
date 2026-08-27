@@ -16,6 +16,9 @@ import ProfilKedudukanAlamat from './pages/ProfilKedudukanAlamat';
 import ProfilStrukturOrganisasi from './pages/ProfilStrukturOrganisasi';
 import ProfilWilayahKerja from './pages/ProfilWilayahKerja';
 import ProfilPejabatStruktural from './pages/ProfilPejabatStruktural';
+import Ejsc from './pages/Ejsc';
+import LayananBafastForm from './pages/LayananBafastForm';
+import LayananFaq from './pages/LayananFaq';
 import './App.css';
 
 function App() {
@@ -60,8 +63,12 @@ function App() {
         <Route path="/profil/*"                   element={<Placeholder />} />
         <Route path="/berita" element={<Berita />} />
         <Route path="/berita/:id" element={<Berita />} />
-        <Route path="/ejsc" element={<Placeholder />} />
-        <Route path="/layanan/*" element={<Placeholder />} />
+        <Route path="/ejsc" element={<Ejsc />} />
+        {/* Halaman Layanan */}
+        <Route path="/layanan/jadwal-kegiatan" element={<Placeholder />} />
+        <Route path="/layanan/bafast-form"     element={<LayananBafastForm />} />
+        <Route path="/layanan/faq"             element={<LayananFaq />} />
+        <Route path="/layanan/*"               element={<Placeholder />} />
         <Route path="/sakip-rb" element={<SakipRb />} />
         <Route path="/inovasi/*" element={<Placeholder />} />
       </Routes>

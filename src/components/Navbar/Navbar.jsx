@@ -62,7 +62,9 @@ function buildNavItems(klasifikasiItems) {
       id: 'layanan',
       label: 'LAYANAN',
       children: [
-
+        { label: 'Jadwal Kegiatan', href: '/layanan/jadwal-kegiatan' },
+        { label: 'Formulir BAFAST', href: '/layanan/bafast-form' },
+        { label: 'FAQ',             href: '/layanan/faq' },
       ],
     },
     { id: 'sakip-rb', label: 'SAKIP-RB', href: '/sakip-rb' },

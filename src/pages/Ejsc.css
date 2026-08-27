@@ -1,0 +1,240 @@
+/* ============================================================
+   Ejsc.css — Halaman EJSC (East Java Super Corridor)
+   Token warna dan layout konsisten dengan SakipRb.css / Profil.css
+   Card styles ada di BeritaCard/BeritaCard.css — tidak diduplikasi.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Design tokens (di-forward ke BeritaCard via CSS custom props) ── */
+.ejsc-page {
+  --bts-card-bg:    #ffffff;
+  --bts-radius:     12px;
+  --bts-shadow:     0 2px 12px rgba(13,154,166,0.08);
+  --bts-shadow-hov: 0 6px 28px rgba(13,154,166,0.18);
+  --bts-teal:       #0d9aa6;
+  --bts-teal-light: rgba(13,154,166,0.08);
+  --bts-text:       #1e3540;
+  --bts-muted:      #5e8694;
+
+  /* Page */
+  --ejsc-amber:     #f59e0b;
+  --ejsc-amber-dk:  #b45309;
+  --ejsc-bg:        #f5fbfc;
+  --ejsc-border:    #d0eaed;
+  --ejsc-font:      'Inter', system-ui, sans-serif;
+
+  min-height: 60vh;
+  background: var(--ejsc-bg);
+  padding: 40px 24px 80px;
+  font-family: var(--ejsc-font);
+}
+
+.ejsc-page__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ════════════════════════════════════════════════
+   PAGE HEADER
+════════════════════════════════════════════════ */
+.ejsc-header {
+  margin-bottom: 36px;
+}
+
+.ejsc-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ejsc-amber-dk);
+  background: rgba(245,158,11,0.1);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.ejsc-header__title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--ejsc-bg, #1e3540);
+  color: #1e3540;
+  margin: 0 0 8px;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.ejsc-header__bar {
+  width: 56px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--ejsc-amber), #f97316);
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.ejsc-header__desc {
+  font-size: 0.92rem;
+  color: var(--bts-muted);
+  line-height: 1.7;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════
+   STAT BAR (total berita + halaman)
+════════════════════════════════════════════════ */
+.ejsc-stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.ejsc-stat__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--bts-muted);
+}
+.ejsc-stat__num {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ejsc-amber-dk);
+}
+
+/* ════════════════════════════════════════════════
+   GRID
+════════════════════════════════════════════════ */
+.ejsc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+@media (max-width: 900px) {
+  .ejsc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .ejsc-grid { grid-template-columns: 1fr; }
+}
+
+/* ════════════════════════════════════════════════
+   LOADING STATE
+════════════════════════════════════════════════ */
+.ejsc-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 24px;
+  color: var(--ejsc-amber-dk);
+  font-size: 0.9rem;
+}
+
+@keyframes ejsc-spin { to { transform: rotate(360deg); } }
+.ejsc-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(245,158,11,0.15);
+  border-top-color: var(--ejsc-amber);
+  border-radius: 50%;
+  animation: ejsc-spin 0.75s linear infinite;
+}
+
+/* ════════════════════════════════════════════════
+   ERROR STATE
+════════════════════════════════════════════════ */
+.ejsc-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff5f5;
+  border: 1px solid #fca5a5;
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #b91c1c;
+  font-size: 0.875rem;
+}
+
+/* ════════════════════════════════════════════════
+   EMPTY STATE
+════════════════════════════════════════════════ */
+.ejsc-empty {
+  text-align: center;
+  padding: 72px 24px;
+  color: var(--bts-muted);
+}
+.ejsc-empty__icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+.ejsc-empty__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--bts-text);
+  margin: 0 0 8px;
+}
+.ejsc-empty__sub {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+/* ════════════════════════════════════════════════
+   PAGINATION
+════════════════════════════════════════════════ */
+.ejsc-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+.ejsc-page-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--ejsc-font);
+  border: 1.5px solid var(--ejsc-border);
+  background: #fff;
+  color: var(--bts-muted);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+.ejsc-page-btn:hover:not(:disabled) {
+  background: var(--ejsc-amber);
+  color: #fff;
+  border-color: var(--ejsc-amber);
+  box-shadow: 0 3px 12px rgba(245,158,11,0.3);
+}
+.ejsc-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.ejsc-page-info {
+  font-size: 0.8rem;
+  color: var(--bts-muted);
+  padding: 0 8px;
+}
+.ejsc-page-info strong { color: var(--bts-text); }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .ejsc-page { padding: 24px 14px 60px; }
+  .ejsc-header__title { font-size: 1.3rem; }
+}

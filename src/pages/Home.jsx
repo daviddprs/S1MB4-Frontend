@@ -21,6 +21,26 @@ function formatDate(iso) {
   }
 }
 
+/* ── Kategori label map ── */
+const LABEL_KATEGORI = {
+  umum:  'Umum',
+  jatim: 'Jatim',
+  ejsc:  'EJSC',
+};
+
+/* ── Eye icon untuk views ── */
+function EyeIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true"
+      style={{ flexShrink: 0 }}>
+      <path d="M1 5.5C1 5.5 2.5 2 5.5 2S10 5.5 10 5.5 8.5 9 5.5 9 1 5.5 1 5.5z"
+        stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="5.5" cy="5.5" r="1.5"
+        stroke="currentColor" strokeWidth="1.2"/>
+    </svg>
+  );
+}
+
 // VITE_API_URL sudah berisi /api (misal: http://localhost:8000/api)
 // apiFetch menerima path TANPA prefix /api, misal '/sliders'
 const API_URL = import.meta.env.VITE_API_URL ?? '';
@@ -116,6 +136,8 @@ export default function Home() {
           tanggal:    n.created_at ?? null,
           gambar_url: n.gambar_url ?? n.gambar ?? n.image_url ?? n.image ?? null,
           penulis:    n.penulis ?? null,   // nama user author dari API
+          views:      n.views ?? 0,        // jumlah kali dilihat
+          kategori:   n.kategori ?? 'umum', // kategori berita
         }))
       );
 
@@ -181,17 +203,31 @@ export default function Home() {
                           )}
                         </div>
 
-                        {/* Teks: judul + tanggal */}
+                        {/* Teks: judul + baris (tanggal · views · badge) */}
                         <div className="home-sidebar__text">
                           <span className="home-sidebar__title">{item.judul}</span>
-                          {item.tanggal && (
-                            <time
-                              className="home-sidebar__date"
-                              dateTime={item.tanggal}
+                          <div className="home-sidebar__meta">
+                            {item.tanggal && (
+                              <time
+                                className="home-sidebar__date"
+                                dateTime={item.tanggal}
+                                style={{ margin: 0 }}
+                              >
+                                {formatDate(item.tanggal)}
+                              </time>
+                            )}
+                            <span className="home-sidebar__meta-dot" aria-hidden="true">·</span>
+                            <span className="home-sidebar__views" aria-label={`${item.views} kali dilihat`}>
+                              <EyeIcon />
+                              {(item.views ?? 0).toLocaleString('id-ID')}x
+                            </span>
+                            <span
+                              className={`home-sidebar__kategori home-sidebar__kategori--${item.kategori ?? 'umum'}`}
+                              aria-label={`Kategori: ${LABEL_KATEGORI[item.kategori] ?? item.kategori}`}
                             >
-                              {formatDate(item.tanggal)}
-                            </time>
-                          )}
+                              {LABEL_KATEGORI[item.kategori] ?? item.kategori}
+                            </span>
+                          </div>
                         </div>
                       </Link>
                     </li>

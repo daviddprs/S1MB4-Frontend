@@ -144,6 +144,59 @@
   margin-top: 2px;
 }
 
+/* ── Meta row: tanggal · views · badge (satu baris) ── */
+.home-sidebar__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.home-sidebar__meta-dot {
+  font-size: 0.62rem;
+  color: #9db8c4;
+  line-height: 1;
+}
+
+.home-sidebar__views {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.64rem;
+  color: #7da8b5;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Kategori badge — base */
+.home-sidebar__kategori {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* Variant warna per kategori */
+.home-sidebar__kategori--umum {
+  background: rgba(100,116,139,0.12);
+  color: #64748b;
+}
+.home-sidebar__kategori--jatim {
+  background: rgba(37,99,235,0.1);
+  color: #2563eb;
+}
+.home-sidebar__kategori--ejsc {
+  background: rgba(245,158,11,0.12);
+  color: #b45309;
+}
+
 .home-sidebar__empty {
   padding: 16px;
   font-size: 0.8rem;
