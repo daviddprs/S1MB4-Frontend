@@ -341,11 +341,119 @@
 }
 
 /* Bagan gambar (jika sudah ada) */
+.pr-org-chart-wrap {
+  margin-top: 24px;
+}
+.pr-org-chart-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--pr-radius);
+  overflow: hidden;
+  box-shadow: var(--pr-shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.pr-org-chart-btn:hover {
+  box-shadow: var(--pr-shadow-hover);
+  transform: translateY(-2px);
+}
 .pr-org-chart-img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
   border-radius: var(--pr-radius);
-  box-shadow: var(--pr-shadow);
-  margin-top: 24px;
+  border: 1px solid var(--pr-border);
+}
+.pr-org-chart-zoom-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(13, 154, 166, 0.88);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+.pr-org-chart-btn:hover .pr-org-chart-zoom-hint,
+.pr-org-chart-btn:focus-visible .pr-org-chart-zoom-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Lightbox modal ── */
+.pr-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 20, 30, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: pr-lb-in 0.2s ease;
+}
+@keyframes pr-lb-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.pr-lightbox-inner {
+  position: relative;
+  max-width: min(1200px, 96vw);
+  max-height: 90vh;
+  overflow: auto;
+  border-radius: var(--pr-radius);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  animation: pr-lb-scale 0.22s ease;
+}
+@keyframes pr-lb-scale {
+  from { transform: scale(0.94); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.pr-lightbox-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--pr-radius);
+}
+.pr-lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.92);
+  color: var(--pr-text);
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  transition: background 0.15s, transform 0.15s;
+  font-family: sans-serif;
+}
+.pr-lightbox-close:hover {
+  background: #fff;
+  transform: scale(1.1);
 }
 
 /* ══════════════════════════════════════════════════════════
