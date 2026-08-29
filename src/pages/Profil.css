@@ -730,3 +730,28 @@
   .faq-item__q { font-size: 0.85rem; }
 }
 
+/* ══════════════════════════════════════════════════════════
+   BAFAST FORM — tombol formulir (tanpa card pembungkus)
+══════════════════════════════════════════════════════════ */
+.bafast-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: linear-gradient(135deg, var(--pr-blue), var(--pr-blue-dark));
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-family: var(--pr-font);
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 3px 12px rgba(26,95,180,0.28);
+  transition: box-shadow 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+.bafast-btn:hover,
+.bafast-btn:focus-visible {
+  box-shadow: 0 6px 20px rgba(26,95,180,0.42);
+  transform: translateY(-1px);
+  outline: none;
+}
