@@ -41,22 +41,18 @@ function EyeIcon() {
   );
 }
 
-// VITE_API_URL sudah berisi /api (misal: http://localhost:8000/api)
-// apiFetch menerima path TANPA prefix /api, misal '/sliders'
-const API_URL = import.meta.env.VITE_API_URL ?? '';
+import { fetchJson } from '../lib/api';
 
 /**
- * Generic fetch helper — returns null on error so the
- * component can show a fallback instead of crashing.
+ * Generic fetch wrapper for Home.jsx that catches errors and returns null
+ * to maintain the resilient behavior of the original apiFetch.
  */
 async function apiFetch(path, signal) {
   try {
-    const res = await fetch(`${API_URL}${path}`, { signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    return await fetchJson(path, { signal });
   } catch (err) {
     if (err.name !== 'AbortError') {
-      console.warn(`[SIMBA API] fetch failed for ${API_URL}${path}:`, err.message);
+      console.warn(`[SIMBA API] fetch failed for ${path}:`, err.message);
     }
     return null;
   }

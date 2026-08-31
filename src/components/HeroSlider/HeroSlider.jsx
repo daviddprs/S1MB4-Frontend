@@ -16,6 +16,12 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
   // Map: slide index → <img> DOM node, agar semua slide ter-track sekaligus
   const imgRefsMap  = useRef({});
 
+  // ── Drag / swipe state (mouse & touch) ──
+  const dragRef = useRef({ active: false, startX: 0, deltaX: 0, pointerId: null });
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const DRAG_THRESHOLD = 50; // px minimum untuk dianggap swipe, bukan klik
+
   /* ── prefers-reduced-motion ── */
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -78,6 +84,48 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
     return () => clearInterval(timerRef.current);
   }, [paused, slides.length, current, goTo, prefersReduced]);
 
+  /* ── Drag / swipe handlers (mouse + touch via Pointer Events) ── */
+  const handlePointerDown = useCallback((e) => {
+    if (slides.length <= 1) return;
+    dragRef.current = {
+      active: true,
+      startX: e.clientX,
+      deltaX: 0,
+      pointerId: e.pointerId,
+    };
+    setIsDragging(true);
+    setPaused(true);
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  }, [slides.length]);
+
+  const handlePointerMove = useCallback((e) => {
+    if (!dragRef.current.active) return;
+    const deltaX = e.clientX - dragRef.current.startX;
+    dragRef.current.deltaX = deltaX;
+    setDragOffset(deltaX);
+  }, []);
+
+  const endDrag = useCallback(() => {
+    if (!dragRef.current.active) return;
+    const { deltaX } = dragRef.current;
+
+    if (deltaX <= -DRAG_THRESHOLD) {
+      nextSlide();
+    } else if (deltaX >= DRAG_THRESHOLD) {
+      prevSlide();
+    }
+
+    dragRef.current = { active: false, startX: 0, deltaX: 0, pointerId: null };
+    setDragOffset(0);
+    setIsDragging(false);
+    setPaused(false);
+  }, [nextSlide, prevSlide]);
+
+  const handlePointerUp = useCallback((e) => {
+    e.currentTarget.releasePointerCapture?.(dragRef.current.pointerId);
+    endDrag();
+  }, [endDrag]);
+
   /* ── News ticker navigation ── */
   const ticker = newsItems.length > 0
     ? newsItems
@@ -105,23 +153,37 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
       {/* ── SLIDER ── */}
       <div
         ref={containerRef}
-        className="hero-slider"
+        className={`hero-slider${isDragging ? ' hs-dragging' : ''}`}
         style={{
           // Inline style selalu menang vs CSS class/media-query.
           // aspectRatio dihitung dari naturalWidth/naturalHeight gambar asli
           // → container proporsional tanpa crop, untuk SEMUA ukuran layar.
           aspectRatio: imgRatio,
           height: 'auto',
+          cursor: slides.length > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+          touchAction: 'pan-y',
         }}
         onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        onMouseLeave={() => { setPaused(false); if (dragRef.current.active) endDrag(); }}
         onFocus={() => setPaused(true)}
         onBlur={() => setPaused(false)}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         aria-roledescription="carousel"
-        aria-label="Slider gambar utama"
+        aria-label="Slider gambar utama — geser untuk berpindah slide"
       >
         {/* Slides */}
-        <div aria-live="polite" aria-atomic="true" className="hs-track">
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="hs-track"
+          style={{
+            transform: dragOffset ? `translateX(${dragOffset}px)` : undefined,
+            transition: isDragging ? 'none' : undefined,
+          }}
+        >
           {slides.map((slide, idx) => (
             <div
               key={slide.id}
@@ -149,20 +211,6 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
             </div>
           ))}
         </div>
-
-        {/* Arrows */}
-        <button className="hs-arrow hs-arrow--prev" onClick={prevSlide}
-          aria-label="Slide sebelumnya" type="button">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M10 3L5 8L10 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <button className="hs-arrow hs-arrow--next" onClick={nextSlide}
-          aria-label="Slide berikutnya" type="button">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M6 3L11 8L6 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
 
         {/* Indicators — top right corner */}
         <div className="hs-indicators" role="tablist" aria-label="Pilih slide">
