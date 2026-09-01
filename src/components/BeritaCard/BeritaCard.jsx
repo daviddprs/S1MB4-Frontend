@@ -55,14 +55,14 @@ export function BeritaCard({ item, onNavigate, badgeLabel = null, badgeColor = n
   /**
    * Resolusi badge text (prioritas):
    * 1. badgeLabel prop   — kalau section override (mis. "JATIM", "EJSC")
-   * 2. item.penulis      — kata PERTAMA dari nama user
-   *                        "Super Administrator" → "Super" → CSS uppercase → "SUPER"
-   *                        "Operator Satu"       → "Operator" → "OPERATOR"
-   *                        "Administrator"       → "Administrator" → "ADMINISTRATOR"
+   * 2. item.penulis      — NAMA LENGKAP dari nama user (sebelumnya hanya kata pertama)
+   *                        "Super Administrator" → "SUPER ADMINISTRATOR"
+   *                        "Operator Satu"       → "OPERATOR SATU"
+   *                        "Administrator"       → "ADMINISTRATOR"
    * 3. Fallback          — "Berita"
    */
   const badgeText = badgeLabel
-    ?? (item.penulis ? item.penulis.trim().split(/\s+/)[0] : 'Berita');
+    ?? (item.penulis ? item.penulis.trim() : 'Berita');
 
   // Style badge: warna solid (kategori) vs teal-light default
   const badgeStyle = badgeColor

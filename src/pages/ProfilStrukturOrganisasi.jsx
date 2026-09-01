@@ -97,21 +97,23 @@ export default function ProfilStrukturOrganisasi() {
     <main className="pr-page" aria-label="Struktur Organisasi Bakorwil I Madiun">
       <div className="pr-page__inner">
 
-        {/* ── Page header ── */}
-        <header className="pr-header">
-          <h1 className="pr-header__title">Struktur Organisasi</h1>
-          <div className="pr-header__bar" aria-hidden="true" />
-          <p className="pr-header__desc">
-            Susunan organisasi Bakorwil I Madiun berdasarkan Peraturan Gubernur Jawa Timur
-            Nomor 134 Tahun 2016.
-          </p>
-        </header>
-
         {/* ── Two-column layout ── */}
+        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
+            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: konten */}
+          {/* Kolom kiri: header + konten */}
           <div className="pr-content">
+
+            {/* ── Page header ── */}
+            <header className="pr-header">
+              <h1 className="pr-header__title">Struktur Organisasi</h1>
+              <div className="pr-header__bar" aria-hidden="true" />
+              <p className="pr-header__desc">
+                Susunan organisasi Bakorwil I Madiun berdasarkan Peraturan Gubernur Jawa Timur
+                Nomor 134 Tahun 2016.
+              </p>
+            </header>
 
             {/* Intro */}
             <p className="pr-org-intro">{INTRO}</p>

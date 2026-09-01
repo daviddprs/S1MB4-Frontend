@@ -249,7 +249,8 @@ export default function Navbar() {
       <div className="topbar">
         <Link to="/" className="brand-link" aria-label="Beranda Bakorwil I Madiun">
           <span className="brand-primary">BAKORWIL</span>
-          <span className="brand-secondary">&nbsp;I MADIUN</span>
+          <span className="brand-romawi">&nbsp;I</span>
+          <span className="brand-secondary">&nbsp;MADIUN</span>
         </Link>
       </div>
 

@@ -56,21 +56,24 @@ export default function ProfilPejabatStruktural() {
     <main className="pr-page" aria-label="Pejabat Struktural Bakorwil I Madiun">
       <div className="pr-page__inner">
 
-        {/* ── Page header ── */}
-        <header className="pr-header">
-          <h1 className="pr-header__title">Pejabat Struktural</h1>
-          <div className="pr-header__bar" aria-hidden="true" />
-          <p className="pr-header__desc">
-            Daftar pejabat struktural Badan Koordinasi Wilayah Pemerintahan dan
-            Pembangunan Provinsi Jawa Timur di Madiun.
-          </p>
-        </header>
-
         {/* ── Two-column layout ── */}
+        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
+            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: tabel pejabat */}
+          {/* Kolom kiri: header + tabel pejabat */}
           <div className="pr-content">
+
+            {/* ── Page header ── */}
+            <header className="pr-header">
+              <h1 className="pr-header__title">Pejabat Struktural</h1>
+              <div className="pr-header__bar" aria-hidden="true" />
+              <p className="pr-header__desc">
+                Daftar pejabat struktural Badan Koordinasi Wilayah Pemerintahan dan
+                Pembangunan Provinsi Jawa Timur di Madiun.
+              </p>
+            </header>
+
             <section aria-labelledby="heading-pejabat">
               <h2 className="pr-section__heading" id="heading-pejabat">
                 DAFTAR PEJABAT STRUKTURAL

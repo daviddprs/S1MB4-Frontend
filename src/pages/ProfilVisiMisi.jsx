@@ -42,21 +42,23 @@ export default function ProfilVisiMisi() {
     <main className="pr-page" aria-label="Visi dan Misi Bakorwil I Madiun">
       <div className="pr-page__inner">
 
-        {/* ── Page header ── */}
-        <header className="pr-header">
-          <h1 className="pr-header__title">Visi Dan Misi</h1>
-          <div className="pr-header__bar" aria-hidden="true" />
-          <p className="pr-header__desc">
-            Visi dan Misi Badan Koordinasi Wilayah Pemerintahan dan Pembangunan
-            Provinsi Jawa Timur di Madiun.
-          </p>
-        </header>
-
         {/* ── Two-column layout ── */}
+        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
+            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: konten */}
+          {/* Kolom kiri: header + konten */}
           <div className="pr-content">
+
+            {/* ── Page header ── */}
+            <header className="pr-header">
+              <h1 className="pr-header__title">Visi Dan Misi</h1>
+              <div className="pr-header__bar" aria-hidden="true" />
+              <p className="pr-header__desc">
+                Visi dan Misi Badan Koordinasi Wilayah Pemerintahan dan Pembangunan
+                Provinsi Jawa Timur di Madiun.
+              </p>
+            </header>
 
             {/* VISI */}
             <section className="pr-section" aria-labelledby="heading-visi">

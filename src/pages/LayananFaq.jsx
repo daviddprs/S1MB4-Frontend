@@ -142,34 +142,37 @@ export default function LayananFaq() {
     <main className="pr-page" aria-label="FAQ — Pertanyaan yang Sering Diajukan">
       <div className="pr-page__inner">
 
-        {/* ── Page header ── */}
-        <header className="pr-header">
-          <h1 className="pr-header__title">Frequently Asked Questions (FAQ)</h1>
-          <div className="pr-header__bar" aria-hidden="true" />
-
-          {/* Meta: badge + tanggal + views */}
-          <div className="faq-meta" role="contentinfo" aria-label="Informasi dokumen">
-            <span className="faq-meta__badge" aria-label="Kategori: PPID">PPID</span>
-            <span className="faq-meta__dot" aria-hidden="true">·</span>
-            <time className="faq-meta__date" dateTime="2026-04-12">12 Apr 2026</time>
-            <span className="faq-meta__dot" aria-hidden="true">·</span>
-            <span className="faq-meta__views" aria-label="156 kali dilihat">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-              156
-            </span>
-          </div>
-        </header>
-
         {/* ── Two-column layout ── */}
+        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
+            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: FAQ sebagai heading + teks biasa (pola Visi Misi) */}
+          {/* Kolom kiri: header + FAQ */}
           <div className="pr-content">
+
+            {/* ── Page header ── */}
+            <header className="pr-header">
+              <h1 className="pr-header__title">Frequently Asked Questions (FAQ)</h1>
+              <div className="pr-header__bar" aria-hidden="true" />
+
+              {/* Meta: badge + tanggal + views */}
+              <div className="faq-meta" role="contentinfo" aria-label="Informasi dokumen">
+                <span className="faq-meta__badge" aria-label="Kategori: PPID">PPID</span>
+                <span className="faq-meta__dot" aria-hidden="true">·</span>
+                <time className="faq-meta__date" dateTime="2026-04-12">12 Apr 2026</time>
+                <span className="faq-meta__dot" aria-hidden="true">·</span>
+                <span className="faq-meta__views" aria-label="156 kali dilihat">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                    strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  156
+                </span>
+              </div>
+            </header>
+
             {FAQ_ITEMS.map((item) => (
               <section
                 key={item.id}

@@ -47,6 +47,13 @@
   letter-spacing: 0.03em;
 }
 
+.brand-romawi {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #1a5fb4;
+  letter-spacing: 0.03em;
+}
+
 .brand-secondary {
   font-size: 2rem;
   font-weight: 400;

@@ -47,17 +47,20 @@ export default function LayananBafastForm() {
     <main className="pr-page" aria-label="Formulir BAFAST — Bakorwil Madiun Fasilitasi">
       <div className="pr-page__inner">
 
-        {/* ── Page header ── */}
-        <header className="pr-header">
-          <h1 className="pr-header__title">Formulir Bakorwil Madiun Fasilitasi</h1>
-          <div className="pr-header__bar" aria-hidden="true" />
-        </header>
-
         {/* ── Two-column layout ── */}
+        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
+            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: daftar formulir (pola Visi Misi) */}
+          {/* Kolom kiri: header + daftar formulir (pola Visi Misi) */}
           <div className="pr-content">
+
+            {/* ── Page header ── */}
+            <header className="pr-header">
+              <h1 className="pr-header__title">Formulir Bakorwil Madiun Fasilitasi</h1>
+              <div className="pr-header__bar" aria-hidden="true" />
+            </header>
+
             {FORMULIR.map((form) => (
               <section
                 key={form.id}

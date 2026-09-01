@@ -81,10 +81,8 @@
 
 /* Badge kategori — default teal; override via inline style untuk kategori */
 .bts-card__badge {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   align-self: flex-start;
-  gap: 5px;
   background: var(--bts-teal-light, rgba(13,154,166,0.08));
   color: var(--bts-teal, #0d9aa6);
   border-radius: 999px;
@@ -94,7 +92,9 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
-  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
 }
 
 /* Views counter: ikon mata + angka */
