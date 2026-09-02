@@ -21,7 +21,7 @@
   /* CSS tokens untuk BeritaCard.css (card pakai var(--bts-*) dengan fallback,
      tapi bila section ini mendefinisikan alias berikut maka card juga terima) */
   --bts-card-bg:     #ffffff;
-  --bts-radius:      12px;
+  --bts-radius:      14px;
   --bts-shadow:      0 2px 12px rgba(13, 154, 166, 0.08);
   --bts-shadow-hov:  0 6px 28px rgba(13, 154, 166, 0.18);
   --bts-teal:        #0d9aa6;
@@ -30,15 +30,15 @@
   --bts-muted:       #5e8694;
 
   background: var(--kbs-bg);
-  padding: 48px 24px 56px;
+  padding: 16px 24px;
   font-family: var(--kbs-font);
-  border-top: 1px solid #e8f4f5;
+  border-top: none;
 }
 
 /* ── Outer wrapper ── */
 .kbs__inner {
   max-width: 1160px;
-  margin: 0 auto;
+  margin: 0 auto 24px auto;
 }
 
 /* ════════════════════════════════════════════════
@@ -49,8 +49,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 28px;
-  gap: 16px;
-  flex-wrap: wrap;
+  width: calc(100% - 328px);
 }
 
 .kbs__title-wrap {
@@ -129,6 +128,13 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   min-width: 0; /* cegah grid blowout */
+
+  /* Card Style */
+  background: var(--bts-card-bg);
+  border: 1px solid var(--kbs-border);
+  border-radius: var(--bts-radius);
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 /* ════════════════════════════════════════════════
@@ -157,12 +163,28 @@
   .kbs__body {
     grid-template-columns: 1fr 260px;
   }
+  .kbs__header {
+    width: calc(100% - 288px);
+  }
 }
 
 /* Mobile ≤768px — 1 kolom, sembunyikan spacer */
 @media (max-width: 768px) {
   .kbs {
-    padding: 36px 16px 44px;
+    padding: 16px;
+  }
+  .kbs__inner {
+    padding: 0;
+  }
+  .kbs__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .kbs__more-link {
+    justify-self: auto;
   }
   .kbs__body {
     grid-template-columns: 1fr;
@@ -172,6 +194,7 @@
   }
   .kbs__grid {
     grid-template-columns: 1fr;
+    padding: 24px 16px;
   }
 }
 

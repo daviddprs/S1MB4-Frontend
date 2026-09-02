@@ -14,20 +14,20 @@
   --bts-border:      #d0eaed;
   --bts-bg:          #f0f8f9;
   --bts-card-bg:     #ffffff;
-  --bts-radius:      12px;
+  --bts-radius:      14px;
   --bts-shadow:      0 2px 12px rgba(13, 154, 166, 0.08);
   --bts-shadow-hov:  0 6px 28px rgba(13, 154, 166, 0.18);
   --bts-font:        'Inter', system-ui, sans-serif;
 
   background: var(--bts-bg);
-  padding: 52px 24px 64px;
+  padding: 32px 24px 16px;
   font-family: var(--bts-font);
 }
 
 /* ── Outer wrapper ── */
 .bts__inner {
   max-width: 1160px;
-  margin: 0 auto;
+  margin: 0 auto 24px auto;
 }
 
 /* ════════════════════════════════════════════════
@@ -38,8 +38,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 32px;
-  gap: 16px;
-  flex-wrap: wrap;
+  width: calc(100% - 328px);
 }
 
 .bts__title-wrap {
@@ -100,6 +99,15 @@
   align-items: start;
 }
 
+/* Card untuk kolom kiri (Grid Berita) */
+.bts__body > div:first-child {
+  background: var(--bts-card-bg);
+  border: 1px solid var(--bts-border);
+  border-radius: var(--bts-radius);
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
 /* ════════════════════════════════════════════════
    BERITA GRID (kiri)
    Card styles ada di BeritaCard/BeritaCard.css
@@ -153,15 +161,20 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  background: var(--bts-card-bg);
+  border: 1px solid var(--bts-border);
+  border-radius: var(--bts-radius);
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  overflow: hidden; /* Clip the full-bleed banner neatly */
 }
 
-/* Banner di atas section VIDEO */
+/* Banner di atas section VIDEO (Full-bleed) */
 .bts__banner-wrap {
-  width: 100%;
-  border-radius: var(--bts-radius);
-  overflow: hidden;
-  box-shadow: var(--bts-shadow);
-  margin-bottom: 4px; /* gap sudah dihandle oleh .bts__sidebar gap: 24px */
+  width: calc(100% + 64px);
+  margin: -32px -32px 0 -32px;
+  border-radius: 0;
+  border-bottom: 1px solid var(--bts-border);
 }
 .bts__banner-img {
   width: 100%;
@@ -305,14 +318,34 @@
   .bts__body {
     grid-template-columns: 1fr 260px;
   }
+  .bts__header {
+    width: calc(100% - 288px);
+  }
 }
 
 @media (max-width: 768px) {
   .bts {
-    padding: 36px 16px 48px;
+    padding: 24px 16px;
+  }
+  .bts__inner {
+    padding: 0;
   }
   .bts__body {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .bts__body > div:first-child {
+    padding: 24px 16px;
+  }
+  .bts__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .bts__more-link {
+    justify-self: auto;
   }
   .bts__grid {
     grid-template-columns: 1fr;
@@ -320,6 +353,12 @@
   /* Di mobile, sidebar tampil di bawah grid */
   .bts__sidebar {
     order: 2;
+    padding: 24px 16px;
+    margin-top: 0;
+  }
+  .bts__banner-wrap {
+    width: calc(100% + 32px);
+    margin: -24px -16px 0 -16px;
   }
 }
 
