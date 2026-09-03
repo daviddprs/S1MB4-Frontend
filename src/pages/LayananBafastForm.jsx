@@ -48,11 +48,10 @@ export default function LayananBafastForm() {
       <div className="pr-page__inner">
 
         {/* ── Two-column layout ── */}
-        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
-            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: header + daftar formulir (pola Visi Misi) */}
+          {/* Kolom kiri: header + daftar formulir (masing-masing dibungkus card,
+              konsisten dengan pola pr-info-card yang dipakai di halaman lain) */}
           <div className="pr-content">
 
             {/* ── Page header ── */}
@@ -70,16 +69,18 @@ export default function LayananBafastForm() {
                 <h2 className="pr-section__heading" id={`heading-${form.id}`}>
                   {form.label}
                 </h2>
-                <a
-                  href={form.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  id={`btn-${form.id}`}
-                  aria-label={`${form.btnText} (buka di tab baru)`}
-                  className="bafast-btn"
-                >
-                  {form.btnText}
-                </a>
+                <div className="pr-info-card">
+                  <a
+                    href={form.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id={`btn-${form.id}`}
+                    aria-label={`${form.btnText} (buka di tab baru)`}
+                    className="bafast-btn"
+                  >
+                    {form.btnText}
+                  </a>
+                </div>
               </section>
             ))}
           </div>

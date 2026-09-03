@@ -98,8 +98,6 @@ export default function ProfilStrukturOrganisasi() {
       <div className="pr-page__inner">
 
         {/* ── Two-column layout ── */}
-        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
-            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
           {/* Kolom kiri: header + konten */}
@@ -118,25 +116,28 @@ export default function ProfilStrukturOrganisasi() {
             {/* Intro */}
             <p className="pr-org-intro">{INTRO}</p>
 
-            {/* SUSUNAN ORGANISASI — plain numbered list, konsisten dengan pola Misi */}
+            {/* SUSUNAN ORGANISASI — sekarang dibungkus card, konsisten dengan
+                pola pr-info-card yang dipakai di halaman Kedudukan & Alamat */}
             <section className="pr-section" aria-labelledby="heading-org-list">
               <h2 className="pr-section__heading" id="heading-org-list">SUSUNAN ORGANISASI</h2>
-              <ol className="pr-misi-plain pr-org-plain" aria-label="Susunan organisasi Bakorwil I Madiun">
-                {ORGANISASI.map((item, idx) => (
-                  <li key={idx} className="pr-misi-plain__item pr-org-plain__item">
-                    <span className="pr-org-plain__name">{item.nama}</span>
-                    {item.sub && (
-                      <span className="pr-org-plain__sub">membawahi: {item.sub}</span>
-                    )}
-                  </li>
-                ))}
-              </ol>
+              <div className="pr-info-card">
+                <ol className="pr-misi-plain pr-org-plain" aria-label="Susunan organisasi Bakorwil I Madiun" style={{ margin: 0 }}>
+                  {ORGANISASI.map((item, idx) => (
+                    <li key={idx} className="pr-misi-plain__item pr-org-plain__item">
+                      <span className="pr-org-plain__name">{item.nama}</span>
+                      {item.sub && (
+                        <span className="pr-org-plain__sub">membawahi: {item.sub}</span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </section>
 
             {/* Closing text */}
             <p className="pr-org-closing">{CLOSING}</p>
 
-            {/* DASAR HUKUM — di kolom kiri, dalam info-card, konsisten dengan halaman lain */}
+            {/* DASAR HUKUM — sudah pakai card sebelumnya, dibiarkan konsisten */}
             <section className="pr-section" aria-labelledby="heading-dasar-hukum">
               <h2 className="pr-section__heading" id="heading-dasar-hukum">DASAR HUKUM</h2>
               <div className="pr-info-card">

@@ -115,6 +115,7 @@
   color: var(--pr-text);
   line-height: 1.8;
   margin: 0 0 12px;
+  text-align: justify;
 }
 .pr-section__text:last-child { margin-bottom: 0; }
 
@@ -128,6 +129,7 @@
   color: var(--pr-text);
   line-height: 1.85;
   margin: 0 0 8px;
+  text-align: justify;
 }
 
 /* Misi: ordered list biasa (1. 2. 3. 4.) */
@@ -143,6 +145,7 @@
   color: var(--pr-text);
   line-height: 1.8;
   padding-left: 4px;
+  text-align: justify;
 }
 
 /* Susunan Organisasi: plain list dengan nama tebal + sub-text kecil */
@@ -262,6 +265,7 @@
   color: var(--pr-text);
   line-height: 1.8;
   margin: 0 0 28px;
+  text-align: justify;
 }
 .pr-org-list {
   list-style: none;

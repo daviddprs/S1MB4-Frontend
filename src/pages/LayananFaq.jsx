@@ -12,7 +12,7 @@ const FAQ_ITEMS = [
     id: 'faq-1',
     pertanyaan: 'Apa itu Bakorwil I Madiun?',
     jawaban: (
-      <p className="pr-section__text">
+      <p className="pr-section__text" style={{ margin: 0 }}>
         Badan Koordinasi Wilayah (Bakorwil) I Madiun merupakan perangkat Pemerintah Provinsi
         Jawa Timur yang bertugas membantu Gubernur Jawa Timur dalam melaksanakan koordinasi
         penyelenggaraan pemerintahan, pembangunan, dan pelayanan publik di wilayah kerja
@@ -35,7 +35,7 @@ const FAQ_ITEMS = [
         <p className="pr-section__text">
           Wilayah kerja Bakorwil I Madiun meliputi:
         </p>
-        <ol className="pr-misi-plain">
+        <ol className="pr-misi-plain" style={{ margin: 0 }}>
           {[
             'Kota Madiun', 'Kabupaten Madiun', 'Kabupaten Magetan', 'Kabupaten Ngawi',
             'Kabupaten Ponorogo', 'Kabupaten Pacitan', 'Kabupaten Trenggalek',
@@ -57,7 +57,7 @@ const FAQ_ITEMS = [
         <p className="pr-section__text">
           Adapun fungsi Bakorwil I Madiun antara lain:
         </p>
-        <ol className="pr-misi-plain">
+        <ol className="pr-misi-plain" style={{ margin: 0 }}>
           {[
             'Melaksanakan koordinasi penyelenggaraan pemerintahan daerah',
             'Memfasilitasi pelaksanaan program dan kebijakan Pemerintah Provinsi Jawa Timur di wilayah kerja',
@@ -76,7 +76,7 @@ const FAQ_ITEMS = [
     jawaban: (
       <>
         <p className="pr-section__text">Masyarakat dapat berkunjung ke Kantor Bakorwil I Madiun dengan langkah berikut:</p>
-        <ol className="pr-misi-plain">
+        <ol className="pr-misi-plain" style={{ margin: 0 }}>
           {[
             'Datang langsung ke Kantor Bakorwil I Madiun pada hari dan jam kerja',
             'Melapor kepada petugas keamanan (security) atau petugas layanan/front office',
@@ -92,7 +92,7 @@ const FAQ_ITEMS = [
     id: 'faq-5',
     pertanyaan: 'Bagaimana sejarah Bakorwil I Madiun?',
     jawaban: (
-      <p className="pr-section__text">
+      <p className="pr-section__text" style={{ margin: 0 }}>
         Badan Koordinasi Wilayah (Bakorwil) dibentuk oleh Pemerintah Provinsi Jawa Timur
         sebagai upaya memperkuat koordinasi pemerintahan di tingkat wilayah. Keberadaan
         Bakorwil bertujuan mendekatkan fungsi koordinasi Pemerintah Provinsi kepada
@@ -143,11 +143,9 @@ export default function LayananFaq() {
       <div className="pr-page__inner">
 
         {/* ── Two-column layout ── */}
-        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
-            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
-          {/* Kolom kiri: header + FAQ */}
+          {/* Kolom kiri: header + FAQ (tiap jawaban dibungkus card) */}
           <div className="pr-content">
 
             {/* ── Page header ── */}
@@ -182,7 +180,9 @@ export default function LayananFaq() {
                 <h2 className="pr-section__heading" id={`${item.id}-heading`}>
                   {item.pertanyaan}
                 </h2>
-                {item.jawaban}
+                <div className="pr-info-card">
+                  {item.jawaban}
+                </div>
               </section>
             ))}
           </div>

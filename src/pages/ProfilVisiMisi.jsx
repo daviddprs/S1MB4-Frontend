@@ -43,8 +43,6 @@ export default function ProfilVisiMisi() {
       <div className="pr-page__inner">
 
         {/* ── Two-column layout ── */}
-        {/* Header dipindah KE DALAM grid (kolom kiri) supaya sidebar/gambar
-            sejajar rata atas dengan judul halaman, bukan mulai di bawahnya. */}
         <div className="pr-layout">
 
           {/* Kolom kiri: header + konten */}
@@ -60,22 +58,29 @@ export default function ProfilVisiMisi() {
               </p>
             </header>
 
-            {/* VISI */}
+            {/* VISI — dibungkus card, konsisten dengan pola pr-info-card
+                yang sudah dipakai di halaman Kedudukan & Alamat */}
             <section className="pr-section" aria-labelledby="heading-visi">
               <h2 className="pr-section__heading" id="heading-visi">VISI</h2>
-              <p className="pr-section__text pr-visi-text">{VISI}</p>
+              <div className="pr-info-card">
+                <p className="pr-section__text pr-visi-text" style={{ margin: 0 }}>
+                  {VISI}
+                </p>
+              </div>
             </section>
 
-            {/* MISI */}
+            {/* MISI — dibungkus card yang sama */}
             <section className="pr-section" aria-labelledby="heading-misi">
               <h2 className="pr-section__heading" id="heading-misi">MISI</h2>
-              <ol className="pr-misi-plain" aria-label="Daftar Misi">
-                {MISI.map((teks, idx) => (
-                  <li key={idx} className="pr-misi-plain__item">
-                    {teks}
-                  </li>
-                ))}
-              </ol>
+              <div className="pr-info-card">
+                <ol className="pr-misi-plain" aria-label="Daftar Misi" style={{ margin: 0 }}>
+                  {MISI.map((teks, idx) => (
+                    <li key={idx} className="pr-misi-plain__item">
+                      {teks}
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </section>
 
           </div>

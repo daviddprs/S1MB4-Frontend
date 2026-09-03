@@ -71,6 +71,18 @@ function buildNavItems(klasifikasiItems) {
     {
       id: 'inovasi',
       label: 'INOVASI',
+      children: [
+        { label: 'Dewa Resi', href: '/' },
+        { label: 'Bafast', href: '/' },
+        { label: 'B-Files', href: '/' },
+        { label: 'Rumah Mas Bakrun', href: '/' },
+        { label: 'KPR', href: '/' },
+        { label: 'PRIMA', href: '/' },
+        { label: 'Meafest', href: '/' },
+        { label: 'Sinema', href: '/' },
+        { label: 'SI ABDI', href: '/' },
+        { label: 'SI MONEV', href: '/' },
+      ],
     },
   ];
 }
