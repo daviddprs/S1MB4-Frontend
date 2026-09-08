@@ -23,14 +23,59 @@
 }
 
 /* ══════════════════════════════════════════════════
+   SUPER BAR  — slim teal strip paling atas
+══════════════════════════════════════════════════ */
+.superbar {
+  background: var(--nav-teal);
+  padding: 5px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Ikon sosmed di kanan */
+.superbar-sosmed {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.superbar-sosmed-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  transition: background var(--nav-transition), color var(--nav-transition);
+}
+.superbar-sosmed-btn:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+/* ══════════════════════════════════════════════════
    TOP BAR  — slim white strip with brand text
 ══════════════════════════════════════════════════ */
 .topbar {
   background: #ffffff;
   border-bottom: 1px solid #dde;
-  padding: 15px 16px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Logo di sisi kanan topbar ── */
+.topbar-logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 
 .brand-link {
@@ -41,21 +86,21 @@
 }
 
 .brand-primary {
-  font-size:  2rem;
+  font-size:  1.25rem;
   font-weight: 700;
   color: #1a5fb4;    
   letter-spacing: 0.03em;
 }
 
 .brand-romawi {
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: 400;
   color: #1a5fb4;
   letter-spacing: 0.03em;
 }
 
 .brand-secondary {
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: 400;
   color: #222;
   letter-spacing: 0.03em;
@@ -286,6 +331,12 @@
 @media (max-width: 900px) {
   .hamburger { display: flex; }
 
+  /* Di tablet/mobile: kompres padding superbar */
+  .superbar { padding: 4px 12px; }
+
+  /* Kecilkan logo di tablet/mobile */
+  .topbar-logo { height: 42px; }
+
   .navbar { position: relative; }
 
   .nav-menu {
@@ -371,4 +422,10 @@
   .site-header, .nav-link, .dropdown-menu, .hamburger-bar, .nav-menu {
     transition: none;
   }
+}
+
+/* ── Layar sangat kecil (≤ 420px): sembunyikan logo dan superbar ── */
+@media (max-width: 420px) {
+  .topbar-logo { display: none; }
+  .superbar { display: none; }
 }
