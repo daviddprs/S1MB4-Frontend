@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, Fragment } from 'react';
 import './HeroSlider.css';
 
 export default function HeroSlider({ slides = [], newsItems = [] }) {
-  const [current, setCurrent]       = useState(0);
-  const [paused, setPaused]         = useState(false);
-  const [newsIndex, setNewsIndex]   = useState(0);
-  const [prefersReduced, setReduced] = useState(false);
+  const [current, setCurrent]           = useState(0);
+  const [paused, setPaused]             = useState(false);
+  const [tickerPaused, setTickerPaused] = useState(false); // pause ticker CSS animation via onPause/onResume
+  const [prefersReduced, setReduced]    = useState(false);
   // imgRatio = naturalWidth / naturalHeight gambar slide aktif.
   // Berlaku untuk SEMUA ukuran layar (bukan hanya mobile).
   // Fallback 16/6 ≈ 2.667 dipakai sebelum gambar pertama selesai load.
@@ -126,13 +126,11 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
     endDrag();
   }, [endDrag]);
 
-  /* ── News ticker navigation ── */
+  /* ── News ticker data ── */
   const ticker = newsItems.length > 0
     ? newsItems
     : [{ id: '_def', text: 'Selamat datang di website resmi Bakorwil I Madiun.', href: '#' }];
 
-  const prevNews = () => setNewsIndex((i) => (i - 1 + ticker.length) % ticker.length);
-  const nextNews = () => setNewsIndex((i) => (i + 1) % ticker.length);
 
   if (slides.length === 0) {
     return (
@@ -142,8 +140,12 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
           <p>Belum ada slide</p>
         </div>
         {/* Still show ticker */}
-        <TickerBar ticker={ticker} newsIndex={newsIndex} prefersReduced={prefersReduced}
-          prevNews={prevNews} nextNews={nextNews} />
+        <TickerBar
+          ticker={ticker}
+          prefersReduced={prefersReduced}
+          onPause={() => setTickerPaused(true)}
+          onResume={() => setTickerPaused(false)}
+        />
       </div>
     );
   }
@@ -231,58 +233,69 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
       {/* ── TICKER ── */}
       <TickerBar
         ticker={ticker}
-        newsIndex={newsIndex}
         prefersReduced={prefersReduced}
-        prevNews={prevNews}
-        nextNews={nextNews}
+        onPause={() => setTickerPaused(true)}
+        onResume={() => setTickerPaused(false)}
       />
     </section>
   );
 }
 
-/* ─── Ticker sub-component ─── */
-function TickerBar({ ticker, newsIndex, prefersReduced, prevNews, nextNews }) {
-  const item = ticker[newsIndex];
-  return (
-    <div className="hs-ticker" role="complementary" aria-label="Berita terkini">
-      {/* Badge */}
-      <div className="hs-ticker__badge">
-        Breaking News
-      </div>
-
-      {/* Scrolling text */}
-      <div className="hs-ticker__text" aria-live="polite">
+/* ─── Ticker sub-component ───
+ *  Marquee running-text: semua items dirender 2× (duplikasi) di dalam
+ *  .hs-ticker__track, animasi geser -50% → seamless infinite loop.
+ *  Pola identik dengan .home-wilayah__track yang sudah ada di project.
+ *  - prefersReduced → tambah class --reduced → CSS nonaktifkan animasi
+ *  - hover ticker → CSS pause animation-play-state
+ *  - Link tiap item tetap clickable meski sedang bergerak
+ */
+function TickerBar({ ticker, prefersReduced, onPause, onResume }) {
+  /* Render 1 set lengkap: semua items + separator di antaranya */
+  function renderSet(keySuffix) {
+    return ticker.map((item, idx) => (
+      <Fragment key={`${item.id}-${keySuffix}`}>
+        {/* Separator sebelum setiap item (termasuk pertama) supaya jarak
+            antara item terakhir set-1 dan item pertama set-2 konsisten */}
+        <span className="hs-ticker__sep" aria-hidden="true">•</span>
         <a
           href={item.href}
-          className={`hs-ticker__marquee${prefersReduced ? ' reduced' : ''}`}
+          className="hs-ticker__item"
+          title={item.text}
           aria-label={`Berita: ${item.text}`}
         >
           {item.text}
         </a>
+      </Fragment>
+    ));
+  }
+
+  return (
+    <div
+      className={`hs-ticker${prefersReduced ? ' hs-ticker--reduced' : ''}`}
+      role="complementary"
+      aria-label="Berita terkini"
+      onMouseEnter={onPause}
+      onMouseLeave={onResume}
+      onFocus={onPause}
+      onBlur={onResume}
+    >
+      {/* Badge */}
+      <div className="hs-ticker__badge">Breaking News</div>
+
+      {/* Scroll wrapper — clips overflow */}
+      <div className="hs-ticker__scroll" aria-hidden="false">
+        {/* Track — dirender 2× untuk seamless loop (animasi geser -50%) */}
+        <div className="hs-ticker__track">
+          {renderSet('a')}
+          {renderSet('b')}
+        </div>
       </div>
 
-      {/* Prev / Next arrows */}
-      <div className="hs-ticker__nav">
-        <button
-          className="hs-ticker__btn"
-          onClick={prevNews}
-          aria-label="Berita sebelumnya"
-          type="button"
-        >
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-            <path d="M7 2L3 5L7 8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <button
-          className="hs-ticker__btn"
-          onClick={nextNews}
-          aria-label="Berita berikutnya"
-          type="button"
-        >
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-            <path d="M3 2L7 5L3 8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+      {/* Accessible fallback: hanya untuk screen reader, tidak terlihat */}
+      <div className="sr-only" aria-live="polite">
+        {ticker.map((item) => (
+          <a key={item.id} href={item.href}>{item.text}</a>
+        ))}
       </div>
     </div>
   );

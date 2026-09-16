@@ -25,8 +25,11 @@
   width: 100%;
   overflow: hidden;
   background: #0d1f2d;
-  /* flex, aspect-ratio, height — TIDAK diset di sini,
-     diatur via inline style dari JS */
+  /* flex-shrink: 0 PENTING — cegah .hero-section (flex column) mengkompress
+     slider saat ticker atau elemen lain tumbuh lebih besar dari perkiraan.
+     Tinggi slider harus selalu ditentukan oleh inline style aspectRatio dari JS,
+     bukan oleh flex shrink algorithm. */
+  flex-shrink: 0;
 }
 
 /* Empty state */
@@ -139,7 +142,14 @@
   display: flex;
   align-items: center;
   background: #0d9aa6;
+  /* Tinggi FIXED 36px — tidak boleh tumbuh/shrink apapun konten di dalamnya.
+     flex-shrink: 0 mencegah .hero-section (flex column) mengubah tinggi ini.
+     min/max-height sebagai failsafe supaya overflow: hidden tidak perlu diandalkan
+     untuk menjaga tinggi tetap. */
   height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  flex-shrink: 0;
   overflow: hidden;
 }
 
@@ -172,69 +182,101 @@
   z-index: 1;
 }
 
-/* Text area */
-.hs-ticker__text {
+/* Scroll clip wrapper — flex:1 mengisi sisa lebar setelah badge */
+.hs-ticker__scroll {
   flex: 1;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  padding: 0 14px 0 18px;
-  position: relative;
+  min-width: 0;
+  /* Fade edge kiri & kanan supaya teks menghilang halus di tepi (konsisten
+     dengan .home-wilayah__marquee-wrap) */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
 }
 
-/* Marquee text */
-.hs-ticker__marquee {
-  display: block;
+/* Keyframes: geser -50% karena konten dirender 2× — persis sama seperti
+   wilayah-scroll yang geser -33.3% dari konten 3× */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Track: satu baris lurus, lebih lebar dari viewport */
+.hs-ticker__track {
+  display: flex;
+  align-items: center;
+  width: max-content;            /* jangan wrap, biarkan melebihi container */
   white-space: nowrap;
+  animation: ticker-scroll 22s linear infinite;
+  will-change: transform;
+}
+
+/* Pause saat hover (bisa baca & klik berita) */
+.hs-ticker:hover .hs-ticker__track {
+  animation-play-state: paused;
+}
+
+/* Nonaktifkan animasi jika prefers-reduced-motion ATAU class --reduced */
+.hs-ticker--reduced .hs-ticker__track {
+  animation: none;
+}
+
+/* Item: setiap link berita di dalam track */
+.hs-ticker__item {
+  display: inline-block;
+  flex-shrink: 0;
   color: #fff;
   font-size: 0.78rem;
   font-weight: 500;
   text-decoration: none;
-  animation: ticker-marquee 18s linear infinite;
-  will-change: transform;
-}
-.hs-ticker__marquee:hover { text-decoration: underline; }
-.hs-ticker__marquee.reduced { animation: none; overflow: hidden; text-overflow: ellipsis; }
-
-@keyframes ticker-marquee {
-  0%   { transform: translateX(60vw); }
-  100% { transform: translateX(-100%); }
-}
-
-/* Pause on hover */
-.hs-ticker:hover .hs-ticker__marquee {
-  animation-play-state: paused;
-}
-
-/* Nav buttons */
-.hs-ticker__nav {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 0 8px;
-}
-
-.hs-ticker__btn {
-  width: 22px;
-  height: 22px;
-  border: 1.5px solid rgba(255,255,255,0.6);
-  border-radius: 3px;
-  background: transparent;
+  white-space: nowrap;
+  padding: 0 4px;
+  transition: color 0.15s;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: background 0.15s, border-color 0.15s;
 }
-.hs-ticker__btn:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: #fff;
+.hs-ticker__item:hover {
+  color: #b8e8ec;
+  text-decoration: underline;
 }
-.hs-ticker__btn:focus-visible {
+.hs-ticker__item:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Separator bullet — di KIRI setiap item (termasuk pertama),
+   menciptakan jarak konsisten di titik loop juga */
+.hs-ticker__sep {
+  display: inline-block;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.75rem;
+  padding: 0 10px;
+  user-select: none;
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ══════════════════════════════════════════════════
@@ -245,12 +287,12 @@
    Hanya arrow-size dan ticker font yang disesuaikan.
 ══════════════════════════════════════════════════ */
 
-/* Tablet ≤768px */
+/* Tablet ≤768px — percepat animasi sedikit, perkecil font */
 @media (max-width: 768px) {
-  /* aspect-ratio .hero-slider TIDAK diset di sini (inline style JS yang berlaku) */
   .hs-arrow { width: 28px; height: 28px; }
   .hs-ticker__badge { font-size: 0.65rem; padding: 0 12px; }
-  .hs-ticker__marquee { font-size: 0.74rem; }
+  .hs-ticker__item  { font-size: 0.74rem; }
+  .hs-ticker__track { animation-duration: 16s; }
 }
 
 /* HP ≤600px */
@@ -287,8 +329,12 @@
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .hs-slide, .hs-arrow, .hs-dot, .hs-ticker__marquee {
+  .hs-slide, .hs-arrow, .hs-dot {
     transition: none;
+    animation: none;
+  }
+  /* Ticker marquee: nonaktifkan via media query juga (backup dari class --reduced) */
+  .hs-ticker__track {
     animation: none;
   }
 }

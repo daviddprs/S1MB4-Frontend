@@ -83,10 +83,10 @@ export default function Home() {
       setLoading(true);
 
       // Path tanpa prefix /api karena API_URL sudah berakhiran /api
-      const [slidersData, breakingData, latestData] = await Promise.all([
+      // Satu fetch /berita?per_page=3 dipakai untuk BOTH ticker dan sidebar
+      const [slidersData, latestData] = await Promise.all([
         apiFetch('/sliders', controller.signal),
-        apiFetch('/berita?breaking=1', controller.signal),
-        apiFetch('/berita?per_page=3', controller.signal),  // sidebar: max 3 item
+        apiFetch('/berita?per_page=3', controller.signal),  // sidebar & ticker: max 3 item
       ]);
 
       /* ── Slider: API returns flat array [{ id, gambar, url_tujuan, urutan }] ── */
@@ -106,23 +106,20 @@ export default function Home() {
         }))
       );
 
-      /* ── Berita breaking ticker ── */
-      const rawBerita = Array.isArray(breakingData)
-        ? breakingData
-        : (breakingData?.data ?? []);
-
-      setNewsItems(
-        rawBerita.map((n) => ({
-          id:   n.id,
-          text: n.judul ?? n.title ?? n.text ?? '',
-          href: n.url ?? `/berita/${n.slug ?? n.id}`,
-        }))
-      );
-
       /* ── Berita terbaru (panel kanan) ── */
+
       const rawLatest = Array.isArray(latestData)
         ? latestData
         : (latestData?.data ?? []);
+
+      // Ticker memakai sumber yang SAMA dengan sidebar (3 berita terbaru)
+      setNewsItems(
+        rawLatest.map((n) => ({
+          id:   n.id,
+          text: n.judul ?? n.title ?? '',
+          href: n.url ?? `/berita/${n.slug ?? n.id}`,
+        }))
+      );
 
       setLatestNews(
         rawLatest.map((n) => ({

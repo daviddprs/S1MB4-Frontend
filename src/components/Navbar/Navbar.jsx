@@ -101,6 +101,7 @@ function buildNavItems(klasifikasiItems) {
           // Diisi dari API; fallback ke statis jika API gagal
           children: klasifikasiItems,
         },
+        { label: 'Maklumat Pelayanan', href: '/ppid/maklumat-pelayanan' },
       ],
     },
     { id: 'ejsc', label: 'EJSC', href: '/ejsc' },

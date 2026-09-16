@@ -88,9 +88,6 @@ export default function Ejsc() {
 
         {/* ── Page header ── */}
         <header className="ejsc-header">
-          <div className="ejsc-header__eyebrow" aria-label="Kategori berita">
-            ⚡ EJSC
-          </div>
           <h1 className="ejsc-header__title">East Java Super Corridor</h1>
           <div className="ejsc-header__bar" aria-hidden="true" />
           <p className="ejsc-header__desc">

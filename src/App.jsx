@@ -9,6 +9,7 @@ import PpidSetiapSaat from './pages/PpidSetiapSaat';
 import PpidLaporanAkses from './pages/PpidLaporanAkses';
 import Placeholder from './pages/Placeholder';
 import PpidSimplePage from './pages/PpidSimplePage';
+import PpidMaklumatPelayanan from './pages/PpidMaklumatPelayanan';
 import Berita from './pages/Berita';
 import SakipRb from './pages/SakipRb';
 import ProfilVisiMisi from './pages/ProfilVisiMisi';
@@ -19,6 +20,7 @@ import ProfilPejabatStruktural from './pages/ProfilPejabatStruktural';
 import Ejsc from './pages/Ejsc';
 import LayananBafastForm from './pages/LayananBafastForm';
 import LayananFaq from './pages/LayananFaq';
+import LayananJadwal from './pages/LayananJadwal';
 import './App.css';
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
         <Route path="/ppid/setiap-saat" element={<PpidSetiapSaat />} />
         <Route path="/ppid/laporan-akses-informasi" element={<PpidLaporanAkses />} />
         <Route path="/ppid/profil" element={<Placeholder />} />
+        <Route path="/ppid/maklumat-pelayanan" element={<PpidMaklumatPelayanan />} />
         <Route path="/ppid/layanan-informasi" element={<Placeholder />} />
         {/* Dokumen PPID — live data dari API */}
         <Route
@@ -65,7 +68,7 @@ function App() {
         <Route path="/berita/:id" element={<Berita />} />
         <Route path="/ejsc" element={<Ejsc />} />
         {/* Halaman Layanan */}
-        <Route path="/layanan/jadwal-kegiatan" element={<Placeholder />} />
+        <Route path="/layanan/jadwal-kegiatan" element={<LayananJadwal />} />
         <Route path="/layanan/bafast-form"     element={<LayananBafastForm />} />
         <Route path="/layanan/faq"             element={<LayananFaq />} />
         <Route path="/layanan/*"               element={<Placeholder />} />
