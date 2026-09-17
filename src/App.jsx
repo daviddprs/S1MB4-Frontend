@@ -23,11 +23,13 @@ import Ejsc from './pages/Ejsc';
 import LayananBafastForm from './pages/LayananBafastForm';
 import LayananFaq from './pages/LayananFaq';
 import LayananJadwal from './pages/LayananJadwal';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
