@@ -10,9 +10,11 @@ import PpidLaporanAkses from './pages/PpidLaporanAkses';
 import Placeholder from './pages/Placeholder';
 import PpidSimplePage from './pages/PpidSimplePage';
 import PpidMaklumatPelayanan from './pages/PpidMaklumatPelayanan';
+import PpidSeputar from './pages/PpidSeputar';
 import Berita from './pages/Berita';
 import SakipRb from './pages/SakipRb';
 import ProfilVisiMisi from './pages/ProfilVisiMisi';
+import ProfilTugasFungsi from './pages/ProfilTugasFungsi';
 import ProfilKedudukanAlamat from './pages/ProfilKedudukanAlamat';
 import ProfilStrukturOrganisasi from './pages/ProfilStrukturOrganisasi';
 import ProfilWilayahKerja from './pages/ProfilWilayahKerja';
@@ -36,7 +38,7 @@ function App() {
         <Route path="/ppid/serta-merta" element={<PpidSertaMerta />} />
         <Route path="/ppid/setiap-saat" element={<PpidSetiapSaat />} />
         <Route path="/ppid/laporan-akses-informasi" element={<PpidLaporanAkses />} />
-        <Route path="/ppid/profil" element={<Placeholder />} />
+        <Route path="/ppid/profil" element={<PpidSeputar />} />
         <Route path="/ppid/maklumat-pelayanan" element={<PpidMaklumatPelayanan />} />
         <Route path="/ppid/layanan-informasi" element={<Placeholder />} />
         {/* Dokumen PPID — live data dari API */}
@@ -58,6 +60,7 @@ function App() {
 
         {/* Halaman Profil */}
         <Route path="/profil/visi-misi"           element={<ProfilVisiMisi />} />
+        <Route path="/profil/tugas-fungsi"         element={<ProfilTugasFungsi />} />
         <Route path="/profil/kedudukan-alamat"    element={<ProfilKedudukanAlamat />} />
         <Route path="/profil/struktur-organisasi" element={<ProfilStrukturOrganisasi />} />
         <Route path="/profil/wilayah-kerja"       element={<ProfilWilayahKerja />} />

@@ -14,11 +14,7 @@
 
 /* ── wrapper ── */
 .site-header {
-  position: sticky;
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: 1000;
   font-family: var(--nav-font);
 }
 
@@ -111,7 +107,9 @@
 ══════════════════════════════════════════════════ */
 .navbar {
   background: var(--nav-teal);
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -186,7 +184,7 @@
     visibility var(--nav-transition),
     transform var(--nav-transition);
   pointer-events: none;
-  z-index: 200;
+  z-index: 1100;
 }
 
 @media (min-width: 901px) {
@@ -265,7 +263,7 @@
     visibility var(--nav-transition),
     transform var(--nav-transition);
   pointer-events: none;
-  z-index: 300;
+  z-index: 1200;
 }
 
 @media (min-width: 901px) {
@@ -337,7 +335,7 @@
   /* Kecilkan logo di tablet/mobile */
   .topbar-logo { height: 42px; }
 
-  .navbar { position: relative; }
+  .navbar { position: sticky; top: 0; z-index: 1000; }
 
   .nav-menu {
     position: absolute;

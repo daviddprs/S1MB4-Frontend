@@ -45,17 +45,10 @@ export default function PpidMaklumatPelayanan() {
             <header className="pr-header">
               <h1 className="pr-header__title">Maklumat Pelayanan Bakorwil I Madiun</h1>
               <div className="pr-header__bar" aria-hidden="true" />
-              <p className="pr-header__desc">
-                Maklumat Pelayanan Informasi Publik Pejabat Pengelola Informasi dan
-                Dokumentasi (PPID) Bakorwil I Madiun.
-              </p>
             </header>
 
             {/* ── Gambar Maklumat Pelayanan (statis, tanpa lightbox) ── */}
             <section className="pr-section" aria-labelledby="heading-maklumat">
-              <h2 className="pr-section__heading" id="heading-maklumat">
-                MAKLUMAT PELAYANAN BAKORWIL I MADIUN
-              </h2>
 
               {imgError ? (
                 /* Fallback apabila gambar gagal di-load */

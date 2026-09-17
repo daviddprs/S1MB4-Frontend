@@ -74,6 +74,7 @@ function buildNavItems(klasifikasiItems) {
       label: 'PROFIL',
       children: [
         { label: 'Visi Dan Misi',          href: '/profil/visi-misi' },
+        { label: 'Tugas Dan Fungsi',        href: '/profil/tugas-fungsi' },
         { label: 'Kedudukan dan Alamat',   href: '/profil/kedudukan-alamat' },
         { label: 'Struktur Organisasi',    href: '/profil/struktur-organisasi' },
         { label: 'Wilayah Kerja',          href: '/profil/wilayah-kerja' },
@@ -86,7 +87,16 @@ function buildNavItems(klasifikasiItems) {
       id: 'ppid',
       label: 'PPID',
       children: [
-        { label: 'Profil PPID', href: '/ppid/profil' },
+        {
+          label: 'Profil PPID',
+          children: [
+            { label: 'Seputar PPID',            href: '/ppid/profil' },
+            { label: 'Visi dan Misi',            href: '/ppid/profil' },
+            { label: 'Kelembagaan PPID',         href: '/ppid/profil' },
+            { label: 'Struktur Organisasi PPID', href: '/ppid/profil' },
+            { label: 'Maklumat Pelayanan',       href: '/ppid/maklumat-pelayanan' },
+          ],
+        },
         { label: 'Layanan Informasi', href: '/ppid/layanan-informasi' },
         {
           label: 'Dokumen PPID',
@@ -101,7 +111,6 @@ function buildNavItems(klasifikasiItems) {
           // Diisi dari API; fallback ke statis jika API gagal
           children: klasifikasiItems,
         },
-        { label: 'Maklumat Pelayanan', href: '/ppid/maklumat-pelayanan' },
       ],
     },
     { id: 'ejsc', label: 'EJSC', href: '/ejsc' },
@@ -302,46 +311,50 @@ export default function Navbar() {
   );
 
   return (
-    <header className="site-header" ref={navRef}>
+    <>
+      {/* ── Non-sticky: superbar + topbar (ikut scroll) ── */}
+      <header className="site-header">
 
-      {/* ── Super Bar (teal tipis di atas header putih) ── */}
-      <div className="superbar">
-        <div className="superbar-sosmed" aria-label="Media sosial">
-          <a href="https://www.instagram.com/bakorwilmadiun_/" className="superbar-sosmed-btn"
-            aria-label="Instagram Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
-            <SbIconInstagram />
-          </a>
-          <a href="https://www.facebook.com/bakorwilmdn/" className="superbar-sosmed-btn"
-            aria-label="Facebook Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
-            <SbIconFacebook />
-          </a>
-          <a href="https://www.youtube.com/@bakorwilmadiun" className="superbar-sosmed-btn"
-            aria-label="YouTube Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
-            <SbIconYouTube />
-          </a>
-          <a href="https://wa.me/6281234567890" className="superbar-sosmed-btn"
-            aria-label="WhatsApp Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
-            <SbIconWhatsApp />
-          </a>
+        {/* ── Super Bar (teal tipis di atas header putih) ── */}
+        <div className="superbar">
+          <div className="superbar-sosmed" aria-label="Media sosial">
+            <a href="https://www.instagram.com/bakorwilmadiun_/" className="superbar-sosmed-btn"
+              aria-label="Instagram Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
+              <SbIconInstagram />
+            </a>
+            <a href="https://www.facebook.com/bakorwilmdn/" className="superbar-sosmed-btn"
+              aria-label="Facebook Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
+              <SbIconFacebook />
+            </a>
+            <a href="https://www.youtube.com/@bakorwilmadiun" className="superbar-sosmed-btn"
+              aria-label="YouTube Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
+              <SbIconYouTube />
+            </a>
+            <a href="https://wa.me/6281234567890" className="superbar-sosmed-btn"
+              aria-label="WhatsApp Bakorwil I Madiun" target="_blank" rel="noopener noreferrer">
+              <SbIconWhatsApp />
+            </a>
+          </div>
         </div>
-      </div>
 
-      {/* ── Top Bar ── */}
-      <div className="topbar">
-        <Link to="/" className="brand-link" aria-label="Beranda Bakorwil I Madiun">
-          <span className="brand-primary">BAKORWIL</span>
-          <span className="brand-romawi">&nbsp;I</span>
-          <span className="brand-secondary">&nbsp;MADIUN</span>
-        </Link>
-        <img
-          src={logoBarkorwil}
-          alt="Logo Bakorwil I Madiun Provinsi Jawa Timur"
-          className="topbar-logo"
-        />
-      </div>
+        {/* ── Top Bar ── */}
+        <div className="topbar">
+          <Link to="/" className="brand-link" aria-label="Beranda Bakorwil I Madiun">
+            <span className="brand-primary">BAKORWIL</span>
+            <span className="brand-romawi">&nbsp;I</span>
+            <span className="brand-secondary">&nbsp;MADIUN</span>
+          </Link>
+          <img
+            src={logoBarkorwil}
+            alt="Logo Bakorwil I Madiun Provinsi Jawa Timur"
+            className="topbar-logo"
+          />
+        </div>
 
-      {/* ── Nav Bar ── */}
-      <nav className="navbar" aria-label="Navigasi utama" role="navigation">
+      </header>
+
+      {/* ── Sticky: Nav Bar saja (menempel di atas saat scroll) ── */}
+      <nav className="navbar" ref={navRef} aria-label="Navigasi utama" role="navigation">
         {/* Hamburger */}
         <button
           className={`hamburger${menuOpen ? ' active' : ''}`}
@@ -373,6 +386,6 @@ export default function Navbar() {
           ))}
         </ul>
       </nav>
-    </header>
+    </>
   );
 }
