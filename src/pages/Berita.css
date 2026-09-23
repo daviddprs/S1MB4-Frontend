@@ -186,6 +186,14 @@
   color: var(--bt-teal);
   font-weight: 600;
 }
+.bt-card__views {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  color: var(--bt-muted);
+  font-weight: 500;
+}
 .bt-card__title {
   font-size: 0.95rem;
   font-weight: 700;

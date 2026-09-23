@@ -15,12 +15,29 @@ function formatDate(iso) {
   }
 }
 
+function formatViews(n) {
+  if (n == null || isNaN(n)) return '0';
+  return new Intl.NumberFormat('id-ID').format(n);
+}
+
 /* ── Arrow icon ── */
 function ArrowRight() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
       <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.7"
         strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+/* ── Eye icon (views counter) ── */
+function EyeIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+      strokeLinejoin="round" aria-hidden="true">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
     </svg>
   );
 }
@@ -56,6 +73,13 @@ function BeritaCard({ item, onClick }) {
           {item.penulis && <>
             <span className="bt-card__dot" aria-hidden="true">●</span>
             <span className="bt-card__author">{item.penulis}</span>
+          </>}
+          {item.views != null && <>
+            <span className="bt-card__dot" aria-hidden="true">●</span>
+            <span className="bt-card__views" aria-label={`${formatViews(item.views)} kali dilihat`}>
+              <EyeIcon />
+              {formatViews(item.views)}
+            </span>
           </>}
         </div>
         <h2 className="bt-card__title">{item.judul}</h2>

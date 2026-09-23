@@ -759,3 +759,108 @@
   transform: translateY(-1px);
   outline: none;
 }
+
+/* ══════════════════════════════════════════════════════════
+   LAYANAN INFORMASI — step label, nested list, link, banner
+══════════════════════════════════════════════════════════ */
+
+/* Label bernomor untuk setiap sub-langkah (1. Pengajuan, 2. Verifikasi, dst.) */
+.pr-layanan-step-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--pr-blue);
+  margin: 20px 0 8px;
+}
+.pr-layanan-step-label:first-of-type {
+  margin-top: 16px;
+}
+
+/* Sub-list bersarang di dalam pr-contact-list */
+.pr-contact-list {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pr-contact-list__item {
+  font-size: 0.9rem;
+  color: var(--pr-text);
+  line-height: 1.75;
+  text-align: justify;
+}
+.pr-contact-list--nested {
+  margin-top: 6px;
+  list-style: circle;
+  padding-left: 22px;
+  gap: 6px;
+}
+.pr-contact-list--nested .pr-contact-list__item {
+  font-size: 0.875rem;
+}
+
+/* Link "Form Permohonan Online" */
+.pr-layanan-link {
+  color: var(--pr-teal);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+.pr-layanan-link:hover,
+.pr-layanan-link:focus-visible {
+  color: var(--pr-teal-dark);
+}
+
+/* Wrapper gambar banner alur permohonan (statis, tanpa lightbox) */
+.pr-layanan-img-wrap {
+  border-radius: var(--pr-radius);
+  overflow: hidden;
+  border: 1px solid var(--pr-border);
+  box-shadow: var(--pr-shadow);
+  margin-top: 8px;
+}
+.pr-layanan-img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Placeholder ketika file gambar belum tersedia */
+.pr-layanan-img-placeholder {
+  background: var(--pr-card-bg);
+  border: 2px dashed var(--pr-border);
+  border-radius: var(--pr-radius);
+  padding: 56px 24px;
+  text-align: center;
+  color: var(--pr-muted);
+}
+.pr-layanan-img-placeholder__icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+.pr-layanan-img-placeholder__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pr-text);
+  margin: 0 0 6px;
+}
+.pr-layanan-img-placeholder__sub {
+  font-size: 0.82rem;
+  margin: 0;
+  line-height: 1.6;
+}
+.pr-layanan-img-placeholder__sub code {
+  background: rgba(13,154,166,0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--pr-teal-dark);
+}
+
+@media (max-width: 600px) {
+  .pr-layanan-img-placeholder { padding: 40px 16px; }
+}

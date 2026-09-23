@@ -11,6 +11,7 @@ import Placeholder from './pages/Placeholder';
 import PpidSimplePage from './pages/PpidSimplePage';
 import PpidMaklumatPelayanan from './pages/PpidMaklumatPelayanan';
 import PpidSeputar from './pages/PpidSeputar';
+import PpidLayananInformasi from './pages/PpidLayananInformasi';
 import Berita from './pages/Berita';
 import SakipRb from './pages/SakipRb';
 import ProfilVisiMisi from './pages/ProfilVisiMisi';
@@ -42,7 +43,7 @@ function App() {
         <Route path="/ppid/laporan-akses-informasi" element={<PpidLaporanAkses />} />
         <Route path="/ppid/profil" element={<PpidSeputar />} />
         <Route path="/ppid/maklumat-pelayanan" element={<PpidMaklumatPelayanan />} />
-        <Route path="/ppid/layanan-informasi" element={<Placeholder />} />
+        <Route path="/ppid/layanan-informasi" element={<PpidLayananInformasi />} />
         {/* Dokumen PPID — live data dari API */}
         <Route
           path="/ppid/dokumen/sk-ppid"

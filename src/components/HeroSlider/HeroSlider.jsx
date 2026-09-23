@@ -214,6 +214,32 @@ export default function HeroSlider({ slides = [], newsItems = [] }) {
           ))}
         </div>
 
+        {/* Tombol panah — hanya tampil di mobile (CSS: hs-arrow--mobile-only) */}
+        {slides.length > 1 && (
+          <>
+            <button
+              type="button"
+              className="hs-arrow hs-arrow--prev hs-arrow--mobile-only"
+              onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+              aria-label="Slide sebelumnya"
+            >
+              <svg width="10" height="16" viewBox="0 0 10 16" fill="none" aria-hidden="true">
+                <path d="M8 2L2 8l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="hs-arrow hs-arrow--next hs-arrow--mobile-only"
+              onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+              aria-label="Slide berikutnya"
+            >
+              <svg width="10" height="16" viewBox="0 0 10 16" fill="none" aria-hidden="true">
+                <path d="M2 2l6 6-6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </>
+        )}
+
         {/* Indicators — top right corner */}
         <div className="hs-indicators" role="tablist" aria-label="Pilih slide">
           {slides.map((slide, idx) => (

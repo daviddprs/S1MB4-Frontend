@@ -102,6 +102,11 @@
 .hs-arrow--prev  { left: 12px; }
 .hs-arrow--next  { right: 12px; }
 
+/* Tombol panah hanya untuk mobile — DISEMBUNYIKAN di desktop */
+.hs-arrow--mobile-only {
+  display: none;
+}
+
 /* ── Indicators — TOP RIGHT ── */
 .hs-indicators {
   position: absolute;
@@ -289,7 +294,12 @@
 
 /* Tablet ≤768px — percepat animasi sedikit, perkecil font */
 @media (max-width: 768px) {
-  .hs-arrow { width: 28px; height: 28px; }
+  /* Tombol panah: tampil dan ukuran nyaman sentuh jari */
+  .hs-arrow--mobile-only {
+    display: flex;
+    width: 40px;
+    height: 40px;
+  }
   .hs-ticker__badge { font-size: 0.65rem; padding: 0 12px; }
   .hs-ticker__item  { font-size: 0.74rem; }
   .hs-ticker__track { animation-duration: 16s; }

@@ -134,7 +134,7 @@ export function Sidebar({ videos, videoLoading, videoError }) {
 
         {!videoLoading && !videoError && videos.length > 0 && (
           <div className="bts__video-list">
-            {videos.map((v) => (
+            {videos.slice(0, 5).map((v) => (
               <VideoItem key={v.id} video={v} />
             ))}
           </div>

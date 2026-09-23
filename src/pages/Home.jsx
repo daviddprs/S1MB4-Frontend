@@ -275,6 +275,8 @@ export default function Home() {
         kategori="jatim"
         judulSection="BERITA JATIM"
         warnaBadge="#2563eb"
+        badgeLabel="JATIM"
+        jumlahBerita={4}
         onNavigate={handleNavigateToBerita}
       />
 
@@ -283,6 +285,8 @@ export default function Home() {
         kategori="ejsc"
         judulSection="BERITA EJSC"
         warnaBadge="#f59e0b"
+        badgeLabel="EJSC"
+        jumlahBerita={4}
         onNavigate={handleNavigateToBerita}
       />
     </main>

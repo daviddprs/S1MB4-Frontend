@@ -40,12 +40,19 @@ function ErrorIcon() {
  * @param {string}   kategori      - "jatim" | "ejsc"
  * @param {string}   judulSection  - "BERITA JATIM" | "BERITA EJSC"
  * @param {string}   warnaBadge    - hex warna badge, misal "#2563eb" / "#f59e0b"
+ * @param {string}   [badgeLabel]  - override teks badge tiap kartu (misal "JATIM", "EJSC");
+ *                                   jika tidak diisi, BeritaCard fallback ke nama penulis
+ * @param {number}   [jumlahBerita=2] - jumlah kartu yang diambil dari API dan ditampilkan;
+ *                                      per-instance supaya Jatim dan EJSC bisa beda tanpa
+ *                                      saling mempengaruhi
  * @param {Function} [onNavigate]  - callback(id) saat card diklik
  */
 export default function KategoriBeritaSection({
   kategori,
   judulSection,
   warnaBadge,
+  badgeLabel,
+  jumlahBerita = 2,
   onNavigate,
 }) {
   const [berita, setBerita]   = useState([]);
@@ -60,7 +67,7 @@ export default function KategoriBeritaSection({
     setLoading(true);
     setError(null);
 
-    fetchJson(`/berita?kategori=${encodeURIComponent(kategori)}&per_page=4`, {
+    fetchJson(`/berita?kategori=${encodeURIComponent(kategori)}&per_page=${jumlahBerita}`, {
       signal: ctrl.signal,
     })
       .then((data) => {
@@ -73,7 +80,7 @@ export default function KategoriBeritaSection({
       .finally(() => setLoading(false));
 
     return () => ctrl.abort();
-  }, [kategori]);
+  }, [kategori, jumlahBerita]);
 
   // Sembunyikan section jika selesai load tapi tidak ada berita
   if (!loading && !error && berita.length === 0) return null;
@@ -115,7 +122,7 @@ export default function KategoriBeritaSection({
         <div className="kbs__body">
           <div className="kbs__grid">
             {/* Loading skeleton */}
-            {loading && Array.from({ length: 4 }).map((_, i) => (
+            {loading && Array.from({ length: jumlahBerita }).map((_, i) => (
               <BeritaCardSkeleton key={i} />
             ))}
 
@@ -126,12 +133,15 @@ export default function KategoriBeritaSection({
               </div>
             )}
 
-            {/* Card berita — badge teks dari item.penulis, warna teal default (sama BERITA TERBARU) */}
+            {/* Card berita — badgeLabel di-override dari prop (mis. "JATIM", "EJSC"),
+                warna badge mengikuti warnaBadge section */}
             {!loading && !error && berita.map((item) => (
               <BeritaCard
                 key={item.id}
                 item={item}
                 onNavigate={handleCardClick}
+                badgeLabel={badgeLabel ?? undefined}
+                badgeColor={warnaBadge ?? undefined}
               />
             ))}
           </div>
