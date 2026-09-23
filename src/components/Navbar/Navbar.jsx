@@ -105,7 +105,7 @@ function buildNavItems(klasifikasiItems) {
  * DropdownChild — render satu item di dalam dropdown-menu.
  * Bisa berupa link biasa ATAU sub-submenu (nested dropdown ke kanan).
  */
-function DropdownChild({ child, isMobile, mobileOpenSub, onMobileSubToggle }) {
+function DropdownChild({ child, isMobile, mobileOpenSub, onMobileSubToggle, onCloseMenu }) {
   const hasSubChildren = child.children && child.children.length > 0;
   // Gunakan label sebagai key unik untuk mobile sub-accordion
   const subKey = child.label;
@@ -114,7 +114,7 @@ function DropdownChild({ child, isMobile, mobileOpenSub, onMobileSubToggle }) {
   if (!hasSubChildren) {
     return (
       <li className="dropdown-item" role="none">
-        <Link className="dropdown-link" to={child.href} role="menuitem">
+        <Link className="dropdown-link" to={child.href} role="menuitem" onClick={onCloseMenu}>
           {child.label}
         </Link>
       </li>
@@ -140,7 +140,7 @@ function DropdownChild({ child, isMobile, mobileOpenSub, onMobileSubToggle }) {
       <ul className="submenu" role="menu" aria-label={child.label}>
         {child.children.map((sub) => (
           <li key={sub.href} role="none">
-            <Link className="dropdown-link submenu-link" to={sub.href} role="menuitem">
+            <Link className="dropdown-link submenu-link" to={sub.href} role="menuitem" onClick={onCloseMenu}>
               {sub.label}
             </Link>
           </li>
@@ -150,7 +150,7 @@ function DropdownChild({ child, isMobile, mobileOpenSub, onMobileSubToggle }) {
   );
 }
 
-function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
+function NavItem({ item, isMobile, mobileOpen, onMobileToggle, onCloseMenu }) {
   const hasChildren = item.children && item.children.length > 0;
   // State untuk mobile sub-accordion (level-2)
   const [mobileOpenSub, setMobileOpenSub] = useState(null);
@@ -162,7 +162,7 @@ function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
   if (!hasChildren) {
     return (
       <li className="nav-item" role="none">
-        <Link className="nav-link" to={item.href} role="menuitem">
+        <Link className="nav-link" to={item.href} role="menuitem" onClick={onCloseMenu}>
           {item.label}
         </Link>
       </li>
@@ -199,6 +199,7 @@ function NavItem({ item, isMobile, mobileOpen, onMobileToggle }) {
             isMobile={isMobile}
             mobileOpenSub={mobileOpenSub}
             onMobileSubToggle={handleMobileSubToggle}
+            onCloseMenu={onCloseMenu}
           />
         ))}
       </ul>
@@ -267,6 +268,12 @@ export default function Navbar() {
     []
   );
 
+  // Tutup menu mobile sepenuhnya saat link diklik
+  const handleCloseMenu = useCallback(() => {
+    setMenuOpen(false);
+    setMobileOpen(null);
+  }, []);
+
   return (
     <>
       {/* ── Non-sticky: superbar + topbar (ikut scroll) ── */}
@@ -319,6 +326,7 @@ export default function Navbar() {
               isMobile={isMobile}
               mobileOpen={mobileOpen}
               onMobileToggle={handleMobileToggle}
+              onCloseMenu={handleCloseMenu}
             />
           ))}
         </ul>

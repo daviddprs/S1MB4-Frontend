@@ -414,6 +414,15 @@
     border-left: none;
     border-top: 1px solid rgba(255,255,255,0.07);
     /* Limit height so it doesn't push content too far down */
-    max-height: 280px;
+    max-height: 300px;
+    overflow: hidden;         /* clip konten yang meluap keluar sidebar */
+    display: flex;
+    flex-direction: column;
+  }
+  /* List item scroll secara internal agar tidak menimpa "Lihat Semua Berita →" */
+  .home-hero-layout__sidebar .home-sidebar__list {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
   }
 }
