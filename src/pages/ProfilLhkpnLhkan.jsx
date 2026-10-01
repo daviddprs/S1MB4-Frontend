@@ -26,13 +26,13 @@ export default function ProfilLhkpnLhkan() {
   useEffect(() => {
     const ctrl = new AbortController();
 
-    /* Fetch LHKPN-LHKAN items */
+    /* Fetch LHKPN-LHKAN items — from standalone /api/lhkpn-lhkan endpoint */
     setLoading(true);
     setError(null);
-    fetchJson('/ppid/dokumen/lhkpn-lhkan', { signal: ctrl.signal })
+    fetchJson('/lhkpn-lhkan', { signal: ctrl.signal })
       .then((data) => {
-        const raw = data?.data ?? data;
-        setItems(Array.isArray(raw) ? raw : []);
+        const raw = Array.isArray(data) ? data : (data?.data ?? []);
+        setItems(raw);
       })
       .catch((err) => {
         if (err.name !== 'AbortError') setError(err.message);
