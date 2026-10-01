@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchJson } from '../../lib/api';
 import logoBarkorwil from '../../assets/logo-bakorwil-madiun.png';
 import './Navbar.css';
+
 
 
 
@@ -11,19 +11,20 @@ import './Navbar.css';
  * atau jika API tidak dapat dijangkau.
  * Urutan dan label harus konsisten dengan tabel ppid_klasifikasi.
  */
-const KLASIFIKASI_FALLBACK = [
-  { label: 'Informasi Berkala',          href: '/ppid/berkala' },
-  { label: 'Informasi Serta Merta',      href: '/ppid/serta-merta' },
-  { label: 'Informasi Setiap Saat',      href: '/ppid/setiap-saat' },
-  { label: 'Informasi Dikecualikan',     href: '/ppid/dikecualikan' },
-  { label: 'Laporan Akses Informasi',    href: '/ppid/laporan-akses-informasi' },
-];
+// URL menuju project PPID-Frontend yang terpisah.
+// Untuk lokal: http://localhost:5174
+// Untuk production: ganti ke subdomain, mis. https://ppid.bakorwilmadiun.jatimprov.go.id
+const PPID_FRONTEND_URL = 'http://localhost:5174';
 
 /**
  * Bangun array NAV_ITEMS dengan menginjeksikan daftar klasifikasi dinamis.
  * @param {Array<{label:string, href:string}>} klasifikasiItems
  */
-function buildNavItems(klasifikasiItems) {
+/**
+ * buildNavItems — kini tidak lagi memerlukan klasifikasiItems karena
+ * menu PPID sudah menjadi link luar ke project PPID-Frontend.
+ */
+function buildNavItems() {
   return [
     { id: 'beranda', label: 'BERANDA', href: '/' },
     {
@@ -36,40 +37,13 @@ function buildNavItems(klasifikasiItems) {
         { label: 'Struktur Organisasi',    href: '/profil/struktur-organisasi' },
         { label: 'Wilayah Kerja',          href: '/profil/wilayah-kerja' },
         { label: 'Pejabat Struktural',     href: '/profil/pejabat-struktural' },
+        { label: 'LHKPN-LHKAN',            href: '/profil/lhkpn-lhkan' },
         { label: 'Sejarah',                href: '/profil/sejarah' },
       ],
     },
     { id: 'berita', label: 'BERITA', href: '/berita' },
-    {
-      id: 'ppid',
-      label: 'PPID',
-      children: [
-        {
-          label: 'Profil PPID',
-          children: [
-            { label: 'Seputar PPID',            href: '/ppid/profil' },
-            { label: 'Visi dan Misi',            href: '/ppid/profil' },
-            { label: 'Kelembagaan PPID',         href: '/ppid/profil' },
-            { label: 'Struktur Organisasi PPID', href: '/ppid/profil' },
-            { label: 'Maklumat Pelayanan',       href: '/ppid/maklumat-pelayanan' },
-          ],
-        },
-        { label: 'Layanan Informasi', href: '/ppid/layanan-informasi' },
-        {
-          label: 'Dokumen PPID',
-          children: [
-            { label: 'SK PPID', href: '/ppid/dokumen/sk-ppid' },
-            { label: 'DIP',     href: '/ppid/dokumen/dip/bakorwil-1-madiun' },
-            { label: 'LLID',    href: '/ppid/dokumen/llid/bakorwil-1-madiun' },
-          ],
-        },
-        {
-          label: 'Klasifikasi Informasi',
-          // Diisi dari API; fallback ke statis jika API gagal
-          children: klasifikasiItems,
-        },
-      ],
-    },
+    // Menu PPID sekarang adalah link luar ke project PPID-Frontend (subdomain terpisah)
+    { id: 'ppid', label: 'PPID', href: PPID_FRONTEND_URL, external: true },
     { id: 'ejsc', label: 'EJSC', href: '/ejsc' },
     {
       id: 'layanan',
@@ -160,6 +134,24 @@ function NavItem({ item, isMobile, mobileOpen, onMobileToggle, onCloseMenu }) {
   );
 
   if (!hasChildren) {
+    // Link luar (external: true) — render <a> biasa, bukan <Link> react-router
+    if (item.external) {
+      return (
+        <li className="nav-item" role="none">
+          <a
+            className="nav-link"
+            href={item.href}
+            role="menuitem"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onCloseMenu}
+          >
+            {item.label}
+            <span style={{ fontSize: '0.6rem', marginLeft: '3px', opacity: 0.7 }} aria-hidden="true">↗</span>
+          </a>
+        </li>
+      );
+    }
     return (
       <li className="nav-item" role="none">
         <Link className="nav-link" to={item.href} role="menuitem" onClick={onCloseMenu}>
@@ -211,37 +203,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  // Mulai dari fallback; akan di-replace dengan data API saat fetch selesai
-  const [klasifikasiItems, setKlasifikasiItems] = useState(KLASIFIKASI_FALLBACK);
   const navRef = useRef(null);
 
-  // Fetch daftar klasifikasi dari API saat Navbar pertama kali mount
-  useEffect(() => {
-    const ctrl = new AbortController();
-
-    fetchJson('/ppid/klasifikasi', { signal: ctrl.signal })
-      .then((data) => {
-        const raw = Array.isArray(data) ? data : (data?.data ?? []);
-        // Validasi minimal: setiap item harus punya label & href
-        const valid = raw.filter((d) => d?.label && d?.href);
-        if (valid.length > 0) {
-          setKlasifikasiItems(valid);
-        }
-        // Jika API kembalikan array kosong, tetap pakai fallback
-      })
-      .catch((err) => {
-        // Jika fetch di-abort (React StrictMode / unmount), abaikan
-        // Jika error jaringan/server, biarkan fallback tetap aktif
-        if (err?.name !== 'AbortError') {
-          console.warn('[Navbar] Gagal memuat klasifikasi dari API, menggunakan data statis.', err?.message);
-        }
-      });
-
-    return () => ctrl.abort();
-  }, []);
-
-  // Rebuild NAV_ITEMS setiap kali klasifikasiItems berubah
-  const navItems = buildNavItems(klasifikasiItems);
+  // Menu PPID kini adalah link luar, tidak perlu fetch klasifikasi dari API
+  const navItems = buildNavItems();
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');
